@@ -6,6 +6,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+// Next tasks
+// TODO: Documentation
+
 
 // TODO: probably much better way:
 // http://www.oodesign.com/chain-of-responsibility-pattern.html

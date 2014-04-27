@@ -112,6 +112,12 @@ public class TEMView extends JPanel {
 		fBox.setColor(new Color(50,0,120));
 		drawableList.add(fBox);
 		
+		initialLocalOrientation = new LocalOrientation(new Point2D.Double(0,0), 0,1.0);
+		initialStarpoint = new StarPoint(0,0);
+		DrawableText text = new DrawableText(initialStarpoint, 
+											  initialLocalOrientation, "AAAAA");
+		drawableList.add(text);
+		
 		
 		// Add Listeners to View
 		

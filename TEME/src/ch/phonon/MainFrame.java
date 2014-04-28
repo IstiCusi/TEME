@@ -59,10 +59,13 @@ public class MainFrame extends JFrame {
 		
 		setVisible(true);
 		
+		
 		// TODO: centerAll has to be after setVisible ; why ? Is there a better
 		// design  ... this looks somehow not nice. 
+		
 		temInspectionPanel.centerAll();
-
+		repaint();
+		
 	}
 	
 }

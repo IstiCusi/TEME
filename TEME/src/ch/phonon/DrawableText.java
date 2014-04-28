@@ -22,7 +22,9 @@ public class DrawableText extends AbstractDrawable {
 	private FontRenderContext frc = null;
 	private TextLayout textLayout = null;
 	
-	double width, height; 
+	// TODO: Take out the standard values after fix of DrawableText
+	double width = 104; 
+	double height=22; 
 
 	
 	DrawableText(StarPoint starpoint, LocalOrientation localOrientation, String text) {
@@ -31,6 +33,8 @@ public class DrawableText extends AbstractDrawable {
 
 		this.text = text;
 		this.font = new Font("Helvetica",Font.PLAIN,30);
+		this.width=104;
+		this.height=22;
 		
 //		this.width=image.getWidth();
 //		this.height=image.getHeight();
@@ -58,6 +62,24 @@ public class DrawableText extends AbstractDrawable {
 		
 		// ----------------------------------------------------------------------
 
+//		frc = graphicsContext.getFontRenderContext();
+//		AttributedString aString = new AttributedString(text);
+//		aString.addAttribute(TextAttribute.FONT, font);
+//		aString.addAttribute(TextAttribute.FOREGROUND, Color.YELLOW);
+//		AttributedCharacterIterator aci = aString.getIterator();
+//		TextLayout textLayout = new TextLayout(aci,frc);
+//		Shape outLine = textLayout.getOutline(null);
+//		this.height = outLine.getBounds2D().getHeight();
+//		this.width= outLine.getBounds2D().getWidth();
+//		
+//		locationTransform.translate(0, +this.height);
+//		AffineTransform helper = graphicsContext.getTransform();
+//		graphicsContext.setTransform(locationTransform);
+//		graphicsContext.drawString(aString.getIterator(), 0, 0);
+//		graphicsContext.setTransform(helper);
+//		
+		// ---------------------------------------------------------------------
+		
 		frc = graphicsContext.getFontRenderContext();
 		AttributedString aString = new AttributedString(text);
 		aString.addAttribute(TextAttribute.FONT, font);
@@ -68,9 +90,14 @@ public class DrawableText extends AbstractDrawable {
 		this.height = outLine.getBounds2D().getHeight();
 		this.width= outLine.getBounds2D().getWidth();
 		
+		System.out.println("height:"+this.height+" width:"+this.width);
+		
 		locationTransform.translate(0, +this.height);
+		AffineTransform helper = graphicsContext.getTransform();
 		graphicsContext.setTransform(locationTransform);
 		graphicsContext.drawString(aString.getIterator(), 0, 0);
+		graphicsContext.setTransform(helper);
+		
 		
 	}
 

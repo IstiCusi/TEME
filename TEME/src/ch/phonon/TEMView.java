@@ -112,12 +112,22 @@ public class TEMView extends JPanel {
 		fBox.setColor(new Color(50,0,120));
 		drawableList.add(fBox);
 		
-		initialLocalOrientation = new LocalOrientation(new Point2D.Double(0,0), 0,1.0);
-		initialStarpoint = new StarPoint(0,0);
+		initialLocalOrientation = new LocalOrientation(new Point2D.Double(0,0), 90,2.0);
+		initialStarpoint = new StarPoint(400, 300);
 		DrawableText text = new DrawableText(initialStarpoint, 
 											  initialLocalOrientation, "AAAAA");
 		drawableList.add(text);
 		
+		initialLocalOrientation = new LocalOrientation(new Point2D.Double(0,0), 0,2.0);
+		initialStarpoint = new StarPoint(0,0);
+		DrawableBox gBox = new DrawableBox(initialStarpoint, 
+											  initialLocalOrientation, 50, 50);
+		gBox.setColor(new Color(50,0,120));
+		drawableList.add(gBox);
+		
+		
+		setVisible(true);	
+		repaint(500);
 		
 		// Add Listeners to View
 		
@@ -127,11 +137,21 @@ public class TEMView extends JPanel {
 		
 		//requestFocusInWindow(true);
 		
-		setVisible(true);	
 		
+		
+		//centerAll();
 	}
 	
 	public void centerAll() {
+		System.out.println(">>>>>>>>>>>centerAll<<<<<<<<<<<<");
+		
+		System.out.println(this.getWidth());
+		System.out.println(this.getHeight());
+		System.out.println(temViewState.x);
+		System.out.println(temViewState.y);
+		
+		System.out.println(">>>>>>>>>>>---------<<<<<<<<<<<<");
+		
 		temViewState.cWidth  =  this.getWidth();
 		temViewState.cHeight =  this.getHeight();
 		temViewState.x = temViewState.cWidth/2;
@@ -152,11 +172,22 @@ public class TEMView extends JPanel {
 		Graphics2D g2D = (Graphics2D) g;
 		this.initial = g2D.getTransform();
 		
+		
 		for (Drawable drawable : drawableList) {
 			this.viewPortTransform = AbstractDrawable.transformViewPort 
 						(initial, this.temViewState);
 			drawable.paint(g2D, this.viewPortTransform);
+		    
 		}
+		
+		
+		//TODO: This repaint() i need just because of the DrawableText item.
+		// I have absolutly no clue, why.... it solves the problem. But not
+		// rigorously ... I have the feeling, that it has something to do with
+		// the width and height not known in DrawableText constructor.
+		// Therefore I take it out, before I do not find an explanation.
+		// repaint();
+		
 		
 
 	}

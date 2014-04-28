@@ -11,6 +11,7 @@ public class TEMViewState {
 	
 	// TODO: We should implement the state private  
 	// How to keep the simple way of reading a value ?
+	// better make double and not int ?
 	
 	public int cWidth;
 	public int cHeight;

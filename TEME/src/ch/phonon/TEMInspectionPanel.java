@@ -28,6 +28,7 @@ public class TEMInspectionPanel extends JPanel {
 		add(this.statusBar,BorderLayout.SOUTH);
 		
 		setVisible(true);
+		
 			
 	}
 	

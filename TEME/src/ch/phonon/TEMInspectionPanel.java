@@ -26,7 +26,7 @@ public class TEMInspectionPanel extends JPanel {
 		setLayout(new BorderLayout());
 		add(this.temView,BorderLayout.CENTER);
 		add(this.statusBar,BorderLayout.SOUTH);
-		
+		//setDoubleBuffered(true);
 		setVisible(true);
 		
 			

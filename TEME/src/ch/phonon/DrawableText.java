@@ -94,7 +94,7 @@ public class DrawableText extends AbstractDrawable {
 		
 		locationTransform.translate(0, +this.height);
 		AffineTransform helper = graphicsContext.getTransform();
-		graphicsContext.setTransform(locationTransform);
+		graphicsContext.transform(locationTransform);
 		graphicsContext.drawString(aString.getIterator(), 0, 0);
 		graphicsContext.setTransform(helper);
 		

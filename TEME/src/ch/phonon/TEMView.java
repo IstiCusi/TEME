@@ -5,10 +5,12 @@ package ch.phonon;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.awt.font.TextAttribute;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
@@ -16,6 +18,7 @@ import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
+import java.text.AttributedString;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -114,8 +117,13 @@ public class TEMView extends JPanel {
 		
 		initialLocalOrientation = new LocalOrientation(new Point2D.Double(0,0), 90,2.0);
 		initialStarpoint = new StarPoint(400, 300);
+		Font font = new Font("Helvetica",Font.PLAIN,30);
+		AttributedString aString = new AttributedString("TEME");
+		aString.addAttribute(TextAttribute.FONT, font);
+		aString.addAttribute(TextAttribute.FOREGROUND, Color.YELLOW);
+
 		DrawableText text = new DrawableText(initialStarpoint, 
-											  initialLocalOrientation, "AAAAA");
+											  initialLocalOrientation, aString);
 		drawableList.add(text);
 		
 		initialLocalOrientation = new LocalOrientation(new Point2D.Double(0,0), 0,2.0);

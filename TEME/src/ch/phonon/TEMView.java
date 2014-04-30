@@ -116,7 +116,7 @@ public class TEMView extends JPanel {
 		drawableList.add(fBox);
 		
 		initialLocalOrientation = new LocalOrientation(new Point2D.Double(0,0), 90,2.0);
-		initialStarpoint = new StarPoint(400, 300);
+		initialStarpoint = new StarPoint(0, 0);
 		Font font = new Font("Helvetica",Font.PLAIN,30);
 		AttributedString aString = new AttributedString("TEME");
 		aString.addAttribute(TextAttribute.FONT, font);
@@ -126,16 +126,19 @@ public class TEMView extends JPanel {
 											  initialLocalOrientation, aString);
 		drawableList.add(text);
 		
-		initialLocalOrientation = new LocalOrientation(new Point2D.Double(0,0), 0,2.0);
+		
+		Point2D.Double p1 = new Point2D.Double(0, 0);
+		Point2D.Double p2 = new Point2D.Double(0, 800);
+		initialLocalOrientation = new LocalOrientation(new Point2D.Double(0,0), 45,1.0);
 		initialStarpoint = new StarPoint(0,0);
-		DrawableBox gBox = new DrawableBox(initialStarpoint, 
-											  initialLocalOrientation, 50, 50);
-		gBox.setColor(new Color(50,0,120));
-		drawableList.add(gBox);
+		DrawableLine line= new DrawableLine(initialStarpoint, 
+											  initialLocalOrientation, p1, p2);
+		line.setColor(new Color(0,0,255));
+		drawableList.add(line);
 		
 		
 		setVisible(true);	
-		repaint(500);
+		repaint();
 		
 		// Add Listeners to View
 		
@@ -146,8 +149,7 @@ public class TEMView extends JPanel {
 		//requestFocusInWindow(true);
 		
 		
-		
-		//centerAll();
+
 	}
 	
 	public void centerAll() {

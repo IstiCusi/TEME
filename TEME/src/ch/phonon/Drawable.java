@@ -39,6 +39,12 @@ public interface Drawable  {
 	
 	public void 		setInvariantRotation(boolean invariantRotation);
 	public boolean 		getInvariantRotation();
+
+	/**
+	 * @param x
+	 * @param y
+	 */
+	public boolean contains(int x, int y);
 	
 
 	

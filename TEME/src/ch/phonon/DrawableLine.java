@@ -9,7 +9,6 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 
 
 
@@ -55,5 +54,14 @@ public class DrawableLine extends AbstractDrawable {
 	@Override
 	public double getHeight() {
 		return this.height;
+	}
+
+	/* (non-Javadoc)
+	 * @see ch.phonon.Drawable#contains(int, int)
+	 */
+	@Override
+	public boolean contains(int x, int y) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

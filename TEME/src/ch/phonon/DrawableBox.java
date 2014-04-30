@@ -16,6 +16,7 @@ public class DrawableBox extends AbstractDrawable {
 	private Rectangle2D box;	
 	private Color 	  color;
 	double width, height; 
+	AffineTransform localTransform;
 	
 	
 	DrawableBox(StarPoint starpoint, LocalOrientation localOrientation, int width, int height) {
@@ -36,6 +37,8 @@ public class DrawableBox extends AbstractDrawable {
 	@Override
 	void draw(Graphics2D graphicsContext, AffineTransform locationTransform) {
 		
+		this.localTransform = locationTransform;
+		
 		graphicsContext.setColor(this.color);
 		graphicsContext.setStroke(new BasicStroke(2.0f));
 		graphicsContext.draw(locationTransform.createTransformedShape(this.box));
@@ -50,5 +53,11 @@ public class DrawableBox extends AbstractDrawable {
 	@Override
 	public double getHeight() {
 		return this.height;
+	}
+
+	
+	@Override
+	public boolean contains(int x, int y) {
+		return this.localTransform.createTransformedShape(this.box).contains(x, y);
 	}
 }

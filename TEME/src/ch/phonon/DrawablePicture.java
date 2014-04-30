@@ -5,6 +5,7 @@ package ch.phonon;
 
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -14,8 +15,10 @@ import javax.imageio.ImageIO;
 
 public class DrawablePicture extends AbstractDrawable {
 
+	private Rectangle2D box;	
 	private BufferedImage image;
 	double width, height; 
+	AffineTransform locationTransform;
 
 	
 	DrawablePicture(StarPoint starpoint, LocalOrientation localOrientation, String pictureFileName) {
@@ -33,12 +36,14 @@ public class DrawablePicture extends AbstractDrawable {
 		
 		this.width=image.getWidth();
 		this.height=image.getHeight();
+		
+		this.box= new Rectangle2D.Double(0, 0, this.width, this.height);
 				
 	}
 	
 	@Override
 	void draw(Graphics2D graphicsContext, AffineTransform locationTransform) {
-		
+		this.locationTransform = locationTransform;
 		graphicsContext.drawRenderedImage(image,locationTransform);
 		
 	}
@@ -51,6 +56,12 @@ public class DrawablePicture extends AbstractDrawable {
 	@Override
 	public double getHeight() {
 		return this.height;
+	}
+
+	
+	@Override
+	public boolean contains(int x, int y) {
+		return this.locationTransform.createTransformedShape(this.box).contains(x, y);
 	}
 	
 }

@@ -74,11 +74,18 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 		this.temBegin.setTEMViewState(temView.getTEMViewState());
 		}
 	
-		if (SwingUtilities.isLeftMouseButton(e)) {
+		if (SwingUtilities.isLeftMouseButton(e) &&  e.isShiftDown()==false) {
 			//System.out.println("x "+e.getX()+" y"+e.getY());
-			// TODO: Check if cast from int to double works here 
+			// TODO: Check if cast from integer to double works here 
 			Point2D.Double point = new Point2D.Double(e.getX(), e.getY());
 			this.temView.addPoint(point);
+		}
+		
+		if (SwingUtilities.isLeftMouseButton(e) &&  e.isShiftDown()==true) {
+			System.out.println("Huch ....");
+			if (temView.getDrawableList().get(2).contains(e.getX(),e.getY())) {
+				System.out.println("Getroffen");
+			}
 		}
 			
 	}
@@ -109,7 +116,7 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 		
 		// TODO: I do not like this conditional expressions - check if there is not a better way
 		if (SwingUtilities.isMiddleMouseButton(e) && e.isShiftDown()==false && e.isControlDown()==false ) {
-
+ 
 			// Rotate
 			
 			this.delta_y = e.getY()-this.cursorBegin_y;

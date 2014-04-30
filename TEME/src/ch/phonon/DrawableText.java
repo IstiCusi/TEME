@@ -70,5 +70,11 @@ public class DrawableText extends AbstractDrawable {
 	public double getHeight() {
 		return this.height;
 	}
+
+	@Override
+	public boolean contains(int x, int y) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
 }

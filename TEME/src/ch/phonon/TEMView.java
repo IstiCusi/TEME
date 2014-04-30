@@ -280,4 +280,11 @@ public void addPoint ( Point2D point) {
 
 	}
 
+/**
+ * @return the drawableList
+ */
+public ArrayList<Drawable> getDrawableList() {
+	return drawableList;
+}
+
 }

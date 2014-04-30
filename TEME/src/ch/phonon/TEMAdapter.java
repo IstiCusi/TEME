@@ -8,6 +8,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 
 import javax.swing.SwingUtilities;
 
@@ -83,9 +84,17 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 		
 		if (SwingUtilities.isLeftMouseButton(e) &&  e.isShiftDown()==true) {
 			System.out.println("Huch ....");
-			if (temView.getDrawableList().get(2).contains(e.getX(),e.getY())) {
-				System.out.println("Getroffen");
+			ArrayList<Drawable> pointList = temView.getPointsList();
+			for (Drawable element : pointList) {
+				if (element.contains(e.getX(),e.getY())) {
+					int index = pointList.indexOf(element);
+					pointList.remove(index);
+					temView.setPointsList(pointList);
+				}
 			}
+//			if (temView.getDrawableList().get(2).contains(e.getX(),e.getY())) {
+//				System.out.println("Getroffen");
+//			}
 		}
 			
 	}

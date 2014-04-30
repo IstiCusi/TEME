@@ -42,8 +42,11 @@ public class TEMView extends JPanel {
 	private AffineTransform viewPortTransform;
 	private ArrayList<Drawable> drawableList; // contains all Drawables 
 	
+	//TODO: This bad datastructure is just a first test
+	// We need fast reading, writing is not so critical
 	private int id; 
 	private HashMap<Integer,Point2D> points; 
+	private		ArrayList<Drawable> pointsList; 
 	
 	// temViewState contains global rotation/zoom/pan state of all Drawables
 	
@@ -68,7 +71,7 @@ public class TEMView extends JPanel {
 		// Populate Drawables in ArrayList 
 		
 		this.drawableList = new ArrayList<Drawable>();
-		
+		this.pointsList = new ArrayList<Drawable>();
 		
 		initialStarpoint = new StarPoint(0,0);
 		DrawablePicture temPicture = new DrawablePicture(initialStarpoint, 
@@ -152,6 +155,21 @@ public class TEMView extends JPanel {
 
 	}
 	
+	/**
+	 * @param pointsList the pointsList to set
+	 */
+	public void setPointsList(ArrayList<Drawable> pointsList) {
+		this.pointsList = pointsList;
+		repaint();
+	}
+
+	/**
+	 * @return the points
+	 */
+	public HashMap<Integer, Point2D> getPoints() {
+		return points;
+	}
+
 	public void centerAll() {
 		System.out.println(">>>>>>>>>>>centerAll<<<<<<<<<<<<");
 		
@@ -184,6 +202,13 @@ public class TEMView extends JPanel {
 		
 		
 		for (Drawable drawable : drawableList) {
+			this.viewPortTransform = AbstractDrawable.transformViewPort 
+						(initial, this.temViewState);
+			drawable.paint(g2D, this.viewPortTransform);
+		    
+		}
+		
+		for (Drawable drawable : pointsList) {
 			this.viewPortTransform = AbstractDrawable.transformViewPort 
 						(initial, this.temViewState);
 			drawable.paint(g2D, this.viewPortTransform);
@@ -270,7 +295,7 @@ public void addPoint ( Point2D point) {
 		pPoint.setColor(new Color(0,255,255));
 		pPoint.setInvariantRotation(true);
 		pPoint.setInvariantScaling(true);
-		this.drawableList.add(pPoint);
+		this.pointsList.add(pPoint);
 		
 		this.firePropertyChange("addPoint", null, pt);
 		
@@ -279,6 +304,13 @@ public void addPoint ( Point2D point) {
 		
 
 	}
+
+/**
+ * @return the pointsList
+ */
+public ArrayList<Drawable> getPointsList() {
+	return pointsList;
+}
 
 /**
  * @return the drawableList

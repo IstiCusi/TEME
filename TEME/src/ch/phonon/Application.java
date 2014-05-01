@@ -7,7 +7,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 // Next tasks
-// TODO: Why do I need a repaint() when we introduce the DrawableText
+// TODO:
 // Why does another recenterAll() lead to a small shift. Has something
 // todo with a changed width of the contentPane... I think, Anyway I do
 // not like the fact, that I need to apply the centerAll after the total

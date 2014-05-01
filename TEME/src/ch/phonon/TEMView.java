@@ -20,7 +20,6 @@ import java.io.File;
 import java.io.IOException;
 import java.text.AttributedString;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -40,15 +39,9 @@ public class TEMView extends JPanel {
 	TEMAdapter adapter;
 	private AffineTransform initial;
 	private AffineTransform viewPortTransform;
-	private ArrayList<Drawable> drawableList; // contains all Drawables 
 	
-	//TODO: This bad datastructure is just a first test
-	// We need fast reading, writing is not so critical
-	private int id; 
-	private HashMap<Integer,Point2D> points; 
-	private		ArrayList<Drawable> pointsList; 
-	
-	// temViewState contains global rotation/zoom/pan state of all Drawables
+	private 	ArrayList<Drawable> 	 drawableList; // contains all Drawables 
+	private		ArrayList<DrawablePoint> pointsList; 
 	
 	private TEMViewState temViewState;
 	
@@ -60,8 +53,6 @@ public class TEMView extends JPanel {
 		
 		this.temViewState = new TEMViewState();
 		this.adapter = new TEMAdapter(this);
-		this.points 	= new HashMap<Integer, Point2D>();
-		this.id 		= 0;		
 				
 		StarPoint initialStarpoint = null;
 		LocalOrientation initialLocalOrientation = null;
@@ -71,7 +62,7 @@ public class TEMView extends JPanel {
 		// Populate Drawables in ArrayList 
 		
 		this.drawableList = new ArrayList<Drawable>();
-		this.pointsList = new ArrayList<Drawable>();
+		this.pointsList = new ArrayList<DrawablePoint>();
 		
 		initialStarpoint = new StarPoint(0,0);
 		DrawablePicture temPicture = new DrawablePicture(initialStarpoint, 
@@ -149,37 +140,44 @@ public class TEMView extends JPanel {
 		this.addMouseMotionListener(this.adapter);		
 		this.addKeyListener(this.adapter);
 		
-		//requestFocusInWindow(true);
 		
 		
 
 	}
 	
-	/**
-	 * @param pointsList the pointsList to set
-	 */
-	public void setPointsList(ArrayList<Drawable> pointsList) {
-		this.pointsList = pointsList;
-		repaint();
+	public void addPoint ( Point2D point) {
+			
+			
+			Point2D.Double pt = new Point2D.Double();
+			 try {
+				this.viewPortTransform.inverseTransform(point, pt);
+			} catch (NoninvertibleTransformException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			LocalOrientation initialLocalOrientation = new LocalOrientation(new Point2D.Double(0,0), 45,1.0);
+			StarPoint initialStarpoint = new StarPoint(pt.getX(),pt.getY());	
+			DrawableBox pBox = new DrawableBox(initialStarpoint, initialLocalOrientation, 10, 10);
+			pBox.setColor(new Color(0,255,255));
+			pBox.setInvariantRotation(true);
+			pBox.setInvariantScaling(true);
+			
+			DrawablePoint pPoint = new DrawablePoint(pBox,pt);
+			this.pointsList.add(pPoint);
+			
+			this.firePropertyChange("addPoint", null, pt);
+			
+			repaint();
+
+		}
+
+	public void addStatusBar (TEMStatusBar statusBar) {
+		this.addPropertyChangeListener("coordinateChange", (PropertyChangeListener) statusBar);
+		this.addPropertyChangeListener("addPoint", (PropertyChangeListener) statusBar);
 	}
 
-	/**
-	 * @return the points
-	 */
-	public HashMap<Integer, Point2D> getPoints() {
-		return points;
-	}
-
-	public void centerAll() {
-		System.out.println(">>>>>>>>>>>centerAll<<<<<<<<<<<<");
-		
-		System.out.println(this.getWidth());
-		System.out.println(this.getHeight());
-		System.out.println(temViewState.x);
-		System.out.println(temViewState.y);
-		
-		System.out.println(">>>>>>>>>>>---------<<<<<<<<<<<<");
-		
+	public void centerAll() {		
 		temViewState.cWidth  =  this.getWidth();
 		temViewState.cHeight =  this.getHeight();
 		temViewState.x = temViewState.cWidth/2;
@@ -187,44 +185,6 @@ public class TEMView extends JPanel {
 		temViewState.scaling = 1;
 		temViewState.rotation = 0;
 		this.repaint();
-	}
-
-	public TEMViewState getTEMViewState() {
-		return temViewState;
-	}
-
-	@Override
-	public void paintComponent(Graphics g) {
-		
-		super.paintComponent( g );
-		Graphics2D g2D = (Graphics2D) g;
-		this.initial = g2D.getTransform();
-		
-		
-		for (Drawable drawable : drawableList) {
-			this.viewPortTransform = AbstractDrawable.transformViewPort 
-						(initial, this.temViewState);
-			drawable.paint(g2D, this.viewPortTransform);
-		    
-		}
-		
-		for (Drawable drawable : pointsList) {
-			this.viewPortTransform = AbstractDrawable.transformViewPort 
-						(initial, this.temViewState);
-			drawable.paint(g2D, this.viewPortTransform);
-		    
-		}
-		
-		
-		//TODO: This repaint() i need just because of the DrawableText item.
-		// I have absolutly no clue, why.... it solves the problem. But not
-		// rigorously ... I have the feeling, that it has something to do with
-		// the width and height not known in DrawableText constructor.
-		// Therefore I take it out, before I do not find an explanation.
-		// repaint();
-		
-		
-
 	}
 
 	private void configureEnvironment() {
@@ -248,20 +208,8 @@ public class TEMView extends JPanel {
 		}
 		
 	}
-			
-	
-	public void setTEMViewState(TEMViewState temViewState) {
-		this.temViewState = temViewState;
-	}
-	
-	public void addStatusBar (TEMStatusBar statusBar) {
-		this.addPropertyChangeListener("coordinateChange", (PropertyChangeListener) statusBar);
-		this.addPropertyChangeListener("addPoint", (PropertyChangeListener) statusBar);
-	}
 
-	/**
-	 * 
-	 */
+
 	public void fireCoordinatePropertyChange(Point2D point) {
 		Point2D pt = new Point2D.Double();
 		 try {
@@ -273,50 +221,60 @@ public class TEMView extends JPanel {
 		 this.firePropertyChange("coordinateChange", null, pt);
 		
 	}
+			
 	
-public void addPoint ( Point2D point) {
-		
-		this.id++;
-		Point2D pt = new Point2D.Double();
-		 try {
-			this.viewPortTransform.inverseTransform(point, pt);
-		} catch (NoninvertibleTransformException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		points.put(id, pt);
-		System.out.println("OriginalPictureCorr.: X:"+pt.getX()+"  Y:"+pt.getY());
-		
-		//TODO: Points and other TEMView related items need to keep size independent of temView scale
-		
-		LocalOrientation initialLocalOrientation = new LocalOrientation(new Point2D.Double(0,0), 45,1.0);
-		StarPoint initialStarpoint = new StarPoint(pt.getX(),pt.getY());
-		DrawableBox pPoint = new DrawableBox(initialStarpoint, initialLocalOrientation, 10, 10);
-		pPoint.setColor(new Color(0,255,255));
-		pPoint.setInvariantRotation(true);
-		pPoint.setInvariantScaling(true);
-		this.pointsList.add(pPoint);
-		
-		this.firePropertyChange("addPoint", null, pt);
-		
-		repaint();
-		
-		
-
+	/**
+	 * @return the drawableList
+	 */
+	public ArrayList<Drawable> getDrawableList() {
+		return drawableList;
+	}
+	
+	/**
+	 * @return the pointsList
+	 */
+	public ArrayList<DrawablePoint> getPointsList() {
+		return pointsList;
 	}
 
-/**
- * @return the pointsList
- */
-public ArrayList<Drawable> getPointsList() {
-	return pointsList;
+	public TEMViewState getTEMViewState() {
+		return temViewState;
+	}
+	
+@Override
+public void paintComponent(Graphics g) {
+	
+	super.paintComponent( g );
+	Graphics2D g2D = (Graphics2D) g;
+	this.initial = g2D.getTransform();
+	
+	
+	for (Drawable drawable : drawableList) {
+		this.viewPortTransform = AbstractDrawable.transformViewPort 
+					(initial, this.temViewState);
+		drawable.paint(g2D, this.viewPortTransform);
+	    
+	}
+	
+	for (Drawable drawable : pointsList) {
+		this.viewPortTransform = AbstractDrawable.transformViewPort 
+					(initial, this.temViewState);
+		drawable.paint(g2D, this.viewPortTransform);
+	    
+	}
+
 }
 
 /**
- * @return the drawableList
+ * @param pointsList the pointsList to set
  */
-public ArrayList<Drawable> getDrawableList() {
-	return drawableList;
+public void setPointsList(ArrayList<DrawablePoint> pointsList) {
+	this.pointsList = pointsList;
+	repaint();
+}
+
+public void setTEMViewState(TEMViewState temViewState) {
+	this.temViewState = temViewState;
 }
 
 }

@@ -42,19 +42,13 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 		System.out.println("keyTyped");
 	}
 
-	// TODO: Important ... since the TEMViewer is embedded in TEMInspectionPanel
-	// the KeyListener part does not work anymore ... no idea why ... 
-	// we need a solution here.
 	
 	@Override
-	public void keyPressed(KeyEvent e) {
-		System.out.println("keyPressed");		
+	public void keyPressed(KeyEvent e) {	
 		if (e.getKeyCode()==KeyEvent.VK_HOME) {
-			System.out.println("HOME!!"); 
 			this.temView.centerAll();
 					
 		}
-		
 	}
 
 	@Override
@@ -76,25 +70,20 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 		}
 	
 		if (SwingUtilities.isLeftMouseButton(e) &&  e.isShiftDown()==false) {
-			//System.out.println("x "+e.getX()+" y"+e.getY());
-			// TODO: Check if cast from integer to double works here 
+			
 			Point2D.Double point = new Point2D.Double(e.getX(), e.getY());
 			this.temView.addPoint(point);
 		}
 		
 		if (SwingUtilities.isLeftMouseButton(e) &&  e.isShiftDown()==true) {
-			System.out.println("Huch ....");
-			ArrayList<Drawable> pointList = temView.getPointsList();
-			for (Drawable element : pointList) {
+			ArrayList<DrawablePoint> pointList = temView.getPointsList();
+			for (DrawablePoint element : pointList) {
 				if (element.contains(e.getX(),e.getY())) {
 					int index = pointList.indexOf(element);
 					pointList.remove(index);
 					temView.setPointsList(pointList);
 				}
 			}
-//			if (temView.getDrawableList().get(2).contains(e.getX(),e.getY())) {
-//				System.out.println("Getroffen");
-//			}
 		}
 			
 	}
@@ -147,7 +136,6 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 	
 	@Override	
 	public void mouseEntered(MouseEvent e) {
-	    System.out.println("Mouse entered!");	 
 		this.temView.grabFocus();
 	 }
 	

@@ -50,8 +50,6 @@ public class DrawableText extends AbstractDrawable {
 		this.height = outLine.getBounds2D().getHeight();
 		this.width= outLine.getBounds2D().getWidth();
 		
-		System.out.println("height:"+this.height+" width:"+this.width);
-		
 		locationTransform.translate(0, +this.height);
 		AffineTransform helper = graphicsContext.getTransform();
 		graphicsContext.transform(locationTransform);

@@ -49,6 +49,8 @@ public abstract class AbstractDrawable implements Drawable {
 		
 		return viewPortTransform;
 	}
+	
+	//public AbstractDrawable()  { }
 
 	public AbstractDrawable(StarPoint starpoint, LocalOrientation localOrientation) {
 		setStarPoint ((StarPoint)starpoint.clone());

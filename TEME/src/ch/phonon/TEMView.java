@@ -112,7 +112,7 @@ public class TEMView extends JPanel {
 		initialLocalOrientation = new LocalOrientation(new Point2D.Double(0,0), 90,2.0);
 		initialStarpoint = new StarPoint(0, 0);
 		Font font = new Font("Helvetica",Font.PLAIN,30);
-		AttributedString aString = new AttributedString("TEME");
+		AttributedString aString = new AttributedString("TEMEVIEW");
 		aString.addAttribute(TextAttribute.FONT, font);
 		aString.addAttribute(TextAttribute.FOREGROUND, Color.YELLOW);
 
@@ -158,12 +158,40 @@ public class TEMView extends JPanel {
 			
 			LocalOrientation initialLocalOrientation = new LocalOrientation(new Point2D.Double(0,0), 45,1.0);
 			StarPoint initialStarpoint = new StarPoint(pt.getX(),pt.getY());	
+			
 			DrawableBox pBox = new DrawableBox(initialStarpoint, initialLocalOrientation, 10, 10);
 			pBox.setColor(new Color(0,255,255));
 			pBox.setInvariantRotation(true);
 			pBox.setInvariantScaling(true);
 			
-			DrawablePoint pPoint = new DrawablePoint(pBox,pt);
+			DrawableLine pLine1 = new DrawableLine(initialStarpoint, 
+													new LocalOrientation(), 
+													new Point2D.Double(0,0), 
+													new Point2D.Double(20,0));
+			pLine1.setColor(Color.WHITE);
+			pLine1.setInvariantRotation(true);
+			pLine1.setInvariantScaling(true);
+			
+			
+			DrawableLine pLine2 = new DrawableLine(initialStarpoint, 
+					new LocalOrientation(), 
+					new Point2D.Double(0,0), 
+					new Point2D.Double(0,20));
+			pLine2.setColor(Color.WHITE);
+			pLine2.setInvariantRotation(true);
+			pLine2.setInvariantScaling(true);
+			
+			
+			DrawableComposite composite = new DrawableComposite();
+			composite.add(pBox);
+			composite.add(pLine1);
+			composite.add(pLine2);
+			
+			
+			DrawablePoint pPoint = new DrawablePoint(composite,pt);
+			
+			//DrawablePoint pPoint = new DrawablePoint(pBox,pt);
+			
 			this.pointsList.add(pPoint);
 			
 			this.firePropertyChange("addPoint", null, pt);

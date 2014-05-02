@@ -23,6 +23,13 @@ import java.util.Observable;
 
 public class LocalOrientation extends Observable  {
 	
+	
+	LocalOrientation () {
+		this.localX = new Point2D.Double(0, 0);
+		this.rotation=0;
+		this.scaling=1;		
+	}
+	
 	LocalOrientation( Point2D localX, double rotation, double scaling) {
 		this.localX=localX;
 		this.rotation=rotation;

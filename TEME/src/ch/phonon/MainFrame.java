@@ -6,6 +6,7 @@ package ch.phonon;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
@@ -30,6 +31,12 @@ public class MainFrame extends JFrame {
 		
 		super(Application.getResource("Window_title"));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		java.net.URL url = ClassLoader.getSystemResource("ch/phonon/pics/icon.png");
+		Toolkit kit = Toolkit.getDefaultToolkit();
+		Image img = kit.createImage(url);
+		setIconImage(img);
+
 	
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();	
 		double widthDesktop =   screenSize.getWidth();

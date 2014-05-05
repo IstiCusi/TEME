@@ -14,7 +14,7 @@ import java.awt.geom.AffineTransform;
  * @author phonon
  *
  */
-public abstract class AbstractDrawable implements Drawable {
+public abstract class AbstractDrawable implements Drawable, Positionable {
 	
 	static private AffineTransform viewPortTransform;
 	static private TEMViewState temViewState;
@@ -36,12 +36,13 @@ public abstract class AbstractDrawable implements Drawable {
 	 * @return viewPortTransform - the {@link AffineTransform} obtained by the
 	 * transformations related to zooming, panning and scaling of the TEMView. 
 	 */
-	static  public AffineTransform transformViewPort (AffineTransform initial, TEMViewState temviewState) {
+	static  public AffineTransform transformViewPort (AffineTransform initial, 
+													TEMViewState temviewState) {
 		
 		viewPortTransform= new AffineTransform(initial);
 		temViewState=temviewState;
 					
-		// ViewPort transformations ; read from the back to the front: Operator ABC *,
+		// ViewPort transformations-read from the back to front: Operator ABC *
 		
 			viewPortTransform.setToTranslation(temviewState.x,temviewState.y);
 			viewPortTransform.rotate(Math.toRadians(temviewState.rotation), 0, 0);
@@ -50,17 +51,17 @@ public abstract class AbstractDrawable implements Drawable {
 		return viewPortTransform;
 	}
 	
-	//public AbstractDrawable()  { }
+	
+	abstract void draw (Graphics2D graphicsContext, AffineTransform locationTransform);
+	abstract public double getWidth () ;
+	abstract public double getHeight() ;
+
 
 	public AbstractDrawable(StarPoint starpoint, LocalOrientation localOrientation) {
 		setStarPoint ((StarPoint)starpoint.clone());
 		setInitialOrientationState((LocalOrientation) localOrientation.clone());
 		setLocalOrientationState((LocalOrientation)localOrientation.clone());
 	}
-	
-	abstract void draw (Graphics2D graphicsContext, AffineTransform locationTransform);
-	
-	// TODO: Add setInvariantRotation (ture, false) ; set InvariantScaling (true,false)
 	
 	@Override
 	public void paint(Graphics2D graphicsContext, AffineTransform viewPortTransform) {
@@ -99,7 +100,8 @@ public abstract class AbstractDrawable implements Drawable {
 		this.draw(graphicsContext, locationTransform);
 		
 	}
-		
+	
+	
 	@Override
 	public LocalOrientation getLocalOrientationState() {
 		return this.localOrientationState;
@@ -132,14 +134,14 @@ public abstract class AbstractDrawable implements Drawable {
 		this.initialOrientationState = initialOrientationState;
 	}
 	
-	abstract public double getWidth () ;
-	abstract public double getHeight() ;
+	
 
 	@Override
 	public void setInvariantScaling(boolean invariantScaling) {
 		this.invariantScaling = invariantScaling;
 	}
 
+	
 	@Override
 	public boolean getInvariantScaling() {
 		return this.invariantScaling;
@@ -156,8 +158,5 @@ public abstract class AbstractDrawable implements Drawable {
 		// TODO Auto-generated method stub
 		return this.invariantRotation;
 	}
-
-	
-	
 
 }

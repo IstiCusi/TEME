@@ -1,5 +1,6 @@
 package ch.phonon;
 
+import java.net.URL;
 import java.util.ResourceBundle;
 
 import javax.swing.SwingUtilities;
@@ -8,7 +9,23 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 // Next tasks
 // TODO:
+// Write container, that keeps track about TEMPicture (Drawable) and it's 
+// polygons and it's points added 
+// TODO:
+// Introduce different variants of point drawable composites 
+// Introduce possibility gto show polygon number beside the point
+
+//TODO: How to decorate Drawables to obtain color, thickness etc.
+// The actual model is to static
+
+//TODO Add an InvariantTranslation property to the Drawables
+// Important, if we want later to add an information line similar to 
+// Lightroom as last layer of the TEMView, that shows information about
+// the actual view (name of tem picture, resolution, project name etc)
+
 // IMPORTANT: Complete the DrawableCompositeImplementation
+// Maybe we can simplify the Drawable interface and go more into composition
+
 // Why does another recenterAll() lead to a small shift. Has something
 // todo with a changed width of the contentPane... I think, Anyway I do
 // not like the fact, that I need to apply the centerAll after the total
@@ -45,6 +62,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 
 public class Application {
+	
+
 
 	static ResourceBundle mainResourceBundle = ResourceBundle
 			.getBundle("ch.phonon.config.resourceBundle");
@@ -56,10 +75,18 @@ public class Application {
  * Any property is keyed by baseName. The value of the property is returned
  * as string. 
  * @param baseName
- * @return a string of the property value
+ * @return a string of the property value	
+ * 
  */
+	
+
 	public static String getResource(String baseName) {
 		return mainResourceBundle.getString(baseName);
+	}
+	
+	public static URL getPicture(String path) {
+		URL url = Application.class.getResource(path);
+		return url;
 	}
 
 /** 
@@ -68,7 +95,7 @@ public class Application {
  * @param args
  */
 	public static void main(String[] args) {
-		
+
 
 		try {
 			UIManager.setLookAndFeel(

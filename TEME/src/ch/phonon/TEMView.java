@@ -5,12 +5,10 @@ package ch.phonon;
 
 import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Toolkit;
-import java.awt.font.TextAttribute;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
@@ -18,7 +16,6 @@ import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
-import java.text.AttributedString;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
@@ -40,9 +37,7 @@ public class TEMView extends JPanel {
 	private AffineTransform initial;
 	private AffineTransform viewPortTransform;
 	
-	private 	ArrayList<Drawable> 	 drawableList; // contains all Drawables 
-	private		ArrayList<DrawablePoint> pointsList; 
-	
+	private TEMAllied temAllied;
 	private TEMViewState temViewState;
 	
 	TEMView  () { 
@@ -53,26 +48,11 @@ public class TEMView extends JPanel {
 		
 		this.temViewState = new TEMViewState();
 		this.adapter = new TEMAdapter(this);
-				
-		StarPoint initialStarpoint = null;
-		LocalOrientation initialLocalOrientation = null;
-				
-		initialLocalOrientation = new LocalOrientation(new Point2D.Double(0,0), 0,1.0);
-		
-		// Populate Drawables in ArrayList 
-		
-		this.drawableList = new ArrayList<Drawable>();
-		this.pointsList = new ArrayList<DrawablePoint>();
-		
-		initialStarpoint = new StarPoint(0,0);
-		
-		DrawablePicture temPicture = new DrawablePicture(initialStarpoint, 
-						initialLocalOrientation, "./pics/CoordinateChecker.png");
-		
-		drawableList.add(temPicture);
-		
+			
+		temAllied = new TEMAllied("./pics/CoordinateChecker.png");
+					
 		setVisible(true);	
-		repaint();
+//		repaint();
 		
 		// Add Listeners to View
 		
@@ -80,7 +60,7 @@ public class TEMView extends JPanel {
 		this.addMouseMotionListener(this.adapter);		
 		this.addKeyListener(this.adapter);
 		
-		this.updateUI();
+		//this.updateUI();
 		
 
 	}
@@ -130,15 +110,18 @@ public class TEMView extends JPanel {
 			
 			DrawablePoint pPoint = new DrawablePoint(composite,pt);
 			
-			//DrawablePoint pPoint = new DrawablePoint(pBox,pt);
-			
-			this.pointsList.add(pPoint);
+			this.temAllied.addPoint(pPoint);
 			
 			this.firePropertyChange("addPoint", null, pt);
 			
 			repaint();
 
 		}
+	
+	public void removePoint (int x, int y) {
+		this.temAllied.removePoint(x, y);
+		repaint();
+	}
 
 	public void addStatusBar (TEMStatusBar statusBar) {
 		this.addPropertyChangeListener("coordinateChange", (PropertyChangeListener) statusBar);
@@ -191,20 +174,7 @@ public class TEMView extends JPanel {
 	}
 			
 	
-	/**
-	 * @return the drawableList
-	 */
-	public ArrayList<Drawable> getDrawableList() {
-		return drawableList;
-	}
 	
-	/**
-	 * @return the pointsList
-	 */
-	public ArrayList<DrawablePoint> getPointsList() {
-		return pointsList;
-	}
-
 	public TEMViewState getTEMViewState() {
 		return temViewState;
 	}
@@ -216,6 +186,13 @@ public void paintComponent(Graphics g) {
 	Graphics2D g2D = (Graphics2D) g;
 	this.initial = g2D.getTransform();
 	
+	this.viewPortTransform = AbstractDrawable.transformViewPort 
+			(initial, this.temViewState);
+	this.temAllied.getTemPicture().paint(g2D, viewPortTransform);
+	
+	
+	ArrayList<Drawable> drawableList = this.temAllied.getDrawables();
+	ArrayList<DrawablePoint> pointList = this.temAllied.getPointsList();
 	
 	for (Drawable drawable : drawableList) {
 		this.viewPortTransform = AbstractDrawable.transformViewPort 
@@ -224,21 +201,13 @@ public void paintComponent(Graphics g) {
 	    
 	}
 	
-	for (Drawable drawable : pointsList) {
+	for (DrawablePoint dPoint  : pointList) {
 		this.viewPortTransform = AbstractDrawable.transformViewPort 
 					(initial, this.temViewState);
-		drawable.paint(g2D, this.viewPortTransform);
+		dPoint.paint(g2D, this.viewPortTransform);
 	    
 	}
 
-}
-
-/**
- * @param pointsList the pointsList to set
- */
-public void setPointsList(ArrayList<DrawablePoint> pointsList) {
-	this.pointsList = pointsList;
-	repaint();
 }
 
 public void setTEMViewState(TEMViewState temViewState) {

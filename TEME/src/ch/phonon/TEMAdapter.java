@@ -8,7 +8,6 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
 
 import javax.swing.SwingUtilities;
 
@@ -76,14 +75,7 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 		}
 		
 		if (SwingUtilities.isLeftMouseButton(e) &&  e.isShiftDown()==true) {
-			ArrayList<DrawablePoint> pointList = temView.getPointsList();
-			for (DrawablePoint element : pointList) {
-				if (element.contains(e.getX(),e.getY())) {
-					int index = pointList.indexOf(element);
-					pointList.remove(index);
-					temView.setPointsList(pointList);
-				}
-			}
+			this.temView.removePoint(e.getX(), e.getY());
 		}
 			
 	}
@@ -142,7 +134,7 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		// TODO: Inform TEMStatusPanel about actual cursor position and 
-		// the actual position also calcaulated by setPoint in TEMView.
+		// the actual position also calculated by setPoint in TEMView.
 		Point2D.Double point = new Point2D.Double(e.getX(), e.getY());
 		this.temView.fireCoordinatePropertyChange(point);
 	   }

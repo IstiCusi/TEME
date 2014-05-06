@@ -42,7 +42,7 @@ public class ProjectPropertiesPanel extends JPanel implements ActionListener  {
 		projectIdLabel.setLabelFor(projectId);
 		technologyLabel.setLabelFor(technology);
 		
-		URL url =   Application.getPicture("pics/Open16.gif");
+		URL url =   Application.getUrl("pics/Open16.gif");
 		openButton = new JButton("Open a TEM picture ...", new ImageIcon(url));
 		openButton.addActionListener(this);
 		temPictureFile = new JFileChooser();

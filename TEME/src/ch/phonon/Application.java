@@ -84,7 +84,7 @@ public class Application {
 		return mainResourceBundle.getString(baseName);
 	}
 	
-	public static URL getPicture(String path) {
+	public static URL getUrl(String path) {
 		URL url = Application.class.getResource(path);
 		return url;
 	}

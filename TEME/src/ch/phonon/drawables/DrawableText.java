@@ -1,7 +1,7 @@
 /**
  * 
  */
-package ch.phonon;
+package ch.phonon.drawables;
 
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -12,6 +12,9 @@ import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.text.AttributedCharacterIterator;
 import java.text.AttributedString;
+
+import ch.phonon.LocalOrientation;
+import ch.phonon.StarPoint;
 
 
 public class DrawableText extends AbstractDrawable {

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package ch.phonon;
+package ch.phonon.temview;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;

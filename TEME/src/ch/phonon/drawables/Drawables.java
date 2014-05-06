@@ -1,7 +1,7 @@
 /**
  * 
  */
-package ch.phonon;
+package ch.phonon.drawables;
 
 /**
  * @author phonon

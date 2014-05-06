@@ -1,10 +1,13 @@
 /**
  * 
  */
-package ch.phonon;
+package ch.phonon.drawables;
 
 import java.awt.Color;
 import java.awt.geom.Point2D;
+
+import ch.phonon.LocalOrientation;
+import ch.phonon.StarPoint;
 
 
 public class DrawableCircularStar extends DrawableComposite {

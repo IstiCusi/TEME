@@ -1,7 +1,7 @@
 /**
  * 
  */
-package ch.phonon;
+package ch.phonon.drawables;
 
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;

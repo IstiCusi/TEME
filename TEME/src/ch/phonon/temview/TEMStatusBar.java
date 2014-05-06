@@ -1,5 +1,5 @@
 
-package ch.phonon;
+package ch.phonon.temview;
 
 import java.awt.Color;
 import java.awt.geom.Point2D;
@@ -11,6 +11,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
+
+import ch.phonon.Application;
 
 /**
  * @author phonon

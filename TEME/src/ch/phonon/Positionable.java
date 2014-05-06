@@ -3,6 +3,8 @@
  */
 package ch.phonon;
 
+import ch.phonon.drawables.Drawable;
+
 
 public interface Positionable {
 

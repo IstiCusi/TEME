@@ -1,31 +1,34 @@
 /**
  * 
  */
-package ch.phonon;
+package ch.phonon.drawables;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
+
+import ch.phonon.LocalOrientation;
+import ch.phonon.StarPoint;
 
 
 
-public class DrawableCircle extends AbstractDrawable {
+public class DrawableBox extends AbstractDrawable {
 
-	private Ellipse2D ellipse;	
+	private Rectangle2D box;	
 	private Color 	  color;
 	double width, height; 
 	AffineTransform localTransform;
 	
 	
-	DrawableCircle(StarPoint starpoint, LocalOrientation localOrientation, int width, int height) {
+	DrawableBox(StarPoint starpoint, LocalOrientation localOrientation, int width, int height) {
 		
 		super(starpoint, localOrientation);
 		
 		this.width=width;
 		this.height=height;
-		this.ellipse= new Ellipse2D.Double(0, 0, width, height);
+		this.box= new Rectangle2D.Double(0, 0, width, height);
 		this.color = new Color(255, 0, 0);
 
 	}
@@ -41,7 +44,7 @@ public class DrawableCircle extends AbstractDrawable {
 		
 		graphicsContext.setColor(this.color);
 		graphicsContext.setStroke(new BasicStroke(2.0f));
-		graphicsContext.draw(locationTransform.createTransformedShape(this.ellipse));
+		graphicsContext.draw(locationTransform.createTransformedShape(this.box));
 		
 	}
 
@@ -58,7 +61,7 @@ public class DrawableCircle extends AbstractDrawable {
 	
 	
 	public boolean contains(int x, int y) {
-		return this.localTransform.createTransformedShape(this.ellipse).contains(x, y);
+		return this.localTransform.createTransformedShape(this.box).contains(x, y);
 	}
 }
 

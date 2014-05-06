@@ -1,7 +1,7 @@
 /**
  * 
  */
-package ch.phonon;
+package ch.phonon.temview;
 
 import java.awt.BorderLayout;
 
@@ -21,12 +21,11 @@ public class TEMInspectionPanel extends JPanel {
 		
 		this.temView 	= new TEMView();
 		this.statusBar	= new TEMStatusBar();
-		temView.addStatusBar(statusBar);
+		temView.registerStatusBar(statusBar);
 	
 		setLayout(new BorderLayout());
 		add(this.temView,BorderLayout.CENTER);
 		add(this.statusBar,BorderLayout.SOUTH);
-		//setDoubleBuffered(true);
 		setVisible(true);
 		
 			
@@ -34,6 +33,10 @@ public class TEMInspectionPanel extends JPanel {
 	
 	public void centerAll() {
 		this.temView.centerAll();
+	}
+	
+	public TEMView getTEMView() {
+		return this.temView;
 	}
 
 

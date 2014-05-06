@@ -1,8 +1,9 @@
 
-package ch.phonon;
+package ch.phonon.projectproperties;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.net.URL;
 
@@ -13,12 +14,19 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import ch.phonon.Application;
+import ch.phonon.TEMAllied;
+import ch.phonon.temview.TEMView;
+
 
 public class ProjectPropertiesPanel extends JPanel implements ActionListener  {
 
 	private static final long serialVersionUID = 1L;
 	private JButton openButton; 
 	private JFileChooser temPictureFile;
+	
+	
+	private TEMAllied temAllied;
 	
 	public ProjectPropertiesPanel() {
 		
@@ -63,22 +71,32 @@ public class ProjectPropertiesPanel extends JPanel implements ActionListener  {
 		
 	}
 
-	/* (non-Javadoc)
-	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		 if (e.getSource() == openButton) {
 	            int returnVal = temPictureFile.showOpenDialog(this);
 
 	            if (returnVal == JFileChooser.APPROVE_OPTION) {
-	                File file = temPictureFile.getSelectedFile();           
+	                File file = temPictureFile.getSelectedFile();    
+	                System.out.println(file.getAbsolutePath());
+	                this.temAllied = new TEMAllied (file.getAbsolutePath());
+	                firePropertyChange("temAlliedChange", null, this.temAllied);
 	                System.out.println("Opening: " + file.getName() + ".");
 	            } else {
 	            	System.out.println("Canceled");
 	            }
 		 }
-
 	}
+
+	
+	// TODO: Instead we could try t implemento registerTEMInspectionPanel and
+	// shift the TEMRegistration into the ProjectPropertiesPanel class.
+	// Seems to be a little bit better ... but I miss the feeling of MVC. 
+	// HOW ? I need help with this point.
+	
+	public void registerTEMView (TEMView temView) {
+		this.addPropertyChangeListener("temAlliedChange", (PropertyChangeListener) temView);
+	}
+	
 	
 }

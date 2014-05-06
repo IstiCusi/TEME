@@ -5,10 +5,16 @@
 // TODO: Check all types on clone(), equals ...etc Unit Tests
 // TODO: Implement a correct handling of exceptions ... CloneBlaBlaException 
 
-package ch.phonon;
+package ch.phonon.drawables;
 
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
+
+import ch.phonon.LocalOrientation;
+import ch.phonon.Positionable;
+import ch.phonon.StarPoint;
+import ch.phonon.temview.TEMView;
+import ch.phonon.temview.TEMViewState;
 
 /**
  * @author phonon

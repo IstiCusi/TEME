@@ -6,6 +6,10 @@ package ch.phonon;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import ch.phonon.drawables.Drawable;
+import ch.phonon.drawables.DrawablePicture;
+import ch.phonon.drawables.DrawablePoint;
+
 /**
  * @author phonon
  *

@@ -6,6 +6,8 @@ package ch.phonon;
 import java.awt.geom.Point2D;
 import java.util.Observable;
 
+import ch.phonon.drawables.Drawable;
+
 
 /**
  * Instances of the class {@link LocalOrientation} store information
@@ -24,13 +26,13 @@ import java.util.Observable;
 public class LocalOrientation extends Observable  {
 	
 	
-	LocalOrientation () {
+	public LocalOrientation () {
 		this.localX = new Point2D.Double(0, 0);
 		this.rotation=0;
 		this.scaling=1;		
 	}
 	
-	LocalOrientation( Point2D localX, double rotation, double scaling) {
+	public LocalOrientation( Point2D localX, double rotation, double scaling) {
 		this.localX=localX;
 		this.rotation=rotation;
 		this.scaling=scaling;
@@ -70,7 +72,7 @@ public class LocalOrientation extends Observable  {
 	}
 
 	@Override
-	protected Object clone() {
+	public Object clone() {
 		//TODO: I dislike to use a constructor to generate a clone() 
 		// The clone contract in java is somehow fishy ... how to handle
 		// this. 

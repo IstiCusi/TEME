@@ -4,7 +4,6 @@
 package ch.phonon;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -12,6 +11,9 @@ import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JTabbedPane;
+
+import ch.phonon.projectproperties.ProjectPropertiesPanel;
+import ch.phonon.temview.TEMInspectionPanel;
 
 /**
  * @author phonon
@@ -25,7 +27,7 @@ public class MainFrame extends JFrame {
 	private JMenuBar menu;
 	private JTabbedPane tabbedPane;
 	private TEMInspectionPanel temInspectionPanel;
-	private Component projectPropPanel;
+	private ProjectPropertiesPanel projectPropPanel;
 	
 	public MainFrame() {
 		
@@ -53,11 +55,12 @@ public class MainFrame extends JFrame {
 		add(menu,BorderLayout.NORTH);
 		
 		this.tabbedPane  = new JTabbedPane();
-		
 		this.tabbedPane.setFocusable(true);
 		
 		this.temInspectionPanel = new TEMInspectionPanel();
 		this.projectPropPanel 	= new ProjectPropertiesPanel();
+		
+		projectPropPanel.registerTEMView(temInspectionPanel.getTEMView());
 		
 		tabbedPane.addTab("Project Properties", this.projectPropPanel);
 		tabbedPane.addTab("TEM Inspection", this.temInspectionPanel);
@@ -74,5 +77,9 @@ public class MainFrame extends JFrame {
 		repaint();
 		
 	}
+
+	
+	
+	
 	
 }

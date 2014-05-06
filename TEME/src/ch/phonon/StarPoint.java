@@ -6,6 +6,8 @@ package ch.phonon;
 import java.awt.geom.Point2D;
 import java.util.Observable;
 
+import ch.phonon.drawables.Drawable;
+
 /**
  * @author phonon
  * A {@link StarPoint} represents the global location of an object in 
@@ -64,7 +66,7 @@ public class StarPoint extends Observable {
 	}
 	
 	@Override
-	protected Object clone()  {
+	public Object clone()  {
 		return new StarPoint(this.starpoint.x, this.starpoint.y);
 	}
 	

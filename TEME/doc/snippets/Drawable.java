@@ -4,10 +4,10 @@ import java.awt.font.TextAttribute;
 import java.awt.geom.Point2D;
 import java.text.AttributedString;
 
-import ch.phonon.DrawableBox;
-import ch.phonon.DrawableLine;
-import ch.phonon.DrawablePicture;
-import ch.phonon.DrawableText;
+import ch.phonon.drawables.DrawableBox;
+import ch.phonon.drawables.DrawableLine;
+import ch.phonon.drawables.DrawablePicture;
+import ch.phonon.drawables.DrawableText;
 import ch.phonon.LocalOrientation;
 import ch.phonon.StarPoint;
 

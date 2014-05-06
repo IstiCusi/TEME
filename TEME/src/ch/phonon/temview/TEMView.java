@@ -1,7 +1,7 @@
 /**
  * 
  */
-package ch.phonon;
+package ch.phonon.temview;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -13,6 +13,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
@@ -22,6 +23,16 @@ import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
+import ch.phonon.Application;
+import ch.phonon.LocalOrientation;
+import ch.phonon.StarPoint;
+import ch.phonon.TEMAllied;
+import ch.phonon.drawables.AbstractDrawable;
+import ch.phonon.drawables.Drawable;
+import ch.phonon.drawables.DrawableCircle;
+import ch.phonon.drawables.DrawableDiamondStar;
+import ch.phonon.drawables.DrawablePoint;
+
 
 /**
  * The {@link TEMView} is a {@link JPanel}, that is used to show various
@@ -29,7 +40,7 @@ import javax.swing.JPanel;
  * @author phonon
  *
  */
-public class TEMView extends JPanel {
+public class TEMView extends JPanel implements PropertyChangeListener {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -40,37 +51,80 @@ public class TEMView extends JPanel {
 	private TEMAllied temAllied;
 	private TEMViewState temViewState;
 	
+	// ------------------------ Constructor ------------------------------------
+	
 	TEMView  () { 
 	
 		// Initialize state of the TEMView
 		
 		configureEnvironment();	// configure properties of TEMView (Color...)
 		
+		
+		
 		this.temViewState = new TEMViewState();
 		this.adapter = new TEMAdapter(this);
 			
-		temAllied = new TEMAllied("./pics/CoordinateChecker.png");
+		//temAllied = new TEMAllied("./pics/CoordinateChecker.png");
+		temAllied = new TEMAllied();
 		
 		LocalOrientation orientation = new LocalOrientation(new Point2D.Double(0,0),0,1.0);
 		StarPoint str = new StarPoint(0,0);
 		DrawableCircle circle = new DrawableCircle(str, orientation, 100, 100);
 		circle.setColor(new Color(0,255,0));
-		
 		temAllied.addDrawable(circle);
 			
 		setVisible(true);	
-//		repaint();
 		
 		// Add Listeners to View
 		
 		this.addMouseListener(this.adapter);
 		this.addMouseMotionListener(this.adapter);		
 		this.addKeyListener(this.adapter);
+				
+	}
+	
+	// ---------------------painting of the view -------------------------------	
+	
+	@Override
+	public void paintComponent(Graphics g) {
 		
-		//this.updateUI();
+		super.paintComponent( g );
+		Graphics2D g2D = (Graphics2D) g;
+		this.initial = g2D.getTransform();
 		
+		this.viewPortTransform = AbstractDrawable.transformViewPort 
+				(initial, this.temViewState);
+		
+		Drawable temPicture = this.temAllied.getTemPicture();
+		
+		if (temPicture==null) {
+			//TODO: Fire information to user, that he needs to load a tem
+			// picture first, before he can manipulate)
+		} else {
+			temPicture.paint(g2D, viewPortTransform);
+		}
+		
+		ArrayList<Drawable> drawableList = this.temAllied.getDrawables();
+		ArrayList<DrawablePoint> pointList = this.temAllied.getPointsList();
+		
+		for (Drawable drawable : drawableList) {
+			this.viewPortTransform = AbstractDrawable.transformViewPort 
+						(initial, this.temViewState);
+			drawable.paint(g2D, this.viewPortTransform);
+		    
+		}
+		
+		for (DrawablePoint dPoint  : pointList) {
+			this.viewPortTransform = AbstractDrawable.transformViewPort 
+						(initial, this.temViewState);
+			dPoint.paint(g2D, this.viewPortTransform);
+		    
+		}
 
 	}
+
+
+	// ---------------------Adding and removing points -------------------------	
 	
 	public void addPoint ( Point2D point) {
 			
@@ -79,7 +133,6 @@ public class TEMView extends JPanel {
 			 try {
 				this.viewPortTransform.inverseTransform(point, pt);
 			} catch (NoninvertibleTransformException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
@@ -99,10 +152,9 @@ public class TEMView extends JPanel {
 		repaint();
 	}
 
-	public void addStatusBar (TEMStatusBar statusBar) {
-		this.addPropertyChangeListener("coordinateChange", (PropertyChangeListener) statusBar);
-		this.addPropertyChangeListener("addPoint", (PropertyChangeListener) statusBar);
-	}
+	// ------------------------Helper functions --------------------------------	
+	
+	
 
 	public void centerAll() {		
 		temViewState.cWidth  =  this.getWidth();
@@ -135,6 +187,13 @@ public class TEMView extends JPanel {
 		}
 		
 	}
+	
+	// --------------------information interchange -----------------------------	
+	
+	public void registerStatusBar (TEMStatusBar statusBar) {
+		this.addPropertyChangeListener("coordinateChange", (PropertyChangeListener) statusBar);
+		this.addPropertyChangeListener("addPoint", (PropertyChangeListener) statusBar);
+	}	
 
 
 	public void fireCoordinatePropertyChange(Point2D point) {
@@ -148,46 +207,36 @@ public class TEMView extends JPanel {
 		 this.firePropertyChange("coordinateChange", null, pt);
 		
 	}
-			
 	
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		
+		System.out.println("Reached");
+		
+		if (evt.getPropertyName().equals("temAlliedChange")) {
+			System.out.println("Property change");
+			this.temAllied = (TEMAllied)(evt.getNewValue());
+			repaint();
+		}
+	}		
+	
+	// --------------------------Getters and Setters---------------------------
 	
 	public TEMViewState getTEMViewState() {
 		return temViewState;
 	}
 	
-@Override
-public void paintComponent(Graphics g) {
-	
-	super.paintComponent( g );
-	Graphics2D g2D = (Graphics2D) g;
-	this.initial = g2D.getTransform();
-	
-	this.viewPortTransform = AbstractDrawable.transformViewPort 
-			(initial, this.temViewState);
-	this.temAllied.getTemPicture().paint(g2D, viewPortTransform);
-	
-	
-	ArrayList<Drawable> drawableList = this.temAllied.getDrawables();
-	ArrayList<DrawablePoint> pointList = this.temAllied.getPointsList();
-	
-	for (Drawable drawable : drawableList) {
-		this.viewPortTransform = AbstractDrawable.transformViewPort 
-					(initial, this.temViewState);
-		drawable.paint(g2D, this.viewPortTransform);
-	    
+	public void setTEMViewState(TEMViewState temViewState) {
+		this.temViewState = temViewState;
 	}
 	
-	for (DrawablePoint dPoint  : pointList) {
-		this.viewPortTransform = AbstractDrawable.transformViewPort 
-					(initial, this.temViewState);
-		dPoint.paint(g2D, this.viewPortTransform);
-	    
+	public TEMAllied getTemAllied() {
+		return temAllied;
 	}
-
-}
-
-public void setTEMViewState(TEMViewState temViewState) {
-	this.temViewState = temViewState;
-}
+	
+	public void setTemAllied(TEMAllied temAllied) {
+		this.temAllied = temAllied;
+		repaint();
+	}
 
 }

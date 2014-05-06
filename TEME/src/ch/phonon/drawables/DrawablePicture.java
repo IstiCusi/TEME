@@ -1,7 +1,7 @@
 /**
  * 
  */
-package ch.phonon;
+package ch.phonon.drawables;
 
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
@@ -12,6 +12,9 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import ch.phonon.LocalOrientation;
+import ch.phonon.StarPoint;
+
 
 public class DrawablePicture extends AbstractDrawable {
 
@@ -21,7 +24,7 @@ public class DrawablePicture extends AbstractDrawable {
 	AffineTransform locationTransform;
 
 	
-	DrawablePicture(StarPoint starpoint, LocalOrientation localOrientation, String pictureFileName) {
+	public DrawablePicture(StarPoint starpoint, LocalOrientation localOrientation, String pictureFileName) {
 		
 		super(starpoint, localOrientation);
 		

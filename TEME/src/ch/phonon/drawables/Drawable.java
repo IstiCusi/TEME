@@ -1,7 +1,10 @@
-package ch.phonon;
+package ch.phonon.drawables;
 
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
+
+import ch.phonon.LocalOrientation;
+import ch.phonon.StarPoint;
 
 /**
  *  A {@link Drawable} is an paintable 2D object.

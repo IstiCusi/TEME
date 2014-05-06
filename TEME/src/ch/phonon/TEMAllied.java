@@ -55,18 +55,10 @@ public class TEMAllied {
 	
 	public void removePoint (int x, int y) {
 		
-		//TODO: I do not like this index decl. 
-		//Is there not a better way ?
-//		int index = -1;
-//		for (DrawablePoint element : getPointsList()) {
-//			if (element.contains(x,y)) {
-//					index = getPointsList().indexOf(element);
-//					break;
-//			}
-//		}		
-//		if (index > -1) {
-//				this.pointsList.remove(index);
-//		}
+		//TODO: The deletion could be shifted to the repaint
+		// section. This can be significantly faster, because
+		// we have just to loop once.
+		// What would be the best design in this case.
 		
 		ArrayList<DrawablePoint> listOfPoints = getPointsList();
 		for (Iterator<DrawablePoint> iterator = listOfPoints.iterator(); iterator.hasNext(); ) {
@@ -79,7 +71,9 @@ public class TEMAllied {
 		
 	}
 	
-	
+	public void addDrawable (Drawable drawable) {
+		drawableList.add(drawable);
+	}
 	
 
 	public Drawable getTemPicture() {

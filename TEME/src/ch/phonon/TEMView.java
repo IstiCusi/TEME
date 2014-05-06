@@ -50,6 +50,14 @@ public class TEMView extends JPanel {
 		this.adapter = new TEMAdapter(this);
 			
 		temAllied = new TEMAllied("./pics/CoordinateChecker.png");
+		
+		LocalOrientation orientation = new LocalOrientation(new Point2D.Double(0,0),0,1.0);
+		StarPoint str = new StarPoint(0,0);
+		DrawableCircle circle = new DrawableCircle(str, orientation, 100, 100);
+		circle.setColor(new Color(0,255,0));
+		
+		temAllied.addDrawable(circle);
+		
 					
 		setVisible(true);	
 //		repaint();

@@ -34,9 +34,20 @@ public class DrawablePicture extends AbstractDrawable {
 			System.out.println("File not found");
 			System.exit(0);
 		}
-
+		
 		System.out.println("OK -- File was found");
 		
+		this.width=image.getWidth();
+		this.height=image.getHeight();
+		
+		this.box= new Rectangle2D.Double(0, 0, this.width, this.height);
+				
+	}
+	
+	public DrawablePicture(StarPoint starpoint, LocalOrientation localOrientation, BufferedImage image) {
+		
+		super(starpoint, localOrientation);
+			
 		this.width=image.getWidth();
 		this.height=image.getHeight();
 		

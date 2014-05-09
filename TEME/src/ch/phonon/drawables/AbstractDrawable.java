@@ -76,8 +76,6 @@ public abstract class AbstractDrawable implements Drawable, Positionable {
 		StarPoint starpoint = this.getStarPoint();
 		
 		double localScaling = drawableOrientationState.getScaling();
-		System.out.println("scaling:"+localScaling);
-		
 		
 		AffineTransform locationTransform = new AffineTransform(viewPortTransform);
 		

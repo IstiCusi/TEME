@@ -13,6 +13,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import ch.phonon.Application;
 import ch.phonon.TEMAllied;
@@ -23,10 +24,11 @@ public class ProjectPropertiesPanel extends JPanel implements ActionListener  {
 
 	private static final long serialVersionUID = 1L;
 	private JButton openButton; 
-	private JFileChooser temPictureFile;
+	private JFileChooser temFileChooser;
 	
 	
 	private TEMAllied temAllied;
+
 	
 	public ProjectPropertiesPanel() {
 		
@@ -53,7 +55,10 @@ public class ProjectPropertiesPanel extends JPanel implements ActionListener  {
 		URL url =   Application.getUrl("pics/Open16.gif");
 		openButton = new JButton("Open a TEM picture ...", new ImageIcon(url));
 		openButton.addActionListener(this);
-		temPictureFile = new JFileChooser();
+		temFileChooser = new JFileChooser();
+		temFileChooser.addChoosableFileFilter
+			(new FileNameExtensionFilter("Images", "jpg", "png", "gif", "bmp"));
+		temFileChooser.setAcceptAllFileFilterUsed(false);
 		
 		add(projectNameLabel);
 		add(projectName);
@@ -74,10 +79,10 @@ public class ProjectPropertiesPanel extends JPanel implements ActionListener  {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		 if (e.getSource() == openButton) {
-	            int returnVal = temPictureFile.showOpenDialog(this);
+	            int returnVal = temFileChooser.showOpenDialog(this);
 
 	            if (returnVal == JFileChooser.APPROVE_OPTION) {
-	                File file = temPictureFile.getSelectedFile();    
+	                File file = temFileChooser.getSelectedFile();    
 	                System.out.println(file.getAbsolutePath());
 	                this.temAllied = new TEMAllied (file.getAbsolutePath());
 	                firePropertyChange("temAlliedChange", null, this.temAllied);

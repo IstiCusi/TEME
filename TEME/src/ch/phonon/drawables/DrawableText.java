@@ -23,7 +23,7 @@ public class DrawableText extends AbstractDrawable {
 	double width; 
 	double height; 
 	
-	DrawableText(StarPoint starpoint, LocalOrientation localOrientation, AttributedString text) {
+	public DrawableText(StarPoint starpoint, LocalOrientation localOrientation, AttributedString text) {
 		
 		super(starpoint, localOrientation);
 		this.aString = text;

@@ -5,10 +5,12 @@ package ch.phonon.temview;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.awt.font.TextAttribute;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
@@ -17,6 +19,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
+import java.text.AttributedString;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
@@ -29,9 +32,10 @@ import ch.phonon.StarPoint;
 import ch.phonon.TEMAllied;
 import ch.phonon.drawables.AbstractDrawable;
 import ch.phonon.drawables.Drawable;
-import ch.phonon.drawables.DrawableCircle;
+import ch.phonon.drawables.DrawableCoordinateSystem;
 import ch.phonon.drawables.DrawableDiamondStar;
 import ch.phonon.drawables.DrawablePoint;
+import ch.phonon.drawables.DrawableText;
 
 
 /**
@@ -49,6 +53,8 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 	private AffineTransform viewPortTransform;
 	
 	private TEMAllied temAllied;
+	private DrawableText informer;
+	
 	private TEMViewState temViewState;
 	
 	// ------------------------ Constructor ------------------------------------
@@ -67,12 +73,18 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		//temAllied = new TEMAllied("./pics/CoordinateChecker.png");
 		temAllied = new TEMAllied();
 		
-		LocalOrientation orientation = new LocalOrientation(new Point2D.Double(0,0),0,1.0);
-		StarPoint str = new StarPoint(0,0);
-		DrawableCircle circle = new DrawableCircle(str, orientation, 100, 100);
-		circle.setColor(new Color(0,255,0));
-		temAllied.addDrawable(circle);
-			
+		DrawableCoordinateSystem cS = new DrawableCoordinateSystem 
+				(new StarPoint(), (double)1000, (double)1000);
+		this.temAllied.addDrawable(cS);
+		
+		Font font = new Font("Helvetica",Font.PLAIN,30);
+		AttributedString information = new AttributedString("Information");
+		information.addAttribute(TextAttribute.FONT, font);
+		information.addAttribute(TextAttribute.FOREGROUND, Color.YELLOW);
+
+		this.informer = new DrawableText(new StarPoint(100,20), new LocalOrientation(), information);
+		
+		
 		setVisible(true);	
 		
 		// Add Listeners to View
@@ -91,6 +103,7 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		super.paintComponent( g );
 		Graphics2D g2D = (Graphics2D) g;
 		this.initial = g2D.getTransform();
+		this.initial.setToIdentity();
 		
 		this.viewPortTransform = AbstractDrawable.transformViewPort 
 				(initial, this.temViewState);
@@ -120,7 +133,7 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 			dPoint.paint(g2D, this.viewPortTransform);
 		    
 		}
-
+		this.informer.paint(g2D, this.initial);
 	}
 
 
@@ -163,6 +176,10 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		temViewState.y = temViewState.cHeight/2;
 		temViewState.scaling = 1;
 		temViewState.rotation = 0;
+		
+		
+		
+		
 		this.repaint();
 	}
 

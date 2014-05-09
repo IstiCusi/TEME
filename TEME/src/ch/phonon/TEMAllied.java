@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import ch.phonon.drawables.Drawable;
+import ch.phonon.drawables.DrawableCoordinateSystem;
 import ch.phonon.drawables.DrawablePicture;
 import ch.phonon.drawables.DrawablePoint;
 
@@ -42,6 +43,13 @@ public class TEMAllied {
 	public TEMAllied(String fileName) {
 		this.drawableList = new ArrayList<Drawable>();
 		this.pointsList = new ArrayList<DrawablePoint>();
+		
+		// TODO: This is dublicate code... add a class to keep it similar to 
+		// the empty TEMView.
+		DrawableCoordinateSystem cS = new DrawableCoordinateSystem 
+				(new StarPoint(), (double)1000, (double)1000);
+		addDrawable(cS);
+		
 		loadTEMPicture(fileName);
 	}
 	
@@ -84,21 +92,14 @@ public class TEMAllied {
 		return drawableTEMPicture;
 	}
 
-	
 	public void setTemPicture(Drawable temPicture) {
 		this.drawableTEMPicture = temPicture;
 	}
 
-	/**
-	 * @return the pointsList
-	 */
 	public ArrayList<DrawablePoint> getPointsList() {
 		return pointsList;
 	}
 
-	/**
-	 * @param pointsList the pointsList to set
-	 */
 	public void setPointsList(ArrayList<DrawablePoint> pointsList) {
 		this.pointsList = pointsList;
 	}

@@ -43,14 +43,12 @@ public class ProjectPropertiesPanel extends JPanel implements ActionListener  {
 	private BufferedImage image;
 	
 	//private JTable temTable;
-	private JButton removeButton;
-	private JPanel upperPanel;
-	private JButton clearButton;
-	private JButton copyButton;
-	private String[] columnNames;
-	private String[][] datas;
-	private JPanel middlePanel;
-	private JPanel bottomPanel;
+	private JButton 	removeButton;
+	private JPanel 		upperPanel;
+	private JButton 	clearButton;
+	private JButton 	copyButton;
+	private JPanel 		middlePanel;
+	private JPanel 		bottomPanel;
 
 	
 	public ProjectPropertiesPanel() {

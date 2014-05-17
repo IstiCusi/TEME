@@ -3,7 +3,10 @@
  */
 package ch.phonon.temview;
 
+import ch.phonon.TextOrientation;
+
 import java.awt.Color;
+
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -19,6 +22,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.text.AttributedString;
 import java.util.ArrayList;
 
@@ -34,8 +38,10 @@ import ch.phonon.drawables.AbstractDrawable;
 import ch.phonon.drawables.Drawable;
 import ch.phonon.drawables.DrawableCoordinateSystem;
 import ch.phonon.drawables.DrawableDiamondStar;
+import ch.phonon.drawables.DrawablePicture;
 import ch.phonon.drawables.DrawablePoint;
 import ch.phonon.drawables.DrawableText;
+
 
 
 /**
@@ -54,8 +60,11 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 	
 	private TEMAllied temAllied;
 	private DrawableText informer;
+	private DrawablePicture rose;
 	
 	private TEMViewState temViewState;
+
+	private BufferedImage roseImage;
 	
 	// ------------------------ Constructor ------------------------------------
 	
@@ -65,25 +74,37 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		
 		configureEnvironment();	// configure properties of TEMView (Color...)
 		
-		
-		
 		this.temViewState = new TEMViewState();
 		this.adapter = new TEMAdapter(this);
 			
-		//temAllied = new TEMAllied("./pics/CoordinateChecker.png");
 		temAllied = new TEMAllied();
 		
 		DrawableCoordinateSystem cS = new DrawableCoordinateSystem 
 				(new StarPoint(), (double)1000, (double)1000);
 		this.temAllied.addDrawable(cS);
 		
-		Font font = new Font("Helvetica",Font.PLAIN,30);
-		AttributedString information = new AttributedString("Information");
-		information.addAttribute(TextAttribute.FONT, font);
-		information.addAttribute(TextAttribute.FOREGROUND, Color.YELLOW);
-
-		this.informer = new DrawableText(new StarPoint(100,20), new LocalOrientation(), information);
+		setInformer(this.temAllied.getInformation());
 		
+		
+		
+		try {            
+			URL url =   Application.getUrl("pics/rose.png");
+			 this.roseImage = ImageIO.read(url);
+			
+		} catch (IOException ex) {
+			System.out.println("File not found");
+			System.exit(0);
+		}
+		
+		
+		
+//		Font font = new Font("Helvetica",Font.PLAIN,30);
+//		AttributedString information = new AttributedString(this.temAllied.getInformation());
+//		information.addAttribute(TextAttribute.FONT, font);
+//		information.addAttribute(TextAttribute.FOREGROUND, Color.YELLOW);
+//
+//		this.informer = new DrawableText(new StarPoint(10,20), new LocalOrientation(), information);
+//		this.informer.textOrientation=TextOrientation.LEFT;
 		
 		setVisible(true);	
 		
@@ -93,6 +114,18 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		this.addMouseMotionListener(this.adapter);		
 		this.addKeyListener(this.adapter);
 				
+	}
+	
+	// -------------------------------------------------------------------------
+	
+	public void setInformer (String text) {
+		Font font = new Font("Helvetica",Font.PLAIN,30);
+		AttributedString information = new AttributedString(text);
+		information.addAttribute(TextAttribute.FONT, font);
+		information.addAttribute(TextAttribute.FOREGROUND, Color.YELLOW);
+
+		this.informer = new DrawableText(new StarPoint(10,20), new LocalOrientation(), information);
+		this.informer.textOrientation=TextOrientation.LEFT;
 	}
 	
 	// ---------------------painting of the view -------------------------------	
@@ -134,6 +167,24 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		    
 		}
 		this.informer.paint(g2D, this.initial);
+		
+		LocalOrientation localOrienation = new LocalOrientation();
+		localOrienation.setScaling(0.35);
+		this.rose = new DrawablePicture(
+					new StarPoint(100,this.getHeight()-100), 
+					localOrienation, this.roseImage);
+	
+		
+//		this.rose.setStarPoint(new StarPoint(this.getWidth()*0.10,this.getHeight()*0.80));
+//		this.rose.setInvariantScaling(false);
+//		LocalOrientation localO = new LocalOrientation();
+//		localO.setScaling(0.25/temViewState.scaling);
+//		this.rose.setLocalOrientationState(localO);
+		initial.setToRotation(	temViewState.rotation/360*2*3.1415, 
+								this.rose.getStarPoint().getX(),
+								this.rose.getStarPoint().getY());
+		
+		this.rose.paint(g2D, initial);
 	}
 
 
@@ -176,10 +227,6 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		temViewState.y = temViewState.cHeight/2;
 		temViewState.scaling = 1;
 		temViewState.rotation = 0;
-		
-		
-		
-		
 		this.repaint();
 	}
 
@@ -228,11 +275,13 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		
-		System.out.println("Reached");
+		//System.out.println("Reached");
 		
 		if (evt.getPropertyName().equals("temAlliedChange")) {
 			System.out.println("Property change");
 			this.temAllied = (TEMAllied)(evt.getNewValue());
+			System.out.println(this.temAllied.getInformation());
+			setInformer(this.temAllied.getInformation());
 			repaint();
 		}
 	}		

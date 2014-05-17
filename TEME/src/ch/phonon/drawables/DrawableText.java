@@ -15,13 +15,18 @@ import java.text.AttributedString;
 
 import ch.phonon.LocalOrientation;
 import ch.phonon.StarPoint;
+import ch.phonon.TextOrientation;
+
 
 
 public class DrawableText extends AbstractDrawable {
 
+	public TextOrientation textOrientation = TextOrientation.CENTER;
+	
 	private AttributedString aString;
 	double width; 
 	double height; 
+	
 	
 	public DrawableText(StarPoint starpoint, LocalOrientation localOrientation, AttributedString text) {
 		
@@ -53,7 +58,12 @@ public class DrawableText extends AbstractDrawable {
 		this.height = outLine.getBounds2D().getHeight();
 		this.width= outLine.getBounds2D().getWidth();
 		
-		locationTransform.translate(0, +this.height);
+		if (textOrientation==TextOrientation.CENTER) {
+			locationTransform.translate(0, +this.height);
+		} else if (textOrientation==TextOrientation.LEFT) {
+			locationTransform.translate(this.width/2, +this.height);
+		}
+		
 		AffineTransform helper = graphicsContext.getTransform();
 		graphicsContext.transform(locationTransform);
 		graphicsContext.drawString(aString.getIterator(), 0, 0);

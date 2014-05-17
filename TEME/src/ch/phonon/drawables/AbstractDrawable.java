@@ -57,6 +57,22 @@ public abstract class AbstractDrawable implements Drawable, Positionable {
 		return viewPortTransform;
 	}
 	
+	static  public AffineTransform rotateWithViewPort (AffineTransform initial, 
+			TEMViewState temviewState) {
+
+		viewPortTransform= new AffineTransform(initial);
+		temViewState=temviewState;
+		
+		// ViewPort transformations-read from the back to front: Operator ABC *
+		
+		//viewPortTransform.setToTranslation(temviewState.x,temviewState.y);
+		viewPortTransform.rotate(Math.toRadians(temviewState.rotation), 0, 0);
+		//viewPortTransform.scale(temviewState.scaling, temviewState.scaling);
+		
+		return viewPortTransform;
+		}
+		
+	
 	
 	abstract void draw (Graphics2D graphicsContext, AffineTransform locationTransform);
 	abstract public double getWidth () ;

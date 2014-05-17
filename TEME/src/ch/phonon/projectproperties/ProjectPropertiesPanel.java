@@ -43,14 +43,12 @@ public class ProjectPropertiesPanel extends JPanel implements ActionListener  {
 	private BufferedImage image;
 	
 	//private JTable temTable;
-	private JButton removeButton;
-	private JPanel upperPanel;
-	private JButton clearButton;
-	private JButton copyButton;
-	private String[] columnNames;
-	private String[][] datas;
-	private JPanel middlePanel;
-	private JPanel bottomPanel;
+	private JButton 	removeButton;
+	private JPanel 		upperPanel;
+	private JButton 	clearButton;
+	private JButton 	copyButton;
+	private JPanel 		middlePanel;
+	private JPanel 		bottomPanel;
 
 	
 	public ProjectPropertiesPanel() {
@@ -90,14 +88,6 @@ public class ProjectPropertiesPanel extends JPanel implements ActionListener  {
 		middlePanel = new JPanel();
 		middlePanel.setLayout(new BorderLayout());
 		
-		columnNames = new String[] { 	"Thumbnail",
-										"Filename",
-										"Size",
-										"Number of associated polygons"
-							};
-		
-		datas = new String[][] {};	
-
 		this.temTable = new TEMTable();
 		
 		JTable temTable = new JTable(this.temTable) {

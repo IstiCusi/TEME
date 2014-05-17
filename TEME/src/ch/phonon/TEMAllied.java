@@ -23,6 +23,7 @@ public class TEMAllied {
 	private		ArrayList<Drawable> drawableList; 
 	private		ArrayList<DrawablePoint> pointsList;
 	private String name; 
+	private String information =""; 
 	
 	/**
 	 * @return the drawables
@@ -41,12 +42,15 @@ public class TEMAllied {
 	public TEMAllied() {
 		this.drawableList = new ArrayList<Drawable>();
 		this.pointsList = new ArrayList<DrawablePoint>();
+		this.information = "No picture loaded";
+		this.name="no name";
 	}
 	
 	public TEMAllied(String fileName) {
 		
 		File file = new File(fileName);
 		this.name = file.getName();
+		this.information=this.information+this.name+"\n";
 
 		this.drawableList = new ArrayList<Drawable>();
 		this.pointsList = new ArrayList<DrawablePoint>();
@@ -63,8 +67,10 @@ public class TEMAllied {
 	public TEMAllied(BufferedImage image, String name) {
 
 		this.name = name;
+		this.information=this.information+this.name+"\n";
 		this.drawableList = new ArrayList<Drawable>();
 		this.pointsList = new ArrayList<DrawablePoint>();
+
 
 		DrawableCoordinateSystem cS = new DrawableCoordinateSystem 
 				(new StarPoint(), (double)1000, (double)1000);
@@ -133,6 +139,14 @@ public class TEMAllied {
 
 	public String getFileName () {
 		return this.name;
+	}
+
+	/**
+	 * @return
+	 */
+	public String getInformation() {
+		// TODO Auto-generated method stub
+		return this.information;
 	}
 	
 

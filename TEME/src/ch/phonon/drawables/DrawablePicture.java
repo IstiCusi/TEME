@@ -47,7 +47,7 @@ public class DrawablePicture extends AbstractDrawable {
 	public DrawablePicture(StarPoint starpoint, LocalOrientation localOrientation, BufferedImage image) {
 		
 		super(starpoint, localOrientation);
-			
+		this.image = image;	
 		this.width=image.getWidth();
 		this.height=image.getHeight();
 		

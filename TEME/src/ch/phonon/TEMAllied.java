@@ -3,6 +3,8 @@
  */
 package ch.phonon;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -19,7 +21,8 @@ public class TEMAllied {
 	
 	private 	Drawable drawableTEMPicture;
 	private		ArrayList<Drawable> drawableList; 
-	private		ArrayList<DrawablePoint> pointsList; 
+	private		ArrayList<DrawablePoint> pointsList;
+	private String name; 
 	
 	/**
 	 * @return the drawables
@@ -41,6 +44,10 @@ public class TEMAllied {
 	}
 	
 	public TEMAllied(String fileName) {
+		
+		File file = new File(fileName);
+		this.name = file.getName();
+
 		this.drawableList = new ArrayList<Drawable>();
 		this.pointsList = new ArrayList<DrawablePoint>();
 		
@@ -52,6 +59,26 @@ public class TEMAllied {
 		
 		loadTEMPicture(fileName);
 	}
+	
+	public TEMAllied(BufferedImage image, String name) {
+
+		this.name = name;
+		this.drawableList = new ArrayList<Drawable>();
+		this.pointsList = new ArrayList<DrawablePoint>();
+
+		DrawableCoordinateSystem cS = new DrawableCoordinateSystem 
+				(new StarPoint(), (double)1000, (double)1000);
+		addDrawable(cS);
+
+		LocalOrientation initialLocalOrientation = new LocalOrientation();
+		StarPoint initialStarpoint = new StarPoint(0,0);
+		this.drawableTEMPicture = new DrawablePicture(initialStarpoint, 
+				initialLocalOrientation, image);		
+
+
+	}
+
+	
 	
 	public void loadTEMPicture (String fileName) {
 		LocalOrientation initialLocalOrientation = new LocalOrientation();
@@ -104,7 +131,9 @@ public class TEMAllied {
 		this.pointsList = pointsList;
 	}
 
-	
+	public String getFileName () {
+		return this.name;
+	}
 	
 
 }

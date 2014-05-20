@@ -8,6 +8,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.swing.ImageIcon;
+
 import ch.phonon.drawables.Drawable;
 import ch.phonon.drawables.DrawableCoordinateSystem;
 import ch.phonon.drawables.DrawablePicture;
@@ -19,11 +21,12 @@ import ch.phonon.drawables.DrawablePoint;
  */
 public class TEMAllied {
 	
-	private 	Drawable drawableTEMPicture;
+	private 	DrawablePicture drawableTEMPicture;
 	private		ArrayList<Drawable> drawableList; 
 	private		ArrayList<DrawablePoint> pointsList;
 	private String name; 
-	private String information =""; 
+	private String information ="";
+	private ImageIcon icon; 
 	
 	/**
 	 * @return the drawables
@@ -64,10 +67,26 @@ public class TEMAllied {
 		loadTEMPicture(fileName);
 	}
 	
+	private void generateIcon(BufferedImage image) {
+		int width = image.getWidth();
+    	int height=image.getHeight();
+    	
+    	//TODO: Review this scaling
+    	//TODO: Review if it is necessary to always regenerate
+    	//TODO: the icons
+    	
+		double scalingFactor = 1;
+    	scalingFactor=100.0/height;
+		this.setIcon(new ImageIcon(image.getScaledInstance(
+        (int)(width*scalingFactor), (int)(height*scalingFactor),java.awt.Image.SCALE_SMOOTH)));
+	}
+	
 	public TEMAllied(BufferedImage image, String name) {
 
 		this.name = name;
 		this.information=this.information+this.name+"\n";
+		generateIcon(image);
+        	
 		this.drawableList = new ArrayList<Drawable>();
 		this.pointsList = new ArrayList<DrawablePoint>();
 
@@ -90,7 +109,8 @@ public class TEMAllied {
 		LocalOrientation initialLocalOrientation = new LocalOrientation();
 		StarPoint initialStarpoint = new StarPoint(0,0);
 		this.drawableTEMPicture = new DrawablePicture(initialStarpoint, 
-				initialLocalOrientation, fileName);		
+				initialLocalOrientation, fileName);	
+		generateIcon(this.drawableTEMPicture.getBufferedImage());
 	}
 	
 	public void addPoint (DrawablePoint point) {
@@ -121,11 +141,11 @@ public class TEMAllied {
 	}
 	
 
-	public Drawable getTemPicture() {
-		return drawableTEMPicture;
+	public DrawablePicture getDrawableTEMPicture() {
+		return this.drawableTEMPicture;
 	}
 
-	public void setTemPicture(Drawable temPicture) {
+	public void setTemPicture(DrawablePicture temPicture) {
 		this.drawableTEMPicture = temPicture;
 	}
 
@@ -147,6 +167,20 @@ public class TEMAllied {
 	public String getInformation() {
 		// TODO Auto-generated method stub
 		return this.information;
+	}
+
+	/**
+	 * @return the icon
+	 */
+	public ImageIcon getIcon() {
+		return icon;
+	}
+
+	/**
+	 * @param icon the icon to set
+	 */
+	public void setIcon(ImageIcon icon) {
+		this.icon = icon;
 	}
 	
 

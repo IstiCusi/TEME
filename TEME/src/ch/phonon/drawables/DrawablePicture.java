@@ -78,4 +78,8 @@ public class DrawablePicture extends AbstractDrawable {
 		return this.locationTransform.createTransformedShape(this.box).contains(x, y);
 	}
 	
+	public BufferedImage getBufferedImage() {
+		return this.image;
+	}
+	
 }

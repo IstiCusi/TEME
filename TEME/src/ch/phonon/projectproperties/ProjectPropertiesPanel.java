@@ -37,7 +37,7 @@ public class ProjectPropertiesPanel extends JPanel implements ActionListener  {
 	private JButton openButton; 
 	private JFileChooser temFileChooser;
 	
-	private TEMTable temTable;
+	private TEMTableModel temTableModel;
 	
 	private TEMAllied temAllied;
 	private BufferedImage image;
@@ -49,6 +49,8 @@ public class ProjectPropertiesPanel extends JPanel implements ActionListener  {
 	private JButton 	copyButton;
 	private JPanel 		middlePanel;
 	private JPanel 		bottomPanel;
+	private JTable temTable;
+
 
 	
 	public ProjectPropertiesPanel() {
@@ -88,9 +90,9 @@ public class ProjectPropertiesPanel extends JPanel implements ActionListener  {
 		middlePanel = new JPanel();
 		middlePanel.setLayout(new BorderLayout());
 		
-		this.temTable = new TEMTable();
+		this.temTableModel = new TEMTableModel();
 		
-		JTable temTable = new JTable(this.temTable) {
+			this.temTable = new JTable(this.temTableModel) {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public boolean isCellEditable(int datas, int columns) {
@@ -113,10 +115,20 @@ public class ProjectPropertiesPanel extends JPanel implements ActionListener  {
 				}
 				return table;
 			}
+			@Override
+			public Class<?> getColumnClass(int column) {
+				// TODO Auto-generated method stub
+				 return getValueAt(0, column).getClass();
+			}
+			
+			
 			
 		};
 		//temTable.setPreferredScrollableViewportSize(new Dimension(1000,1000));
 		temTable.setFillsViewportHeight(true);
+		temTable.setRowHeight(100);
+		
+		//temTable.getColumnModel().getColumn(0).setCellRenderer(new ImageRenderer());
 		//temTable.setVisible(true);
 		
 		JScrollPane scrollPane = new JScrollPane(temTable);
@@ -185,8 +197,9 @@ public class ProjectPropertiesPanel extends JPanel implements ActionListener  {
 	        			System.exit(0);
 	        		}
 	                this.temAllied = new TEMAllied (image, file.getName());
-	                this.temTable.add(this.temAllied);
-	                this.temTable.fireTableDataChanged();
+	                this.temTableModel.add(this.temAllied);
+	                //updateRowHeights();
+	                this.temTableModel.fireTableDataChanged();
 	                
 	                firePropertyChange("temAlliedChange", null, this.temAllied);
 	                System.out.println("Opening: " + file.getName() + ".");
@@ -204,6 +217,27 @@ public class ProjectPropertiesPanel extends JPanel implements ActionListener  {
 	
 	public void registerTEMView (TEMView temView) {
 		this.addPropertyChangeListener("temAlliedChange", (PropertyChangeListener) temView);
+	}
+	
+	
+	private void updateRowHeights()
+	{
+	    try
+	    {
+	        for (int row = 0; row < temTable.getRowCount(); row++)
+	        {
+	            int rowHeight = temTable.getRowHeight();
+
+	            for (int column = 0; column < temTable.getColumnCount(); column++)
+	            {
+	                Component comp = temTable.prepareRenderer(temTable.getCellRenderer(row, column), row, column);
+	                rowHeight = Math.max(rowHeight, comp.getPreferredSize().height);
+	            }
+
+	            temTable.setRowHeight(row, rowHeight);
+	        }
+	    }
+	    catch(ClassCastException e) {}
 	}
 	
 	

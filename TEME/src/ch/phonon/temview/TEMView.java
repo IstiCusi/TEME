@@ -141,7 +141,7 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		this.viewPortTransform = AbstractDrawable.transformViewPort 
 				(initial, this.temViewState);
 		
-		Drawable temPicture = this.temAllied.getTemPicture();
+		Drawable temPicture = this.temAllied.getDrawableTEMPicture();
 		
 		if (temPicture==null) {
 			//TODO: Fire information to user, that he needs to load a tem

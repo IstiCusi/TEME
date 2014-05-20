@@ -1,32 +1,23 @@
-/**
- * 
- */
+
 package ch.phonon.projectproperties;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.phonon.TEMAllied;
-
+import javax.swing.ImageIcon;
 import javax.swing.table.AbstractTableModel;
 
+import ch.phonon.TEMAllied;
 
-/**
- * @author phonon
- *
- */
-
-
-public class TEMTable extends AbstractTableModel {
+public class TEMTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 1L;
 	List<TEMAllied> listOfTEMAllied;
 	
-	public TEMTable() {
+	public TEMTableModel() {
 		super();
-		this.listOfTEMAllied = new ArrayList<TEMAllied>();
-
-		
+		this.listOfTEMAllied = new ArrayList<TEMAllied>();		
 	}
 	
 	@Override
@@ -43,27 +34,25 @@ public class TEMTable extends AbstractTableModel {
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		
-		//System.out.println(columnIndex);
-		
-		
-		
+	
 		Object obj = listOfTEMAllied.get(rowIndex);
-		
-		
-		//TODO: How to obtain elements ?
-		
-		
-        Object value = null;
+	
+		Object value = null;
         switch (columnIndex) {
             case 0:
-            	
-                value = "col1";
+            	value	=	((TEMAllied)obj).getIcon();
                 break;
             case 1:
                 value =  ((TEMAllied)obj).getFileName();
                 break;
             case 2:
-                value =  "col3";
+            	BufferedImage image= ((TEMAllied)obj).getDrawableTEMPicture().
+            					getBufferedImage();
+            	System.out.println(image);
+            	int width = image.getWidth();
+            	int height=image.getHeight();
+            	
+                value =  width+ " x "+height+" Pixels";
                 break;
             case 3:
                 value =  "col4";

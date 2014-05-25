@@ -78,12 +78,16 @@ public class Application {
  * @return a string of the property value	
  * 
  */
-	
-
 	public static String getResource(String baseName) {
 		return mainResourceBundle.getString(baseName);
 	}
-	
+
+/**
+ * This convinience function is used to obtain resource
+ * paths directly in the jar file of the application.
+ * @param path
+ * @return
+ */
 	public static URL getUrl(String path) {
 		URL url = Application.class.getResource(path);
 		return url;
@@ -91,7 +95,6 @@ public class Application {
 
 /** 
  * The launching and entrance point of the application
- * 	
  * @param args
  */
 	public static void main(String[] args) {
@@ -100,17 +103,8 @@ public class Application {
 		try {
 			UIManager.setLookAndFeel(
 		            UIManager.getSystemLookAndFeelClassName());
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnsupportedLookAndFeelException e) {
-			// TODO Auto-generated catch block
+		} catch (Exception e) {
+			System.err.println("Exception: standard look and feel not found");
 			e.printStackTrace();
 		}
 		

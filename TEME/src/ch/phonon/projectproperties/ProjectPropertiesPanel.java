@@ -34,22 +34,22 @@ import ch.phonon.temview.TEMView;
 public class ProjectPropertiesPanel extends JPanel implements ActionListener  {
 
 	private static final long serialVersionUID = 1L;
-	private JButton openButton; 
-	private JFileChooser temFileChooser;
+	private JButton 		openButton; 
+	private JFileChooser 	temFileChooser;
 	
-	private TEMTableModel temTableModel;
+	private TEMTableModel 	temTableModel;
 	
-	private TEMAllied temAllied;
-	private BufferedImage image;
+	private TEMAllied 		temAllied;
+	private BufferedImage 	image;
 	
 	//private JTable temTable;
-	private JButton 	removeButton;
-	private JPanel 		upperPanel;
-	private JButton 	clearButton;
-	private JButton 	copyButton;
-	private JPanel 		middlePanel;
-	private JPanel 		bottomPanel;
-	private JTable temTable;
+	private JButton 		removeButton;
+	private JPanel 			upperPanel;
+	private JButton 		clearButton;
+	private JButton 		copyButton;
+	private JPanel 			middlePanel;
+	private JPanel 			bottomPanel;
+	private JTable 			temTable;
 
 
 	

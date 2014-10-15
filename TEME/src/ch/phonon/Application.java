@@ -8,6 +8,11 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 // Next tasks
+
+// TODO: Go on with TEMTableModel.java
+// the container and the relation to the TEMView needs to be implemented.
+// How to switch between different loaded TEM pictures
+
 // TODO:
 // Write container, that keeps track about TEMPicture (Drawable) and it's 
 // polygons and it's points added 

@@ -193,6 +193,7 @@ public class ProjectPropertiesPanel extends JPanel implements ActionListener  {
 	                try {                
 	        			this.image = ImageIO.read(file);
 	        		} catch (IOException ex) {
+	        			//TODO Add here a meaningful exception handling
 	        			System.out.println("File not found");
 	        			System.exit(0);
 	        		}

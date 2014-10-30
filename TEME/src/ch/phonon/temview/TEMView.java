@@ -11,6 +11,7 @@ import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.KeyboardFocusManager;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.font.TextAttribute;
@@ -41,6 +42,7 @@ import ch.phonon.drawables.DrawableDiamondStar;
 import ch.phonon.drawables.DrawablePicture;
 import ch.phonon.drawables.DrawablePoint;
 import ch.phonon.drawables.DrawableText;
+import ch.phonon.projectproperties.TEMTableModel;
 
 
 
@@ -65,6 +67,8 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 	private TEMViewState temViewState;
 
 	private BufferedImage roseImage;
+
+	private TEMTableModel temTableModel;
 	
 	// ------------------------ Constructor ------------------------------------
 	
@@ -76,7 +80,7 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		
 		this.temViewState = new TEMViewState();
 		this.adapter = new TEMAdapter(this);
-			
+					
 		temAllied = new TEMAllied();
 		
 		DrawableCoordinateSystem cS = new DrawableCoordinateSystem 
@@ -166,7 +170,12 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 			dPoint.paint(g2D, this.viewPortTransform);
 		    
 		}
+		
+		// Paints the actual temAllied information (top right)
+		
 		this.informer.paint(g2D, this.initial);
+		
+		// Paints the windrose (bottom left)
 		
 		LocalOrientation localOrienation = new LocalOrientation();
 		localOrienation.setScaling(0.35);
@@ -174,12 +183,9 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 					new StarPoint(100,this.getHeight()-100), 
 					localOrienation, this.roseImage);
 	
+		// TODO Maybe it is more save to make a copy of initial
+		// not to have a clash with the other Drawables
 		
-//		this.rose.setStarPoint(new StarPoint(this.getWidth()*0.10,this.getHeight()*0.80));
-//		this.rose.setInvariantScaling(false);
-//		LocalOrientation localO = new LocalOrientation();
-//		localO.setScaling(0.25/temViewState.scaling);
-//		this.rose.setLocalOrientationState(localO);
 		initial.setToRotation(	temViewState.rotation/360*2*3.1415, 
 								this.rose.getStarPoint().getX(),
 								this.rose.getStarPoint().getY());
@@ -275,15 +281,17 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		
-		//System.out.println("Reached");
 		
-		if (evt.getPropertyName().equals("temAlliedChange")) {
+		
+		if (evt.getPropertyName().equals("temTableModelChange")) {
 			System.out.println("Property change");
-			this.temAllied = (TEMAllied)(evt.getNewValue());
-			System.out.println(this.temAllied.getInformation());
+			this.temTableModel = (TEMTableModel)(evt.getNewValue());
+			this.temAllied=this.temTableModel.getLastItem();
 			setInformer(this.temAllied.getInformation());
 			repaint();
 		}
+		
+		
 	}		
 	
 	// --------------------------Getters and Setters---------------------------
@@ -302,6 +310,12 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 	
 	public void setTemAllied(TEMAllied temAllied) {
 		this.temAllied = temAllied;
+		repaint();
+	}
+
+	public void switchToNextTemAllied() {
+		this.temAllied = temTableModel.getForwardItem();
+		setInformer(this.temAllied.getInformation());
 		repaint();
 	}
 

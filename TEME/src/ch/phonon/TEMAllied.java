@@ -15,6 +15,10 @@ import ch.phonon.drawables.DrawableCoordinateSystem;
 import ch.phonon.drawables.DrawablePicture;
 import ch.phonon.drawables.DrawablePoint;
 
+// TODO The TEMAllied component should also store the viewing state in 
+// the TEMView so that when the user changes to the old view of another
+// picture can go on working from his old settings 
+
 /**
  * @author phonon
  *

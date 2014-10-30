@@ -4,6 +4,7 @@
 package ch.phonon.temview;
 
 import java.awt.BorderLayout;
+import java.awt.KeyboardFocusManager;
 
 import javax.swing.JPanel;
 

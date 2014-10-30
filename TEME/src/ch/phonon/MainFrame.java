@@ -35,6 +35,11 @@ public class MainFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		java.net.URL url = ClassLoader.getSystemResource("ch/phonon/pics/icon.png");
+		
+		System.out.println(url.toString());
+		
+		
+		
 		Toolkit kit = Toolkit.getDefaultToolkit();
 		Image img = kit.createImage(url);
 		setIconImage(img);

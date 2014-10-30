@@ -152,6 +152,7 @@ public class ProjectPropertiesPanel extends JPanel implements ActionListener  {
 		temFileChooser.addChoosableFileFilter
 			(new FileNameExtensionFilter("Images", "jpg", "png", "gif", "bmp"));
 		temFileChooser.setAcceptAllFileFilterUsed(false);
+		temFileChooser.setCurrentDirectory(new File(Application.getResource("PictureFolder").toString()));
 		
 		removeButton = new JButton("Remove TEM picture(s) ...");
 		
@@ -202,7 +203,8 @@ public class ProjectPropertiesPanel extends JPanel implements ActionListener  {
 	                //updateRowHeights();
 	                this.temTableModel.fireTableDataChanged();
 	                
-	                firePropertyChange("temAlliedChange", null, this.temAllied);
+	                //firePropertyChange("temAlliedChange", null, this.temAllied);
+	                firePropertyChange("temTableModelChange", null, this.temTableModel);
 	                System.out.println("Opening: " + file.getName() + ".");
 	            } else {
 	            	System.out.println("Canceled");
@@ -217,7 +219,8 @@ public class ProjectPropertiesPanel extends JPanel implements ActionListener  {
 	// HOW ? I need help with this point.
 	
 	public void registerTEMView (TEMView temView) {
-		this.addPropertyChangeListener("temAlliedChange", (PropertyChangeListener) temView);
+		this.addPropertyChangeListener("temAlliedChange", 		(PropertyChangeListener) temView);
+		this.addPropertyChangeListener("temTableModelChange", 	(PropertyChangeListener) temView);
 	}
 	
 	

@@ -48,6 +48,14 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 			this.temView.centerAll();
 					
 		}
+		
+		if (e.getKeyCode()==KeyEvent.VK_E ) {
+			
+			// TODO Switch to Tabulator --> Claudio ?
+			this.temView.switchToNextTemAllied();
+			System.out.println("Tabulator reached");		
+		}
+		
 	}
 
 	@Override

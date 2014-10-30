@@ -15,6 +15,9 @@ public class TEMTableModel extends AbstractTableModel {
 	private static final long serialVersionUID = 1L;
 	List<TEMAllied> listOfTEMAllied;
 	
+	private int countOfTemAllieds = 0;
+	private int activeTemAllied = 0;
+	
 	public TEMTableModel() {
 		super();
 		this.listOfTEMAllied = new ArrayList<TEMAllied>();		
@@ -86,9 +89,24 @@ public class TEMTableModel extends AbstractTableModel {
 	}
 	
 	public void add (TEMAllied temAllied) {
+		this.countOfTemAllieds++;
 		this.listOfTEMAllied.add(temAllied);
 	}
 	
+	public TEMAllied getForwardItem() {
+		
+		this.activeTemAllied = this.activeTemAllied + 1; 
+		if (this.countOfTemAllieds >0 && 
+			this.activeTemAllied > this.countOfTemAllieds ) {
+			this.activeTemAllied=1;
+		} 
+		return this.listOfTEMAllied.get(this.activeTemAllied-1);
+	}
+
+
+	public TEMAllied getLastItem() {
+		return this.listOfTEMAllied.get(this.countOfTemAllieds -1);
+	}
 
 
 }

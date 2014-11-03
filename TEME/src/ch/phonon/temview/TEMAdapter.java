@@ -38,7 +38,9 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 	
 	@Override
 	public void keyTyped(KeyEvent e) {
-		System.out.println("keyTyped");
+		
+		System.out.println("keyTyped: "+e.getExtendedKeyCode());
+		
 	}
 
 	
@@ -49,7 +51,14 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 					
 		}
 		
-		if (e.getKeyCode()==KeyEvent.VK_E ) {
+		if (e.isShiftDown() && e.getKeyCode()==KeyEvent.VK_TAB ) {
+			
+			// TODO Switch to Tabulator --> Claudio ?
+			this.temView.switchToPreviousTemAllied();
+			System.out.println("Back Tabulator reached");		
+		}
+		
+		if (!e.isShiftDown() && e.getKeyCode()==KeyEvent.VK_TAB ) {
 			
 			// TODO Switch to Tabulator --> Claudio ?
 			this.temView.switchToNextTemAllied();

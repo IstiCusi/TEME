@@ -95,17 +95,44 @@ public class TEMTableModel extends AbstractTableModel {
 	
 	public TEMAllied getForwardItem() {
 		
+		//TODO: I think, the logic is not correct. Need to be checked again
+		// Maybe it would be better to handle here an exception ... 
+		
+		if (this.countOfTemAllieds==0) return null;
+		
 		this.activeTemAllied = this.activeTemAllied + 1; 
 		if (this.countOfTemAllieds >0 && 
 			this.activeTemAllied > this.countOfTemAllieds ) {
 			this.activeTemAllied=1;
 		} 
+		
+		return this.listOfTEMAllied.get(this.activeTemAllied-1);
+		
+	}
+
+	public TEMAllied getBackwardItem() {
+		
+		if (this.countOfTemAllieds==0) return null;
+		
+		//TODO: I think, the logic is not correct. Need to be checked again
+		
+		this.activeTemAllied = this.activeTemAllied - 1; 
+		if ( this.activeTemAllied == 0 ) {
+			this.activeTemAllied=this.countOfTemAllieds;
+		} 
 		return this.listOfTEMAllied.get(this.activeTemAllied-1);
 	}
 
-
+	
 	public TEMAllied getLastItem() {
+		
+		if (this.countOfTemAllieds==0) return null;
 		return this.listOfTEMAllied.get(this.countOfTemAllieds -1);
+	}
+	
+	public TEMAllied getFirstItem() {
+		if (this.countOfTemAllieds==0) return null;
+		return this.listOfTEMAllied.get(0);
 	}
 
 

@@ -9,6 +9,9 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 // Next tasks
 
+// TODO: the Tabulator switch to TEMAllieds gives back null object...
+// I would like to catch the exception and treat it correspondingly
+
 // TODO: Go on with TEMTableModel.java
 // the container and the relation to the TEMView needs to be implemented.
 // How to switch between different loaded TEM pictures

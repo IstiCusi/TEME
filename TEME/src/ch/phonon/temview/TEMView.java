@@ -28,13 +28,20 @@ import java.text.AttributedString;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 import ch.phonon.Application;
 import ch.phonon.LocalOrientation;
+import ch.phonon.Sound;
 import ch.phonon.StarPoint;
 import ch.phonon.TEMAllied;
+import ch.phonon.TextOrientation;
 import ch.phonon.drawables.AbstractDrawable;
 import ch.phonon.drawables.Drawable;
 import ch.phonon.drawables.DrawableCoordinateSystem;
@@ -77,6 +84,8 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		// Initialize state of the TEMView
 		
 		configureEnvironment();	// configure properties of TEMView (Color...)
+		
+		
 		
 		this.temViewState = new TEMViewState();
 		this.adapter = new TEMAdapter(this);
@@ -223,7 +232,13 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 	}
 
 	// ------------------------Helper functions --------------------------------	
-	
+	public void beep() {
+
+			//TODO: Add references to sound pool to property file 
+		
+			Sound beepSound = new Sound();
+			beepSound.playURL("pics/beep.wav");
+	}
 	
 
 	public void centerAll() {		
@@ -240,6 +255,16 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		
 		setOpaque(true);
 		setFocusable(true);
+		setFocusTraversalKeysEnabled(false);
+		
+		
+//		InputMap inputMap = this.getInputMap();     
+//        KeyStroke key = KeyStroke.getKeyStroke("TAB");
+//        inputMap.put(key, this.switchToNextTemAllied());
+ 
+		
+		//this.getInputMap().put(KeyStroke.getKeyStroke("TAB"), actionMapKey);
+		
 		setBorder(BorderFactory.createLineBorder(Color.white));		
 		setBackground( new Color (
 				Integer.parseInt(
@@ -248,7 +273,8 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		);
 
 		try {
-			BufferedImage curBufferedImage = ImageIO.read(new File("pics/Cross.gif"));
+			URL url =   Application.getUrl("pics/Cross.gif");
+			BufferedImage curBufferedImage = ImageIO.read(url);
 			Cursor bufferedCursor = Toolkit.getDefaultToolkit().createCustomCursor(curBufferedImage, new Point(32,32), "Cross");
 			setCursor(bufferedCursor);
 		} catch (IOException e) {
@@ -281,8 +307,16 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		
+	
 		
-		
+/*		if (evt.getPropertyName().equals("temAlliedChange")) {
+			System.out.println("Property change");
+			this.temAllied = (TEMAllied)(evt.getNewValue());
+			System.out.println(this.temAllied.getInformation());
+			setInformer(this.temAllied.getInformation());
+			repaint();
+		}
+*/		
 		if (evt.getPropertyName().equals("temTableModelChange")) {
 			System.out.println("Property change");
 			this.temTableModel = (TEMTableModel)(evt.getNewValue());
@@ -314,9 +348,37 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 	}
 
 	public void switchToNextTemAllied() {
-		this.temAllied = temTableModel.getForwardItem();
-		setInformer(this.temAllied.getInformation());
-		repaint();
+		
+		try {
+			TEMAllied helper = temTableModel.getForwardItem();
+			if (helper != null) {
+				setInformer(helper.getInformation());
+				this.temAllied = helper;
+				repaint();
+			}
+		} catch (Exception e) {
+			System.out.println("No TEMAllied loaded");
+			Toolkit.getDefaultToolkit().beep();
+			this.beep();
+		}
 	}
 
+	public void switchToPreviousTemAllied() {
+		
+		try {
+			TEMAllied helper = temTableModel.getBackwardItem();
+			if (helper != null) {
+				setInformer(helper.getInformation());
+				this.temAllied = helper;
+				repaint();
+			}
+		} catch (Exception e) {
+			System.out.println("No TEMAllied loaded");
+			Toolkit.getDefaultToolkit().beep();
+			this.beep();
+		}
+		
+	}
+	
+	
 }

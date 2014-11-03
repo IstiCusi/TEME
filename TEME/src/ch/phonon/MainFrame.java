@@ -34,6 +34,8 @@ public class MainFrame extends JFrame {
 		super(Application.getResource("Window_title"));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
+		//setFocusTraversalKeysEnabled(false);
+		
 		java.net.URL url = ClassLoader.getSystemResource("ch/phonon/pics/icon.png");
 		
 		System.out.println(url.toString());

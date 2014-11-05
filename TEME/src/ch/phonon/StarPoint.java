@@ -70,6 +70,62 @@ public class StarPoint extends Observable {
 		return new StarPoint(this.starpoint.x, this.starpoint.y);
 	}
 	
+	public static StarPoint getDifference (StarPoint a,StarPoint b) {
+		
+		double x = b.getX()-a.getX();
+		double y = b.getY()-a.getY();
+		
+		StarPoint difference = new StarPoint(x,y);
+		return difference;
+		
+	}
 	
+	public static double getNorm (StarPoint sPoint) {
+		double norm = Math.sqrt(
+				Math.pow(sPoint.getX(), 2) + Math.pow(sPoint.getY(), 2)
+				);
+		return norm;
+	}
+	
+	public static double getDistance (StarPoint begin, StarPoint end) {
+		
+		double distance = getNorm (getDifference(begin, end));				
+		return distance;
+	}
 
+	public static double getDotProduct (StarPoint a, StarPoint b) {
+		return a.getX()*b.getX() + a.getY()*b.getY();
+	}
+	
+	public static double getAngle (StarPoint a, StarPoint b) {
+		
+		double normA = getNorm(a);
+		double normB = getNorm(b);
+		
+		double dotProduct = getDotProduct(a, b);
+		
+		double angle = Math.acos(dotProduct/(normA * normB))*360.0/(2*Math.PI);
+		return angle;
+		
+	}
+	
+	public static StarPoint getUnitVector (StarPoint vector) {
+			
+			double normVector = getNorm(vector);
+			StarPoint unitVector = new StarPoint(vector.getX()/normVector,vector.getY()/normVector);
+			return unitVector;
+		}
+	
+	public static StarPoint getScaleVector (StarPoint vector, double scale) {
+		StarPoint scaledVector = new StarPoint(vector.getX()*scale,vector.getY()*scale);
+		return scaledVector;
+	}
+	
+	@Override
+	public String toString() {
+		return "StarPoint: (X" +this.getX()+",Y "+this.getY()+")"; 
+	
+	}
+
+	
 }

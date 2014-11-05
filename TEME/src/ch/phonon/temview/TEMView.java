@@ -3,15 +3,11 @@
  */
 package ch.phonon.temview;
 
-import ch.phonon.TextOrientation;
-
 import java.awt.Color;
-
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.KeyboardFocusManager;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.font.TextAttribute;
@@ -21,18 +17,12 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.text.AttributedString;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.DataLine;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
@@ -48,6 +38,7 @@ import ch.phonon.drawables.DrawableCoordinateSystem;
 import ch.phonon.drawables.DrawableDiamondStar;
 import ch.phonon.drawables.DrawablePicture;
 import ch.phonon.drawables.DrawablePoint;
+import ch.phonon.drawables.DrawableScaleReference;
 import ch.phonon.drawables.DrawableText;
 import ch.phonon.projectproperties.TEMTableModel;
 
@@ -76,6 +67,8 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 	private BufferedImage roseImage;
 
 	private TEMTableModel temTableModel;
+
+	private DrawableScaleReference drawableScaleReference;
 	
 	// ------------------------ Constructor ------------------------------------
 	
@@ -179,6 +172,14 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 			dPoint.paint(g2D, this.viewPortTransform);
 		    
 		}
+		
+		// TODO: Take out the following testcode block 
+		
+		DrawableScaleReference drawableScaleReference = 
+				new DrawableScaleReference(new StarPoint(-194,-36), new StarPoint(-25,96));
+		this.viewPortTransform = AbstractDrawable.transformViewPort 
+				(initial, this.temViewState);
+		drawableScaleReference.paint(g2D,  this.viewPortTransform);
 		
 		// Paints the actual temAllied information (top right)
 		

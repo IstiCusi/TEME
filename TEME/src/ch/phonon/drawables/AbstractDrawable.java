@@ -10,11 +10,14 @@ package ch.phonon.drawables;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 
+import ch.phonon.InvariantScalingType;
 import ch.phonon.LocalOrientation;
 import ch.phonon.Positionable;
 import ch.phonon.StarPoint;
 import ch.phonon.temview.TEMView;
 import ch.phonon.temview.TEMViewState;
+
+
 
 /**
  * @author phonon
@@ -30,7 +33,9 @@ public abstract class AbstractDrawable implements Drawable, Positionable {
 	private StarPoint starpoint;
 	
 	public boolean invariantRotation = false;
+	
 	public boolean invariantScaling  = false;
+	public InvariantScalingType invariantScalingType 	 =  InvariantScalingType.BOTH;
 
 	
 	/** 
@@ -108,14 +113,36 @@ public abstract class AbstractDrawable implements Drawable, Positionable {
 		locationTransform.translate(starpoint.getX(), starpoint.getY());
 		
 		double viewScaling = 1.0;
+		double localScalingX =localScaling;
+		double localScalingY =localScaling;
 		
-		if (getInvariantScaling()==true) {
+		
+		if (getInvariantScaling()==true && this.invariantScalingType==InvariantScalingType.BOTH) {
+			
 			viewScaling = temViewState.scaling;
-			localScaling = localScaling/viewScaling;
+			localScalingX = localScaling/viewScaling;
+			localScalingY = localScaling/viewScaling;
 		}
 		
-		locationTransform.translate(-getWidth()/2.0*localScaling, -getHeight()/2.0*localScaling);
-		locationTransform.scale(localScaling,localScaling);
+		if (getInvariantScaling()==true && this.invariantScalingType==InvariantScalingType.FIXEDX) {
+	
+			viewScaling = temViewState.scaling;			
+			localScalingX = localScaling/viewScaling;
+			localScalingY = localScaling;
+		}
+
+		if (getInvariantScaling()==true && this.invariantScalingType==InvariantScalingType.FIXEDY) {
+	
+			viewScaling = temViewState.scaling;				
+			localScalingX = localScaling;
+			localScalingY = localScaling/viewScaling;
+			
+		}
+
+		
+		
+		locationTransform.translate(-getWidth()/2.0*localScalingX, -getHeight()/2.0*localScalingY);
+		locationTransform.scale(localScalingX,localScalingY);
 			
 		this.draw(graphicsContext, locationTransform);
 		

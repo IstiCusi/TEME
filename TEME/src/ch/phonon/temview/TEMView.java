@@ -18,6 +18,7 @@ import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
+import java.lang.management.ManagementFactory;
 import java.net.URL;
 import java.text.AttributedString;
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ import javax.swing.JPanel;
 import ch.phonon.Application;
 import ch.phonon.LocalOrientation;
 import ch.phonon.Sound;
+import ch.phonon.SoundType;
 import ch.phonon.StarPoint;
 import ch.phonon.TEMAllied;
 import ch.phonon.TextOrientation;
@@ -68,7 +70,10 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 
 	private TEMTableModel temTableModel;
 
-	private DrawableScaleReference drawableScaleReference;
+	private Sound newPoint;
+	private Sound killPoint;
+	private Sound pageturn;
+	private Sound error;
 	
 	// ------------------------ Constructor ------------------------------------
 	
@@ -119,6 +124,14 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		this.addMouseListener(this.adapter);
 		this.addMouseMotionListener(this.adapter);		
 		this.addKeyListener(this.adapter);
+		
+		// Define sounds to use in this component
+		
+		this.newPoint 	= new Sound(SoundType.POP);
+		this.killPoint	= new Sound(SoundType.KILL);
+		this.pageturn	= new Sound(SoundType.PAGETURN);
+		this.error		= new Sound(SoundType.ERROR);
+		
 				
 	}
 	
@@ -223,23 +236,26 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 			this.temAllied.addPoint(pPoint);
 			this.firePropertyChange("addPoint", null, pt);
 			
+			new Thread(this.newPoint).start();
+			System.out.println(ManagementFactory.getThreadMXBean().getThreadCount());
+
 			repaint();
 
 		}
 	
 	public void removePoint (int x, int y) {
-		this.temAllied.removePoint(x, y);
-		repaint();
+		
+		if (this.temAllied.removePoint(x, y)==true) {
+			new Thread(this.killPoint).start();
+			System.out.println(ManagementFactory.getThreadMXBean().getThreadCount());
+			repaint();
+		}
 	}
 
 	// ------------------------Helper functions --------------------------------	
-	public void beep() {
 
-			//TODO: Add references to sound pool to property file 
-		
-			Sound beepSound = new Sound();
-			beepSound.playURL("pics/beep.wav");
-	}
+
+	//TODO: Implement Shift-Home to center to fit picture into window
 	
 
 	public void centerAll() {		
@@ -257,14 +273,6 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		setOpaque(true);
 		setFocusable(true);
 		setFocusTraversalKeysEnabled(false);
-		
-		
-//		InputMap inputMap = this.getInputMap();     
-//        KeyStroke key = KeyStroke.getKeyStroke("TAB");
-//        inputMap.put(key, this.switchToNextTemAllied());
- 
-		
-		//this.getInputMap().put(KeyStroke.getKeyStroke("TAB"), actionMapKey);
 		
 		setBorder(BorderFactory.createLineBorder(Color.white));		
 		setBackground( new Color (
@@ -309,15 +317,6 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 	public void propertyChange(PropertyChangeEvent evt) {
 		
 	
-		
-/*		if (evt.getPropertyName().equals("temAlliedChange")) {
-			System.out.println("Property change");
-			this.temAllied = (TEMAllied)(evt.getNewValue());
-			System.out.println(this.temAllied.getInformation());
-			setInformer(this.temAllied.getInformation());
-			repaint();
-		}
-*/		
 		if (evt.getPropertyName().equals("temTableModelChange")) {
 			System.out.println("Property change");
 			this.temTableModel = (TEMTableModel)(evt.getNewValue());
@@ -347,7 +346,9 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		this.temAllied = temAllied;
 		repaint();
 	}
-
+	
+	// ------------------------ Controls ---------------------------------------
+	
 	public void switchToNextTemAllied() {
 		
 		try {
@@ -355,12 +356,15 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 			if (helper != null) {
 				setInformer(helper.getInformation());
 				this.temAllied = helper;
+				new Thread(this.pageturn).start();
+				System.out.println(ManagementFactory.getThreadMXBean().getThreadCount());
+				
 				repaint();
 			}
 		} catch (Exception e) {
 			System.out.println("No TEMAllied loaded");
-			Toolkit.getDefaultToolkit().beep();
-			this.beep();
+			new Thread(this.error).start();
+
 		}
 	}
 
@@ -371,12 +375,14 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 			if (helper != null) {
 				setInformer(helper.getInformation());
 				this.temAllied = helper;
+				new Thread(this.pageturn).start();
+				System.out.println(ManagementFactory.getThreadMXBean().getThreadCount());
+		
 				repaint();
 			}
 		} catch (Exception e) {
 			System.out.println("No TEMAllied loaded");
-			Toolkit.getDefaultToolkit().beep();
-			this.beep();
+			new Thread(this.error).start();
 		}
 		
 	}

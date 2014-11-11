@@ -1,12 +1,26 @@
 package ch.phonon;
 
 import java.net.URL;
+import ch.phonon.SoundType;
+import ch.phonon.Sound;
 import java.util.ResourceBundle;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 // Next tasks
+
+//TODO: Try to understand the Sound code. It is very interesting and hard
+// to find ... maybe we can even simplify/beautify it. 
+
+//DONE The playStdSound below only work for some reason
+// in separate threads for several times. Playing 
+// a second time only works in the thead or if always a new
+// Sound instance is generated. Why ?
+//this.sound.playStdSound(SoundType.ERROR);
+// In general the idea was to load all sounds when the TEMView is
+// initalized and not always ... So how ?
+// Solution found Clip is not perfectly work
 
 // TODO: the Tabulator switch to TEMAllieds gives back null object...
 // I would like to catch the exception and treat it correspondingly
@@ -75,6 +89,7 @@ public class Application {
 	static ResourceBundle mainResourceBundle = ResourceBundle
 			.getBundle("ch.phonon.config.resourceBundle");
 	
+	
 /**
  * For the whole {@link Application} a general properties file is arranged. It
  * can be found at path ch.phonon.config.resourceBundleProperties. Properties 
@@ -106,7 +121,9 @@ public class Application {
  */
 	public static void main(String[] args) {
 		
-	
+		Sound.setStandardStreams(ResourceLoader.getStandardInputStreams());
+		
+		new Thread(new Sound(SoundType.WELCOME)).start();
 
 		try {
 			UIManager.setLookAndFeel(
@@ -119,6 +136,7 @@ public class Application {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
+			
 				new MainFrame();
 			}
 		});		

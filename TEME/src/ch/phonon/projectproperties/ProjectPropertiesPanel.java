@@ -27,6 +27,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.TableCellRenderer;
 
 import ch.phonon.Application;
+import ch.phonon.Sound;
+import ch.phonon.SoundType;
 import ch.phonon.TEMAllied;
 import ch.phonon.temview.TEMView;
 
@@ -206,6 +208,7 @@ public class ProjectPropertiesPanel extends JPanel implements ActionListener  {
 	                //firePropertyChange("temAlliedChange", null, this.temAllied);
 	                firePropertyChange("temTableModelChange", null, this.temTableModel);
 	                System.out.println("Opening: " + file.getName() + ".");
+	                new Thread(new Sound(SoundType.TICK)).start();
 	            } else {
 	            	System.out.println("Canceled");
 	            }
@@ -224,6 +227,7 @@ public class ProjectPropertiesPanel extends JPanel implements ActionListener  {
 	}
 	
 	
+	@SuppressWarnings("unused")
 	private void updateRowHeights()
 	{
 	    try

@@ -122,22 +122,25 @@ public class TEMAllied {
 	}
 	
 	
-	public void removePoint (int x, int y) {
+	public boolean removePoint (int x, int y) {
 		
 		//TODO: The deletion could be shifted to the repaint
 		// section. This can be significantly faster, because
 		// we have just to loop once.
 		// What would be the best design in this case.
 		
+		boolean success = false; 
+		
 		ArrayList<DrawablePoint> listOfPoints = getPointsList();
 		for (Iterator<DrawablePoint> iterator = listOfPoints.iterator(); iterator.hasNext(); ) {
 			DrawablePoint element = iterator.next();
 			if (element.contains(x,y)) {
 			    iterator.remove();
+			    success = true;
 			    break;
 			}
 		}
-		
+		return success;
 	}
 	
 	public void addDrawable (Drawable drawable) {

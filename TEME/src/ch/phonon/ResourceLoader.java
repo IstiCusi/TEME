@@ -1,6 +1,7 @@
 package ch.phonon;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -8,6 +9,7 @@ import java.net.URL;
 import java.util.EnumMap;
 import java.util.ResourceBundle;
 
+import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -20,7 +22,12 @@ public class ResourceLoader {
 	public static Image getImage (String fileName ) {
 		return Toolkit.getDefaultToolkit().getImage(
 					rl.getClass().getResource("pics/"+fileName)
-				);
+		);
+	}
+	
+	public static BufferedImage getBufferedImage (String fileName) throws IOException {
+		URL url = ResourceLoader.getUrl("pics/"+fileName);
+		return ImageIO.read(url);
 	}
 
 	public static AudioInputStream getAudioInputStream(String fileName ) {
@@ -122,6 +129,18 @@ public class ResourceLoader {
 	            }
 	        }
 	    }
+
+	/**
+	 * This convinience function is used to obtain resource
+	 * paths directly in the jar file of the application.
+	 * @param path
+	 * @return
+	 */
+		
+		public static URL getUrl(String path) {
+			URL url = Application.class.getResource(path);
+			return url;
+		}
 	
 
 }

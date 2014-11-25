@@ -171,6 +171,23 @@ public abstract class AbstractDrawable implements Drawable, Positionable {
 		
 	}	
 	
+	public double getX() {
+		return this.starpoint.getX();
+	}
+	
+	public double getY() {
+		return this.starpoint.getY();
+	}
+
+	public void setX(double x) {
+		this.starpoint.setX(x);
+	}
+	
+	public void setY(double y) {
+		this.starpoint.setY(y);
+	}
+
+	
 	@Override
 	public LocalOrientation getInitialOrientationState() {
 		return initialOrientationState;

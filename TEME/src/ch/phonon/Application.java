@@ -1,6 +1,5 @@
 package ch.phonon;
 
-import java.net.URL;
 import ch.phonon.SoundType;
 import ch.phonon.Sound;
 import java.util.ResourceBundle;
@@ -10,36 +9,23 @@ import javax.swing.UIManager;
 
 // Next tasks
 
-//TODO: Try to understand the Sound code. It is very interesting and hard
+// TODO: Try to understand the Sound code. It is very interesting and hard
 // to find ... maybe we can even simplify/beautify it. 
 
-//DONE The playStdSound below only work for some reason
-// in separate threads for several times. Playing 
-// a second time only works in the thead or if always a new
-// Sound instance is generated. Why ?
-//this.sound.playStdSound(SoundType.ERROR);
-// In general the idea was to load all sounds when the TEMView is
-// initalized and not always ... So how ?
-// Solution found Clip is not perfectly work
+//TODO: How to decorate Drawables to obtain color, thickness etc.
+//The actual model is to static
 
 // TODO: the Tabulator switch to TEMAllieds gives back null object...
 // I would like to catch the exception and treat it correspondingly
 
-// TODO: Go on with TEMTableModel.java
-// the container and the relation to the TEMView needs to be implemented.
-// How to switch between different loaded TEM pictures
+// TODO:
+// Introduce possibility to show polygon number beside the point
 
 // TODO:
-// Write container, that keeps track about TEMPicture (Drawable) and it's 
-// polygons and it's points added 
-// TODO:
-// Introduce different variants of point drawable composites 
-// Introduce possibility gto show polygon number beside the point
+// Use anti-aliasing for fonts 
 
-//TODO: How to decorate Drawables to obtain color, thickness etc.
-// The actual model is to static
 
-//TODO Add an InvariantTranslation property to the Drawables
+// TODO Add an InvariantTranslation property to the Drawables
 // Important, if we want later to add an information line similar to 
 // Lightroom as last layer of the TEMView, that shows information about
 // the actual view (name of tem picture, resolution, project name etc)
@@ -84,8 +70,15 @@ import javax.swing.UIManager;
 
 public class Application {
 	
+	static {
+// 		System.setProperty("sun.java2d.trace", "timestamp,log,count");
+//	    System.setProperty("sun.java2d.transaccel", "True");
+//	    System.setProperty("sun.java2d.d3d", "True");
+//	    System.setProperty("sun.java2d.ddforcevram", "True");
+//	    System.setProperty("sun.java2d.opengl","True");
+	}
 
-
+	
 	static ResourceBundle mainResourceBundle = ResourceBundle
 			.getBundle("ch.phonon.config.resourceBundle");
 	
@@ -100,19 +93,9 @@ public class Application {
  * @return a string of the property value	
  * 
  */
+	
 	public static String getResource(String baseName) {
 		return mainResourceBundle.getString(baseName);
-	}
-
-/**
- * This convinience function is used to obtain resource
- * paths directly in the jar file of the application.
- * @param path
- * @return
- */
-	public static URL getUrl(String path) {
-		URL url = Application.class.getResource(path);
-		return url;
 	}
 
 /** 
@@ -121,10 +104,13 @@ public class Application {
  */
 	public static void main(String[] args) {
 		
+		/** Load the standard sound streams as defined in the properties file */
 		Sound.setStandardStreams(ResourceLoader.getStandardInputStreams());
 		
+		/** Pay the welcome sound in a separate thread */
 		new Thread(new Sound(SoundType.WELCOME)).start();
 
+		/** Define the Look and File - TODO:  Define per system */
 		try {
 			UIManager.setLookAndFeel(
 		            UIManager.getSystemLookAndFeelClassName());
@@ -133,6 +119,7 @@ public class Application {
 			e.printStackTrace();
 		}
 		
+		/** Invoke the Swing application on a separate thread */
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -141,12 +128,12 @@ public class Application {
 			}
 		});		
 		
+		/** Always say good bye */
 		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
 		    public void run() {
 		    	System.out.println(Application.getResource("Window_SayBye"));
 		    }
 		}));
-		
 		
 		
 	}

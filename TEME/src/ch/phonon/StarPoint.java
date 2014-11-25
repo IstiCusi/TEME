@@ -65,6 +65,15 @@ public class StarPoint extends Observable {
 		return starpoint.y;
 	}
 	
+	public void setX(double x) {
+		starpoint.x=x;
+	}
+	
+	public void setY(double y) {
+		starpoint.y=y;
+	}
+
+	
 	@Override
 	public Object clone()  {
 		return new StarPoint(this.starpoint.x, this.starpoint.y);

@@ -27,6 +27,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.TableCellRenderer;
 
 import ch.phonon.Application;
+import ch.phonon.ResourceLoader;
 import ch.phonon.Sound;
 import ch.phonon.SoundType;
 import ch.phonon.TEMAllied;
@@ -145,7 +146,7 @@ public class ProjectPropertiesPanel extends JPanel implements ActionListener  {
 		
 		bottomPanel = new JPanel();
 		
-		URL url =   Application.getUrl("pics/Open16.gif");
+		URL url =   ResourceLoader.getUrl("pics/Open16.gif");
 		openButton = new JButton("Open a TEM picture ...", new ImageIcon(url));
 		openButton.addActionListener(this);
 		

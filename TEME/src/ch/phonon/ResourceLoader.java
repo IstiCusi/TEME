@@ -78,9 +78,22 @@ public class ResourceLoader {
 	}
 
 	
+	
+	
 	static ResourceBundle mainResourceBundle = ResourceBundle
 			.getBundle("ch.phonon.config.resourceBundle");
 
+	/**
+	 * For the whole {@link Application} a general properties file is arranged. It
+	 * can be found at path ch.phonon.config.resourceBundleProperties. Properties 
+	 * stored in this file adjust various thinks like menu names, view colors etc.
+	 * Any property is keyed by baseName. The value of the property is returned
+	 * as string. 
+	 * @param baseName
+	 * @return a string of the property value	
+	 * 
+	 */
+	
 	public static String getResource(String baseName) {
 		return mainResourceBundle.getString(baseName);
 	}

@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
-import ch.phonon.Application;
 import ch.phonon.LocalOrientation;
 import ch.phonon.ResourceLoader;
 import ch.phonon.Sound;
@@ -254,7 +253,7 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		/** Standard background and frame color */
 		setBorder(BorderFactory.createLineBorder(Color.white));
 		setBackground(new Color(Integer.parseInt(
-				Application.getResource("TEMView_Color").substring(2), 16)));
+				ResourceLoader.getResource("TEMView_Color").substring(2), 16)));
 		
 		/** Define sounds to use in this component */ 
 		this.newPoint = new Sound(SoundType.POP);

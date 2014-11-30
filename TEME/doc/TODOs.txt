@@ -1,0 +1,19 @@
+// TODO: Documentation
+
+// TODO: probably much better way:
+// http://www.oodesign.com/chain-of-responsibility-pattern.html
+// http://www.thecentric.com/wiki/index.php/HMVC_Tutorial
+// http://www.javaworld.com/article/2076128/design-patterns/hmvc--the-layered-pattern-for-developing-strong-client-tiers.html
+// http://shulgadim.blogspot.ch/2012/01/model-view-controller-mvc-pattern_13.html
+//http://stackoverflow.com/questions/1673841/examples-of-gof-design-patterns
+
+
+//TODO: Check the following 
+//http://stackoverflow.com/questions/14536503/how-do-i-zoom-on-swing-components-using-affinetransform
+//http://docs.oracle.com/javase/tutorial/uiswing/misc/jlayer.html
+//Could any item in the TEMView be a JComponent ?
+
+// Should we use a SecurityManager ? Not necessary, but who knows
+
+//http://javarevisited.blogspot.ch/2013/04/what-is-javalibrarypath-how-to-set-in-Eclipse.html
+

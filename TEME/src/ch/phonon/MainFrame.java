@@ -31,7 +31,7 @@ public class MainFrame extends JFrame {
 	
 	public MainFrame() {
 		
-		super(Application.getResource("Window_title"));
+		super(ResourceLoader.getResource("Window_title"));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		//setFocusTraversalKeysEnabled(false);
@@ -50,7 +50,7 @@ public class MainFrame extends JFrame {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();	
 		double widthDesktop =   screenSize.getWidth();
 		double heightDesktop =  screenSize.getHeight();		
-		double windowShrinking = Double.parseDouble(Application.getResource("Window_shrinking"));
+		double windowShrinking = Double.parseDouble(ResourceLoader.getResource("Window_shrinking"));
 	
 		setBounds( 	(int)(0.5*widthDesktop  *(1-windowShrinking)), 
 					(int)(0.5*heightDesktop *(1-windowShrinking)), 

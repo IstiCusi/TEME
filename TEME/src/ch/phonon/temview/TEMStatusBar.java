@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 
-import ch.phonon.Application;
+import ch.phonon.ResourceLoader;
 
 /**
  * @author phonon
@@ -36,7 +36,7 @@ public class TEMStatusBar extends JPanel implements PropertyChangeListener{
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		setBackground( new Color (
 				Integer.parseInt(
-						Application.getResource("TEMStatusBar_Color").substring(2),16)
+						ResourceLoader.getResource("TEMStatusBar_Color").substring(2),16)
 				)
 		);
 		

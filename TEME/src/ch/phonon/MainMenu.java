@@ -21,13 +21,13 @@ public class MainMenu extends JMenuBar {
 	
 	public MainMenu() {
 		super();
-		JMenu 	 fileMenue = new JMenu(Application.getResource("File"));
+		JMenu 	 fileMenue = new JMenu(ResourceLoader.getResource("File"));
 		add(fileMenue);
 		
-		openFile = new JMenuItem(Application.getResource("File_openFile"));
-		saveFile = new JMenuItem(Application.getResource("File_saveFile"));
-		saveasFile = new JMenuItem(Application.getResource("File_saveasFile"));
-		exitIt = new JMenuItem(Application.getResource("File_exit"));
+		openFile = new JMenuItem(ResourceLoader.getResource("File_openFile"));
+		saveFile = new JMenuItem(ResourceLoader.getResource("File_saveFile"));
+		saveasFile = new JMenuItem(ResourceLoader.getResource("File_saveasFile"));
+		exitIt = new JMenuItem(ResourceLoader.getResource("File_exit"));
 		
 		fileMenue.add(openFile);
 		fileMenue.add(saveFile);

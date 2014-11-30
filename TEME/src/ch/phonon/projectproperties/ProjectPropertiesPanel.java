@@ -26,7 +26,6 @@ import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.TableCellRenderer;
 
-import ch.phonon.Application;
 import ch.phonon.ResourceLoader;
 import ch.phonon.Sound;
 import ch.phonon.SoundType;
@@ -36,23 +35,22 @@ import ch.phonon.temview.TEMView;
 
 public class ProjectPropertiesPanel extends JPanel implements ActionListener  {
 
-	private static final long serialVersionUID = 1L;
-	private JButton 		openButton; 
-	private JFileChooser 	temFileChooser;
+	private static final long 	serialVersionUID = 1L;
+	private JButton 			openButton; 
+	private JFileChooser 		temFileChooser;
 	
-	private TEMTableModel 	temTableModel;
+	private TEMTableModel 		temTableModel;
 	
-	private TEMAllied 		temAllied;
-	private BufferedImage 	image;
+	private TEMAllied 			temAllied;
+	private BufferedImage 		image;
 	
-	//private JTable temTable;
-	private JButton 		removeButton;
-	private JPanel 			upperPanel;
-	private JButton 		clearButton;
-	private JButton 		copyButton;
-	private JPanel 			middlePanel;
-	private JPanel 			bottomPanel;
-	private JTable 			temTable;
+	private JButton 			removeButton;
+	private JPanel 				upperPanel;
+	private JButton 			clearButton;
+	private JButton 			copyButton;
+	private JPanel 				middlePanel;
+	private JPanel 				bottomPanel;
+	private JTable 				temTable;
 
 
 	
@@ -105,7 +103,6 @@ public class ProjectPropertiesPanel extends JPanel implements ActionListener  {
 			public Component prepareRenderer(TableCellRenderer renderer,
 					int row, int column) {
 				
-				//System.out.println("I am here");
 				Component table = super.prepareRenderer(renderer, row, column);
 				if (row % 2 == 0) {
 					table.setBackground(Color.WHITE);
@@ -127,16 +124,12 @@ public class ProjectPropertiesPanel extends JPanel implements ActionListener  {
 			
 			
 		};
-		//temTable.setPreferredScrollableViewportSize(new Dimension(1000,1000));
+
 		temTable.setFillsViewportHeight(true);
 		temTable.setRowHeight(100);
 		
-		//temTable.getColumnModel().getColumn(0).setCellRenderer(new ImageRenderer());
-		//temTable.setVisible(true);
 		
 		JScrollPane scrollPane = new JScrollPane(temTable);
-		
-		//middlePanel.add(temTable);
 		middlePanel.add(scrollPane,BorderLayout.CENTER);
 		
 		
@@ -155,7 +148,7 @@ public class ProjectPropertiesPanel extends JPanel implements ActionListener  {
 		temFileChooser.addChoosableFileFilter
 			(new FileNameExtensionFilter("Images", "jpg", "png", "gif", "bmp"));
 		temFileChooser.setAcceptAllFileFilterUsed(false);
-		temFileChooser.setCurrentDirectory(new File(Application.getResource("PictureFolder").toString()));
+		temFileChooser.setCurrentDirectory(new File(ResourceLoader.getResource("PictureFolder").toString()));
 		
 		removeButton = new JButton("Remove TEM picture(s) ...");
 		

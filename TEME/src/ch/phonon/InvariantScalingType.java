@@ -3,7 +3,14 @@
  */
 package ch.phonon;
 
+import ch.phonon.drawables.Drawable;
+import ch.phonon.temview.TEMViewState;
+
 /**
+ * {@link Drawable} items can have some invariant behaviour concerning the
+ * {@link TEMViewState}. E.g you would like to keep the same size of points
+ * added to the view. These enum takes care about that. 
+ * 
  * @author phonon
  *
  */

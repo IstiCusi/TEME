@@ -40,6 +40,9 @@ public class Application {
  */
 	public static void main(String[] args) {
 		
+		/** Load the standard sound volume from the properties file */
+		Sound.setStandardVolume();
+		
 		/** Load the standard sound streams as defined in the properties file */
 		Sound.setStandardStreams(ResourceLoader.getStandardInputStreams());
 		

@@ -11,25 +11,31 @@ import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 
-
+/** 
+ * The {@link Sound} class has several static helper functions that allow
+ * to set the default sounds of the application. The default sounds are
+ * associated with the {@link SoundType} enum and stored internally in a 
+ * EnumMap. An active SoundType can be chosen without regeneration of a 
+ * new instance and either played with the run or by start when providing
+ * this Runnable to a Thread.
+ * 
+ * @author phonon
+ *
+ */
 public class Sound implements Runnable {
 	
 	//TODO Check if it is necessary to have a synchronized approach
 	
 	private Position curPosition;
     
-    private final int EXTERNAL_BUFFER_SIZE = 524288; // 128Kb 
+    private final int EXTERNAL_BUFFER_SIZE = 524288;
  
     enum Position { 
         LEFT, RIGHT, NORMAL
     };
 
 	
-    static public  EnumMap<SoundType, AudioInputStream> standardClips;
-
-    public Sound() {
-    	
-	}
+    static private EnumMap<SoundType, AudioInputStream> standardInputStreams;
 	
 	public Sound(SoundType type) {
 		this.setActiveAudioStream(type);
@@ -40,14 +46,20 @@ public class Sound implements Runnable {
 	}
     
   
-	static public void setStandardStreams (EnumMap<SoundType, AudioInputStream> standardClips) {
-		Sound.standardClips = standardClips;
+	static public void setStandardStreams (EnumMap<SoundType, AudioInputStream> standardInputStreams) {
+		Sound.standardInputStreams = standardInputStreams;
 	}
 
+	static public void setStandardVolume( ) {
+		volume = Float.parseFloat(ResourceLoader.getResource("Volume"));
+	}
+	
 	private AudioInputStream activeAudioInputStream;
+
+	private static float volume=1.0F;
     
 	public void setActiveAudioStream (SoundType type) {
-		this.activeAudioInputStream=Sound.standardClips.get(type);
+		this.activeAudioInputStream=Sound.standardInputStreams.get(type);
 	}
 
 	public void setActiveAudioStream (AudioInputStream stream) {
@@ -60,17 +72,17 @@ public class Sound implements Runnable {
 		try {
 				this.activeAudioInputStream.reset();
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
+				System.out.println("Sound: Problem to reset activeAudioStream");
 				e1.printStackTrace();
 			}
         AudioFormat format = activeAudioInputStream.getFormat();
        
-        SourceDataLine auline = null;
+        SourceDataLine sourceDataLine = null;
         DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
  
         try { 
-            auline = (SourceDataLine) AudioSystem.getLine(info);
-            auline.open(format);
+            sourceDataLine = (SourceDataLine) AudioSystem.getLine(info);
+            sourceDataLine.open(format);
         } catch (LineUnavailableException e) { 
             e.printStackTrace();
             return;
@@ -79,8 +91,8 @@ public class Sound implements Runnable {
             return;
         } 
  
-        if (auline.isControlSupported(FloatControl.Type.PAN)) { 
-            FloatControl pan = (FloatControl) auline
+        if (sourceDataLine.isControlSupported(FloatControl.Type.PAN)) { 
+            FloatControl pan = (FloatControl) sourceDataLine
                     .getControl(FloatControl.Type.PAN);
             if (curPosition == Position.RIGHT) 
                 pan.setValue(1.0f);
@@ -88,27 +100,39 @@ public class Sound implements Runnable {
                 pan.setValue(-1.0f);
         } 
  
-        auline.start();
-        int nBytesRead = 0;
+        /** Set the standard volume when possible */
+        
+        if (sourceDataLine.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
+        	FloatControl gainControl =
+        	           (FloatControl) sourceDataLine.getControl(FloatControl.Type.MASTER_GAIN);
+        	float range = gainControl.getMaximum() - gainControl.getMinimum();
+        	float gain = (range * volume) + gainControl.getMinimum();
+        	gainControl.setValue(gain);
+        }
+        
+        sourceDataLine.start();
+        
         byte[] abData = new byte[EXTERNAL_BUFFER_SIZE];
  
-        try { 
-            while (nBytesRead != -1) { 
-                nBytesRead = activeAudioInputStream.read(abData, 0, abData.length);
-                if (nBytesRead >= 0) 
-                    auline.write(abData, 0, nBytesRead);
-            } 
-        } catch (IOException e) { 
-            e.printStackTrace();
-            return;
-        } finally {
-        	System.out.println("Huhu");
-            auline.drain();
-            auline.close();
-        } 
+        /** s p 231 Killergame programming: Play chunks **/
         
-        //auline.stop();
- 
+        int numRead = 0;
+        try {
+			while ((numRead = activeAudioInputStream.read(abData, 0, abData.length)) >=0) {
+				int offset = 0;
+				while (offset < numRead) {
+					offset += sourceDataLine.write(abData,offset,numRead-offset);
+				}
+			}
+		} catch (IOException e1) {
+			System.out.println("Sound: Problem to read or write to lines");
+			e1.printStackTrace();
+		} finally {
+			sourceDataLine.drain();
+			sourceDataLine.stop();
+			sourceDataLine.close();
+		}
+                 
     } 
 
 

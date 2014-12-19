@@ -148,6 +148,7 @@ public class ProjectPropertiesPanel extends JPanel implements ActionListener  {
 		temFileChooser.addChoosableFileFilter
 			(new FileNameExtensionFilter("Images", "jpg", "png", "gif", "bmp"));
 		temFileChooser.setAcceptAllFileFilterUsed(false);
+		temFileChooser.setMultiSelectionEnabled(true);
 		temFileChooser.setCurrentDirectory(new File(ResourceLoader.getResource("PictureFolder").toString()));
 		
 		removeButton = new JButton("Remove TEM picture(s) ...");
@@ -184,24 +185,31 @@ public class ProjectPropertiesPanel extends JPanel implements ActionListener  {
 	            int returnVal = temFileChooser.showOpenDialog(this);
 
 	            if (returnVal == JFileChooser.APPROVE_OPTION) {
-	                File file = temFileChooser.getSelectedFile();    
-	                System.out.println(file.getAbsolutePath());
-	                
-	                try {                
-	        			this.image = ImageIO.read(file);
-	        		} catch (IOException ex) {
-	        			//TODO Add here a meaningful exception handling
-	        			System.out.println("File not found");
-	        			System.exit(0);
-	        		}
-	                this.temAllied = new TEMAllied (image, file.getName());
-	                this.temTableModel.add(this.temAllied);
-	                //updateRowHeights();
-	                this.temTableModel.fireTableDataChanged();
-	                
-	                //firePropertyChange("temAlliedChange", null, this.temAllied);
-	                firePropertyChange("temTableModelChange", null, this.temTableModel);
-	                System.out.println("Opening: " + file.getName() + ".");
+	             
+	                File[] files = temFileChooser.getSelectedFiles();
+	                	                   
+	                	for (File temFile : files) {
+	                		  try {    
+	                			  	this.image = ImageIO.read(temFile);
+		                			  	if (this.image!=null) {
+		    	                		this.temAllied = new TEMAllied (image, temFile.getName());
+		    	                		this.temTableModel.add(this.temAllied);
+		    	                		this.temTableModel.fireTableDataChanged();
+		    	                		firePropertyChange("temTableModelChange", null, this.temTableModel);
+		    	                		System.out.println("Opening: " + temFile.getName() + ".");
+	                			  	}
+
+	                		  } catch (IOException ex) {
+	      	        			//TODO Add here a meaningful exception handling
+	      	        			System.out.println("File not found");
+	      	        			System.exit(0);
+	      	        		}
+	                		
+						}
+	                	
+	        			
+	        		
+	               
 	                new Thread(new Sound(SoundType.TICK)).start();
 	            } else {
 	            	System.out.println("Canceled");

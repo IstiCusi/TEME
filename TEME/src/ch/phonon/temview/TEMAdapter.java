@@ -51,19 +51,27 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 					
 		}
 		
-		if (e.isShiftDown() && e.getKeyCode()==KeyEvent.VK_TAB ) {
-			
-			// TODO Switch to Tabulator --> Claudio ?
+		// KeyEvent.VK_TAB
+		
+		if ( e.getKeyCode()==KeyEvent.VK_PAGE_UP ) {
 			this.temView.switchToPreviousTemAllied();
-			System.out.println("Back Tabulator reached");		
 		}
 		
-		if (!e.isShiftDown() && e.getKeyCode()==KeyEvent.VK_TAB ) {
-			
-			// TODO Switch to Tabulator --> Claudio ?
+		if (e.getKeyCode()==KeyEvent.VK_PAGE_DOWN) {
 			this.temView.switchToNextTemAllied();
 			System.out.println("Tabulator reached");		
 		}
+		
+		if (e.isShiftDown() && e.getKeyCode()==KeyEvent.VK_TAB ) {
+			
+			this.temView.switchToPreviousEditMode();
+			
+		}
+		
+		if (!e.isShiftDown() && e.getKeyCode()==KeyEvent.VK_TAB ) {
+			this.temView.switchToNextEditMode();	
+		}
+
 		
 	}
 
@@ -85,13 +93,15 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 		this.temBegin.setTEMViewState(temView.getTEMViewState());
 		}
 	
-		if (SwingUtilities.isLeftMouseButton(e) &&  e.isShiftDown()==false) {
+		if (SwingUtilities.isLeftMouseButton(e) &&  e.isShiftDown()==false && 
+				this.temView.getTEMEditMode()==TEMEditType.POINT) {
 			
 			Point2D.Double point = new Point2D.Double(e.getX(), e.getY());
 			this.temView.addPoint(point);
 		}
 		
-		if (SwingUtilities.isLeftMouseButton(e) &&  e.isShiftDown()==true) {
+		if (SwingUtilities.isLeftMouseButton(e) &&  e.isShiftDown()==true && 
+				this.temView.getTEMEditMode()==TEMEditType.POINT) {
 			this.temView.removePoint(e.getX(), e.getY());
 		}
 			

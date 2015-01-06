@@ -4,11 +4,9 @@
 package ch.phonon.temview;
 
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.font.TextAttribute;
 import java.awt.geom.AffineTransform;
@@ -41,6 +39,7 @@ import ch.phonon.drawables.DrawablePoint;
 import ch.phonon.drawables.DrawableScaleReference;
 import ch.phonon.drawables.DrawableText;
 import ch.phonon.projectproperties.TEMTableModel;
+
 
 /**
  * The {@link TEMView} is a {@link JPanel}, that is used to show various
@@ -82,6 +81,11 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 	private Sound pageturn;
 	private Sound error;
 
+	/** Standard Edit modes and their associated containers (cursors,...) */
+	private TEMEditMode temEditMode;
+	
+	
+
 	// ------------------------ Constructor ------------------------------------
 
 	TEMView() {
@@ -105,7 +109,8 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		this.addMouseListener(this.adapter);
 		this.addMouseMotionListener(this.adapter);
 		this.addKeyListener(this.adapter);
-
+		
+	
 	}
 
 	// -------------------------------------------------------------------------
@@ -273,18 +278,15 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		LocalOrientation localOrienation = new LocalOrientation();
 		localOrienation.setScaling(0.35);
 		this.rose = new DrawablePicture(new StarPoint(), localOrienation, this.roseImage);
-
-		/** Load the standard cursor used inside the temView */
-		try {
-			BufferedImage curBufferedImage = ResourceLoader.getBufferedImage("Cross.gif");
-			Cursor bufferedCursor = Toolkit.getDefaultToolkit()
-					.createCustomCursor(curBufferedImage, new Point(32, 32),
-							"Cross");
-			setCursor(bufferedCursor);
-		} catch (IOException e) {
-			System.out.println("Exception: Standard Cursor can not be loaded");
-			e.printStackTrace();
-		}
+		
+		/** http://www.java-gaming.org/index.php?topic=2227.0 */
+		System.out.println(Toolkit.getDefaultToolkit().getMaximumCursorColors());
+		
+		/** Load the standard cursors used inside the temView */
+		
+		this.temEditMode = new TEMEditMode();
+		this.temEditMode.switchToActiveEditTyp(TEMEditType.POINT);
+		setCursor (this.temEditMode.getActiveCursor());
 
 	}
 
@@ -340,6 +342,10 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		this.temAllied = temAllied;
 		repaint();
 	}
+	
+	public TEMEditType getTEMEditMode() {
+		return this.temEditMode.getActiveEditType();
+	}
 
 	// ------------------------ Controls ---------------------------------------
 
@@ -379,6 +385,18 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 			new Thread(this.error).start();
 		}
 
+	}
+
+	public void switchToPreviousEditMode() {
+		this.temEditMode.cycleToPreviousEditType();
+		this.setCursor(this.temEditMode.getActiveCursor());
+		
+	}
+
+	public void switchToNextEditMode() {
+		this.temEditMode.cycleToNextEditType();
+		this.setCursor(this.temEditMode.getActiveCursor());
+		
 	}
 
 }

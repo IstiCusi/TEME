@@ -90,6 +90,7 @@ public class TEMTableModel extends AbstractTableModel {
 	public void add (TEMAllied temAllied) {
 		this.countOfTemAllieds++;
 		this.listOfTEMAllied.add(temAllied);
+		this.activeTemAllied = this.countOfTemAllieds;
 	}
 	
 	public TEMAllied getForwardItem() {

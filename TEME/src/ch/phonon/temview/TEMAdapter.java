@@ -59,7 +59,6 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 		
 		if (e.getKeyCode()==KeyEvent.VK_PAGE_DOWN) {
 			this.temView.switchToNextTemAllied();
-			System.out.println("Tabulator reached");		
 		}
 		
 		if (e.isShiftDown() && e.getKeyCode()==KeyEvent.VK_TAB ) {

@@ -4,14 +4,21 @@
 package ch.phonon.temview;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
+import javax.swing.plaf.ButtonUI;
+import javax.swing.plaf.basic.BasicButtonUI;
 
 import ch.phonon.ResourceLoader;
 
@@ -22,47 +29,116 @@ import ch.phonon.ResourceLoader;
 public class TEMInspectionPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
+	
 	public TEMView temView;
-	private TEMStatusBar statusBar;
 	private JButton switchToNextPictureButton;
-	private JButton switchToPreviousPictureButton; 
+	private JButton switchToPreviousPictureButton;
+	
+	
+	private JPanel statusBarPanel; 
+	private TEMStatusBar statusBar;
+
+	private JButton switchToNextEditMode;
+
+	private JButton switchtoPreviousEditMode;
+
+	private JPanel switchEditModePanel;
+	
+	
+
 	
 	public TEMInspectionPanel() {
-		
-		
-		this.temView 	= new TEMView();
-		this.statusBar	= new TEMStatusBar();
-		temView.registerStatusBar(statusBar);
-	
-		setLayout(new BorderLayout());
-		add(this.temView,BorderLayout.CENTER);
-		add(this.statusBar,BorderLayout.SOUTH);
 		
 		URL url = null;
 		ImageIcon icon = null;
 		Image scaledIconImage = null;
+
+		Border emptyBorder = BorderFactory.createEmptyBorder();
+		setBorder(emptyBorder);
+		
+		/** Add all subpanels to the InspectionPanel --------------------------*/
+		
+		setLayout(new BorderLayout());
+
+		this.temView 	= new TEMView();
+		this.statusBar	= new TEMStatusBar();
+		temView.registerStatusBar(statusBar);
+		
+		add(this.temView,BorderLayout.CENTER);
+			
+		statusBarPanel = new JPanel();
+		statusBarPanel.setLayout(new BorderLayout());
+		statusBarPanel.add(this.statusBar,BorderLayout.CENTER);
+		
+
+		switchEditModePanel = new JPanel();
+		switchEditModePanel.setBorder(emptyBorder);
+		switchEditModePanel.setLayout(new FlowLayout());
+		statusBarPanel.add(switchEditModePanel,BorderLayout.EAST);
+		
+		add(statusBarPanel,BorderLayout.SOUTH);
+		
+		
+		/** switchEditModePanel Definitions -----------------------------------*/ 
+		
+		url =   ResourceLoader.getUrl("pics/PreviousEditMode.png");
+		icon = new ImageIcon(url);
+		scaledIconImage = icon.getImage().getScaledInstance(16, 16, java.awt.Image.SCALE_SMOOTH);
+		icon = new ImageIcon(scaledIconImage);
+		switchtoPreviousEditMode 	= new JButton(icon);
+		
+		url =   ResourceLoader.getUrl("pics/NextEditMode.png");
+		icon = new ImageIcon(url);
+		scaledIconImage = icon.getImage().getScaledInstance(16, 16, java.awt.Image.SCALE_SMOOTH);
+		icon = new ImageIcon(scaledIconImage);
+		switchToNextEditMode 		= new JButton(icon);
+		
+		switchEditModePanel.add(switchtoPreviousEditMode);
+		switchEditModePanel.add(switchToNextEditMode);
+		
+		switchtoPreviousEditMode.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				temView.switchToPreviousEditMode();
+			}
+		});
+		
+		switchToNextEditMode.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				temView.switchToNextEditMode();
+			}
+		});
+
+		
+
+		
+		/** Switch/Cycle through TEM pictures (TEMAllieds) ---------------------*/
+		
+		Border border = BorderFactory.createLineBorder(new Color(Integer.parseInt(
+				ResourceLoader.getResource("TEMViewSwitch_Border_Color").substring(2), 16)));
 		
 		url =   ResourceLoader.getUrl("pics/Previous.png");
 		icon = new ImageIcon(url);
-		scaledIconImage = icon.getImage().getScaledInstance(32, 32, java.awt.Image.SCALE_SMOOTH);
+		scaledIconImage = icon.getImage().getScaledInstance(64, 64, java.awt.Image.SCALE_SMOOTH);
 		icon = new ImageIcon(scaledIconImage);
-		
 		switchToPreviousPictureButton = new JButton(icon);
-	
-		//setFocusTraversalKeysEnabled(false);
-		
-		//	switchToNextPictureButton.setFocusable(false);
-		
+		switchToPreviousPictureButton.setUI((ButtonUI) BasicButtonUI.createUI(switchToPreviousPictureButton));
+		switchToPreviousPictureButton.setBackground(new Color(Integer.parseInt(
+				ResourceLoader.getResource("TEMViewSwitch_Color").substring(2), 16)));
 		add(switchToPreviousPictureButton,BorderLayout.WEST);
 		
 		
 		url =   ResourceLoader.getUrl("pics/Next.png");
 		icon = new ImageIcon(url);
-		scaledIconImage = icon.getImage().getScaledInstance(32, 32, java.awt.Image.SCALE_SMOOTH);
+		scaledIconImage = icon.getImage().getScaledInstance(64, 64, java.awt.Image.SCALE_SMOOTH);
 		icon = new ImageIcon(scaledIconImage);
-
-		
 		switchToNextPictureButton 	= new JButton(icon);
+		switchToNextPictureButton.setUI((ButtonUI) BasicButtonUI.createUI(switchToNextPictureButton));
+		switchToNextPictureButton.setBackground(new Color(Integer.parseInt(
+				ResourceLoader.getResource("TEMViewSwitch_Color").substring(2), 16)));
 		add(switchToNextPictureButton,BorderLayout.EAST);
 		
 		
@@ -80,15 +156,7 @@ public class TEMInspectionPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				temView.switchToPreviousTemAllied();
 			}
-		});
-
-		
-		
-//		URL url =   ResourceLoader.getUrl("pics/Open16.gif");
-//		JButton fixedPoint = new JButton(">", new ImageIcon(url));
-//		
-//		add(fixedPoint,BorderLayout.AFTER_LINE_ENDS);
-		
+		});		
 		
 		setVisible(true);
 		

@@ -22,6 +22,7 @@ import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
 
 import ch.phonon.LocalOrientation;
 import ch.phonon.ResourceLoader;
@@ -248,6 +249,10 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 	}
 
 	private void configureEnvironment() {
+		
+		Border emptyBorder = BorderFactory.createEmptyBorder();
+		setBorder(emptyBorder);
+		
 		
 		setOpaque(true);
 		setFocusable(true);

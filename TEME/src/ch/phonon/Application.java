@@ -6,6 +6,11 @@
  * 	ch.phonon.Application
  ******************************************************************************/
 
+
+//TODO: Check for all drawables, if after dimension changes with setters
+//		you change as well the internal primitive types!!!! Very important
+// 		TODO. Do not forget to do this.
+
 package ch.phonon;
 
 import javax.swing.SwingUtilities;

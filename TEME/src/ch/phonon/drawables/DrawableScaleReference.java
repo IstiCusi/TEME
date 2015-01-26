@@ -16,42 +16,69 @@ import ch.phonon.StarPoint;
 // are on minimal distance.==> Exception 
 
 public class DrawableScaleReference extends DrawableComposite {
+	
+	double 				sizeOfGrip = 20.0; // TODO: put into properties file
+	
+	private StarPoint 	begin;
+	
+	private double 		distance;
+	private StarPoint 	relativeVector;
+	private StarPoint 	unitVector;
+	private double 		angle;
+	private double 		xMiddle;
+	private double 		yMiddle;
+	
+	private StarPoint 			drawableMiddleStarPoint;
+	private LocalOrientation 	localOrientationOuterBox;
+	private DrawableBox 		outerBox;
+	private StarPoint starPointLeftGrip;
+	
+	private LocalOrientation localOrientationLeftGrip;
+	private DrawableBox leftGrip;
+	private StarPoint starPointRightGrip;
+	private DrawableBox rightGrip;
+
+	private StarPoint end;
+
+	private LocalOrientation localOrientationRightGrip;
+
 
 	public DrawableScaleReference(StarPoint begin , StarPoint end) {
 		super();
 		
-		double sizeOfGrip = 20.0;
+		this.begin = begin;
+		this.end   = end;
 		
-		double distance = StarPoint.getDistance(begin, end);
+		distance = StarPoint.getDistance(begin, end);
 		
-		StarPoint relativeVector = StarPoint.getDifference(begin, end);
-		StarPoint unitVector = StarPoint.getUnitVector(relativeVector);
+		relativeVector = StarPoint.getDifference(begin, end);
+		unitVector = StarPoint.getUnitVector(relativeVector);
 		
 		System.out.println(relativeVector);
 		System.out.println(unitVector);
 		
-		double angle = StarPoint.getAngle(new StarPoint(10,0),relativeVector);
+		angle = StarPoint.getAngle(new StarPoint(10,0),relativeVector);
 		
-		double xMiddle = begin.getX()+relativeVector.getX()/2.0;
-		double yMiddle = begin.getY()+relativeVector.getY()/2.0;
+		xMiddle = begin.getX()+relativeVector.getX()/2.0;
+		yMiddle = begin.getY()+relativeVector.getY()/2.0;
+
 		
-		StarPoint DrawableMiddleStarPoint = new StarPoint (xMiddle, yMiddle);
+		drawableMiddleStarPoint = new StarPoint (xMiddle, yMiddle);
 		
+		localOrientationOuterBox = new LocalOrientation(new Point2D.Double(0,0),angle,1.0);
 		
-		LocalOrientation localOrientationOuterBox = new LocalOrientation(new Point2D.Double(0,0),angle,1.0);
-		
-		DrawableBox outerBox = new DrawableBox(DrawableMiddleStarPoint, localOrientationOuterBox, (int)(Math.round(distance)+2*sizeOfGrip), (int)sizeOfGrip);
+		outerBox = new DrawableBox(drawableMiddleStarPoint, localOrientationOuterBox, (int)(Math.round(distance)+2*sizeOfGrip), (int)sizeOfGrip);
 		outerBox.setColor(new Color(0x890ADF));
 		
-		StarPoint starPointLeftGrip = StarPoint.getDifference(StarPoint.getScaleVector(unitVector, sizeOfGrip/2),begin);
-		LocalOrientation localOrientationLeftGrip = new LocalOrientation(new Point2D.Double(0,0),angle,1.0);		
-		DrawableBox leftGrip = new DrawableBox(starPointLeftGrip, localOrientationLeftGrip, (int)(sizeOfGrip), (int)(sizeOfGrip)-4);
+		starPointLeftGrip = StarPoint.getDifference(StarPoint.getScaledVector(unitVector, sizeOfGrip/2),begin);
+		localOrientationLeftGrip = new LocalOrientation(new Point2D.Double(0,0),angle,1.0);		
+		leftGrip = new DrawableBox(starPointLeftGrip, localOrientationLeftGrip, (int)(sizeOfGrip), (int)(sizeOfGrip)-4);
 		leftGrip.setColor(new Color(0xFFEA00));
 		
 		
-		StarPoint starPointRightGrip = StarPoint.getDifference(StarPoint.getScaleVector(unitVector, -sizeOfGrip/2),end);
-		LocalOrientation localOrientationRightGrip = new LocalOrientation(new Point2D.Double(0,0),angle,1.0);
-		DrawableBox rightGrip = new DrawableBox(starPointRightGrip, localOrientationRightGrip, (int)(sizeOfGrip), (int)(sizeOfGrip)-4);
+		starPointRightGrip = StarPoint.getDifference(StarPoint.getScaledVector(unitVector, -sizeOfGrip/2),end);
+		localOrientationRightGrip = new LocalOrientation(new Point2D.Double(0,0),angle,1.0);
+		rightGrip = new DrawableBox(starPointRightGrip, localOrientationRightGrip, (int)(sizeOfGrip), (int)(sizeOfGrip)-4);
 		rightGrip.setColor(new Color(0xFFEA00));
 		
 		//TODO: Length of the ScaleReference should scale with the temView state, the thickness however should stay the same.
@@ -73,7 +100,104 @@ public class DrawableScaleReference extends DrawableComposite {
 		this.add(rightGrip);
 		
 	}
-
 	
+	public void reCalculateDimensions() {
+		
+		// TODO: Express constructor mainly over this function later (code duplication problem)
+		
+		// TODO: There is somewhere a problem in this recalculation block ... 
+		// 		 For testing we could try to use the constructor to set the
+		//		 begin and end. 
+		
+		
+		distance = StarPoint.getDistance(this.begin, this.end);
+		
+		this.relativeVector = StarPoint.getDifference(this.begin, this.end);
+		this.unitVector = StarPoint.getUnitVector(this.relativeVector);
+				
+		angle = StarPoint.getAngle(new StarPoint(10,0),relativeVector);
+		
+		System.out.println("Angle: "+angle);
+		
+		/** Outer Box */
+
+		xMiddle = begin.getX()+relativeVector.getX()/2.0;
+		yMiddle = begin.getY()+relativeVector.getY()/2.0;
+		
+		drawableMiddleStarPoint.setX(xMiddle);
+		drawableMiddleStarPoint.setY(yMiddle);
+		
+		localOrientationOuterBox.setRotation(angle);
+		
+		outerBox.setStarPoint(drawableMiddleStarPoint);
+		outerBox.setLocalOrientationState(localOrientationOuterBox);
+		outerBox.setWidth((int)(Math.round(distance)+2*sizeOfGrip));
+		outerBox.setHeight((int)sizeOfGrip);
+		
+		/** Left Grip */
+		
+		starPointLeftGrip = StarPoint.getDifference(StarPoint.getScaledVector(unitVector, sizeOfGrip/2),begin);
+		localOrientationLeftGrip.setRotation(angle);
+		
+		leftGrip.setStarPoint(starPointLeftGrip);
+		leftGrip.setLocalOrientationState(localOrientationLeftGrip);
+		leftGrip.setWidth(sizeOfGrip);
+		leftGrip.setHeight(sizeOfGrip-4);
+		
+		/** Right Grip */
+		
+		starPointRightGrip = StarPoint.getDifference(StarPoint.getScaledVector(unitVector, -sizeOfGrip/2),end);
+		localOrientationRightGrip.setRotation(angle);
+		
+		rightGrip.setStarPoint(starPointRightGrip);
+		rightGrip.setLocalOrientationState(localOrientationRightGrip);
+		rightGrip.setWidth(sizeOfGrip);
+		rightGrip.setHeight(sizeOfGrip-4);
+		
+		
+	}
+	
+	
+
+	public StarPoint getBegin() {
+		return begin;
+	}
+	
+	public StarPoint getEnd() {
+		return end;
+	}
+
+
+	public void setBegin(StarPoint begin) {
+		this.begin = begin;
+		reCalculateDimensions();
+	}
+
+	public void setEnd(StarPoint end) {
+		this.end = end;
+		reCalculateDimensions();
+	}
+
+	public void setBegin(int x, int y) {
+			this.begin.setX(x);
+			this.begin.setY(y);
+			reCalculateDimensions();
+	}
+
+	public void setEnd(int x, int y) {
+		this.end.setX(x);
+		this.end.setY(y);
+		reCalculateDimensions();
+	}
+	
+	public boolean rightGripContains(int x, int y) {
+		return this.rightGrip.contains(x, y);
+	}
+
+	public boolean leftGripContains(int x, int y) {
+		return this.leftGrip.contains(x, y);
+	}
+
+
 	
 }

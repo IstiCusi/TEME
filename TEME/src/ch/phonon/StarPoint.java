@@ -106,6 +106,10 @@ public class StarPoint extends Observable {
 		return a.getX()*b.getX() + a.getY()*b.getY();
 	}
 	
+	public static double getPerDotProduct (StarPoint a, StarPoint b) {
+		return a.getX()*b.getY() + a.getY()*b.getX();
+	}
+	
 	public static double getAngle (StarPoint a, StarPoint b) {
 		
 		double normA = getNorm(a);
@@ -114,6 +118,11 @@ public class StarPoint extends Observable {
 		double dotProduct = getDotProduct(a, b);
 		
 		double angle = Math.acos(dotProduct/(normA * normB))*360.0/(2*Math.PI);
+		
+		if(getPerDotProduct(a, b) < 0) {
+		    angle = -angle;
+		}
+		
 		return angle;
 		
 	}
@@ -125,7 +134,7 @@ public class StarPoint extends Observable {
 			return unitVector;
 		}
 	
-	public static StarPoint getScaleVector (StarPoint vector, double scale) {
+	public static StarPoint getScaledVector (StarPoint vector, double scale) {
 		StarPoint scaledVector = new StarPoint(vector.getX()*scale,vector.getY()*scale);
 		return scaledVector;
 	}

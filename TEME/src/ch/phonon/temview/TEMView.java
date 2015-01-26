@@ -84,6 +84,8 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 
 	/** Standard Edit modes and their associated containers (cursors,...) */
 	private TEMEditMode temEditMode;
+
+	private DrawableScaleReference drawableScaleReference;
 	
 	
 
@@ -110,6 +112,13 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		this.addMouseListener(this.adapter);
 		this.addMouseMotionListener(this.adapter);
 		this.addKeyListener(this.adapter);
+		
+
+		 drawableScaleReference = new DrawableScaleReference(
+				new StarPoint(-900, 550), new StarPoint(-500, 550));
+		 drawableScaleReference.setBegin(-800, 400);
+		 drawableScaleReference.setBegin(-700, 400);
+		 drawableScaleReference.setEnd(-400, 550);
 		
 	
 	}
@@ -174,10 +183,9 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 
 		// TODO: Take out the following testcode block
 
-		DrawableScaleReference drawableScaleReference = new DrawableScaleReference(
-				new StarPoint(-194, -36), new StarPoint(-25, 96));
 		this.viewPortTransform = AbstractDrawable.transformViewPort(initial,
 				this.temViewState);
+		
 		drawableScaleReference.paint(g2D, this.viewPortTransform);
 
 		// Paints the actual temAllied information (top right)
@@ -197,16 +205,30 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		this.initial.setToIdentity();
 	}
 
+	
+	// -------------------- Shifting scale dimensions --------------------------
+	
+	public DrawableScaleReference getScaleReference() {
+		return this.drawableScaleReference;
+	}
+	
+	
 	// ---------------------Adding and removing points -------------------------
 
-	public void addPoint(Point2D point) {
-
+	public Point2D.Double getPictureCoordinates (Point2D point) {
 		Point2D.Double pt = new Point2D.Double();
 		try {
 			this.viewPortTransform.inverseTransform(point, pt);
 		} catch (NoninvertibleTransformException e) {
 			e.printStackTrace();
 		}
+
+		return pt;
+	}
+	
+	public void addPoint(Point2D point) {
+		
+		Point2D.Double pt = getPictureCoordinates(point);
 
 		StarPoint initialStarpoint = new StarPoint(pt.getX(), pt.getY());
 		DrawableDiamondStar diamondStar = new DrawableDiamondStar(
@@ -225,6 +247,9 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 	}
 
 	public void removePoint(int x, int y) {
+		
+		//TODO Where is the transformation to picture coordinates happening ?!
+		// Not good API ... needs to be checked
 
 		if (this.temAllied.removePoint(x, y) == true) {
 			new Thread(this.killPoint).start();

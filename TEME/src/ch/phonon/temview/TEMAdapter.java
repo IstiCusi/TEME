@@ -28,6 +28,11 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 	private TEMViewState temBegin;
 	private int cursorBegin_x,cursorBegin_y;
 	private int delta_x, delta_y;
+	private int scaleBegin_x;
+	private int scaleBegin_y;
+	
+	private boolean scaleLeftGripChosen = false;
+	private boolean scaleRightGripChosen = false;
 
 	
 	public TEMAdapter(TEMView temView) {
@@ -85,11 +90,9 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 		
 		
 		if (SwingUtilities.isMiddleMouseButton(e)) {
-		
-		this.cursorBegin_x = e.getX();
-		this.cursorBegin_y = e.getY();
-		
-		this.temBegin.setTEMViewState(temView.getTEMViewState());
+			this.cursorBegin_x = e.getX();
+			this.cursorBegin_y = e.getY();
+			this.temBegin.setTEMViewState(temView.getTEMViewState());
 		}
 	
 		if (SwingUtilities.isLeftMouseButton(e) &&  e.isShiftDown()==false && 
@@ -103,6 +106,24 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 				this.temView.getTEMEditMode()==TEMEditType.POINT) {
 			this.temView.removePoint(e.getX(), e.getY());
 		}
+		
+		if (SwingUtilities.isLeftMouseButton(e) && 
+				this.temView.getTEMEditMode()==TEMEditType.SCALE) {
+		
+			if (this.temView.getScaleReference().leftGripContains(e.getX(), e.getY())==true) {
+				System.out.println("scaleLeftGripChosen");
+				this.scaleLeftGripChosen = true;
+			}
+			
+			if (this.temView.getScaleReference().rightGripContains(e.getX(), e.getY())==true) {
+				System.out.println("scaleRightGripChosen");
+				this.scaleRightGripChosen = true;
+			}
+
+			
+		}
+
+		
 			
 	}
 
@@ -114,6 +135,31 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 		
 		TEMViewState temViewState = this.temView.getTEMViewState();
 
+		if (SwingUtilities.isLeftMouseButton(e) && 
+							this.temView.getTEMEditMode()==TEMEditType.SCALE) {
+					
+			if(this.scaleLeftGripChosen==true) {
+				Point2D.Double pt = this.temView.getPictureCoordinates(
+										new Point2D.Double(e.getX(), e.getY())
+										);
+				
+				System.out.println("Set Begin to: "+pt.getX()+" "+pt.getY());
+				this.temView.getScaleReference().setBegin((int)pt.getX(), (int)pt.getY());
+			}
+		
+			if(this.scaleRightGripChosen==true) {
+				Point2D.Double pt = this.temView.getPictureCoordinates(
+						new Point2D.Double(e.getX(), e.getY())
+						);
+
+						System.out.println("Set End to: "+pt.getX()+" "+pt.getY());	
+				this.temView.getScaleReference().setEnd((int)pt.getX(), (int)pt.getY());
+			}
+
+		
+		}
+			
+				
 		if (SwingUtilities.isMiddleMouseButton(e) && e.isShiftDown()==true) {
 
 			// Translate
@@ -150,6 +196,16 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 		if (SwingUtilities.isMiddleMouseButton(e)) {
 			this.delta_x=0 ; this.delta_y=0 ; 	
 		}
+		
+		if (SwingUtilities.isLeftMouseButton(e) && 
+								this.temView.getTEMEditMode()==TEMEditType.SCALE) {
+		
+				System.out.println("Grip released");
+				this.scaleLeftGripChosen 	= false;	
+				this.scaleRightGripChosen 	= false;
+
+		}
+		
 	}	
 	
 	@Override	

@@ -33,6 +33,7 @@ public class DrawableBox extends AbstractDrawable {
 
 	}
 	
+
 	public void setColor (Color color) {
 		this.color = color; 
 	}
@@ -46,6 +47,18 @@ public class DrawableBox extends AbstractDrawable {
 		graphicsContext.setStroke(new BasicStroke(2.0f));
 		graphicsContext.draw(locationTransform.createTransformedShape(this.box));
 		
+	}
+	
+	public void setWidth(double width) {
+		this.width = width;
+		// TODO Is it necessary to generate a new object or is it somehow
+		// possible to modify the exising box. 
+		this.box = new Rectangle2D.Double(0, 0, this.width, this.height);
+	}
+
+	public void setHeight(double height) {
+		this.height = height;
+		this.box = new Rectangle2D.Double(0, 0, this.width, this.height);
 	}
 
 	@Override

@@ -16,7 +16,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
 import javax.swing.plaf.ButtonUI;
 import javax.swing.plaf.basic.BasicButtonUI;
 
@@ -117,8 +116,8 @@ public class TEMInspectionPanel extends JPanel {
 		
 		/** Switch/Cycle through TEM pictures (TEMAllieds) ---------------------*/
 		
-		Border border = BorderFactory.createLineBorder(new Color(Integer.parseInt(
-				ResourceLoader.getResource("TEMViewSwitch_Border_Color").substring(2), 16)));
+//		Border border = BorderFactory.createLineBorder(new Color(Integer.parseInt(
+//				ResourceLoader.getResource("TEMViewSwitch_Border_Color").substring(2), 16)));
 		
 		url =   ResourceLoader.getUrl("pics/Previous.png");
 		icon = new ImageIcon(url);

@@ -215,6 +215,11 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 	
 	// ---------------------Adding and removing points -------------------------
 
+	public Point2D.Double getPictureCoordinates (double x, double y) {
+		Point2D.Double point = new Point2D.Double(x,y);
+		return getPictureCoordinates(point);
+	}
+	
 	public Point2D.Double getPictureCoordinates (Point2D point) {
 		Point2D.Double pt = new Point2D.Double();
 		try {
@@ -229,6 +234,8 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 	public void addPoint(Point2D point) {
 		
 		Point2D.Double pt = getPictureCoordinates(point);
+		
+		System.out.println("new point added with coordinates: " + pt.getX()+" "+pt.getY());
 
 		StarPoint initialStarpoint = new StarPoint(pt.getX(), pt.getY());
 		DrawableDiamondStar diamondStar = new DrawableDiamondStar(

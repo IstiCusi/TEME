@@ -4,7 +4,6 @@
 package ch.phonon;
 
 import java.awt.geom.Point2D;
-import java.util.Observable;
 
 import ch.phonon.drawables.Drawable;
 
@@ -14,7 +13,8 @@ import ch.phonon.drawables.Drawable;
  * reference to the global coordinate system. {@link Drawable} objects have 
  * an internal {@link LocalOrientation} relative to the {@link StarPoint}.
  */
-public class StarPoint extends Observable {
+//public class StarPoint extends Observable {
+public class StarPoint {
 
 	Point2D.Double starpoint;
 	/** 
@@ -49,12 +49,19 @@ public class StarPoint extends Observable {
 		}
 	}
 
+	public void setPoint (StarPoint point) {
+		this.starpoint.x=point.getX();
+		this.starpoint.y=point.getY();
+	}
+	
 	public void setPoint (Point2D.Double point) {
 		if ( point instanceof Point2D.Double ) {
 			starpoint = (Point2D.Double) point.clone();
 		}
-		setChanged();
-		notifyAll();
+		// TODO: Is this necessary or not ... originally I had it in ..
+		// so I am not sure, if I should it take it out.
+//		setChanged();
+//		notifyAll();
 	}
 
 	public double getX() {
@@ -79,15 +86,36 @@ public class StarPoint extends Observable {
 		return new StarPoint(this.starpoint.x, this.starpoint.y);
 	}
 	
-	public static StarPoint getDifference (StarPoint a,StarPoint b) {
+	public static StarPoint getDifference (StarPoint start,StarPoint end) {
 		
-		double x = b.getX()-a.getX();
-		double y = b.getY()-a.getY();
+		double x = end.getX()-start.getX();
+		double y = end.getY()-start.getY();
 		
 		StarPoint difference = new StarPoint(x,y);
 		return difference;
 		
 	}
+	
+	public static StarPoint rotateStarPoint (StarPoint a, double angle) {
+		
+		double x = a.getX();
+		double y = a.getY();
+		double xNew = (x * Math.cos(angle)) - (y * Math.sin(angle));
+		double yNew = (x * Math.sin(angle)) + (y * Math.cos(angle));
+		return new StarPoint(xNew, yNew);
+	}
+	
+	public static StarPoint getSum (StarPoint a,StarPoint b) {
+		
+		double x = b.getX()+a.getX();
+		double y = b.getY()+a.getY();
+		
+		StarPoint sum = new StarPoint(x,y);
+		return sum;
+
+	}
+
+
 	
 	public static double getNorm (StarPoint sPoint) {
 		double norm = Math.sqrt(
@@ -106,18 +134,15 @@ public class StarPoint extends Observable {
 		return a.getX()*b.getX() + a.getY()*b.getY();
 	}
 	
+	
+	
 	public static double getPerDotProduct (StarPoint a, StarPoint b) {
 		return a.getX()*b.getY() + a.getY()*b.getX();
 	}
 	
-	public static double getAngle (StarPoint a, StarPoint b) {
+	public static double getPerAngle (StarPoint a, StarPoint b) {
 		
-		double normA = getNorm(a);
-		double normB = getNorm(b);
-		
-		double dotProduct = getDotProduct(a, b);
-		
-		double angle = Math.acos(dotProduct/(normA * normB))*360.0/(2*Math.PI);
+		double angle = getAngle(a, b);
 		
 		if(getPerDotProduct(a, b) < 0) {
 		    angle = -angle;
@@ -126,6 +151,34 @@ public class StarPoint extends Observable {
 		return angle;
 		
 	}
+
+	public static double getAngle(StarPoint a, StarPoint b) {
+		double normA = getNorm(a);
+		double normB = getNorm(b);
+		
+		double dotProduct = getDotProduct(a, b);
+		
+		double angle = Math.acos(dotProduct/(normA * normB))*360.0/(2*Math.PI);
+		return angle;
+	}
+	
+	public static double getClockWiseAngle(StarPoint a, StarPoint b) {
+		
+		double dotProduct 	= getDotProduct(a, b);
+		double determinant 	= getDerminant(a, b);
+		
+		double angle = Math.atan2(determinant, dotProduct);
+		return Math.toDegrees(angle);
+	}
+	
+	public static double getDerminant(StarPoint a, StarPoint b) {
+		
+		double det = a.getX()*b.getY()-a.getY()*b.getX();
+		return det;
+	}
+	
+
+	
 	
 	public static StarPoint getUnitVector (StarPoint vector) {
 			

@@ -11,6 +11,8 @@ import java.awt.geom.Point2D;
 
 import javax.swing.SwingUtilities;
 
+import ch.phonon.StarPoint;
+
 enum KeyState {pressed, released};
 
 /**
@@ -28,16 +30,24 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 	private TEMViewState temBegin;
 	private int cursorBegin_x,cursorBegin_y;
 	private int delta_x, delta_y;
-	private int scaleBegin_x;
-	private int scaleBegin_y;
-	
-	private boolean scaleLeftGripChosen = false;
-	private boolean scaleRightGripChosen = false;
+	private boolean scaleLeftGripChosen 	= false;
+	private boolean scaleRightGripChosen 	= false;
+	private StarPoint origGribPosInPicCoord;
+	private StarPoint newGribPosition;
+	private StarPoint origGrabPosInPicCoord;
+	private StarPoint corrInPicCoord;
+	private StarPoint newGrabPositionInPicCoord;
+	private StarPoint actGrabPosRelativeToEnd;
+	private StarPoint origGrabPosRelativToEnd;
+	private StarPoint rotCorrInPicCoord;
 
 	
 	public TEMAdapter(TEMView temView) {
 		this.temView = temView; 
 		this.temBegin = new TEMViewState();
+		this.origGribPosInPicCoord = new StarPoint();
+		this.newGribPosition = new StarPoint();
+		this.newGrabPositionInPicCoord = new StarPoint();
 	}
 
 	
@@ -107,12 +117,20 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 			this.temView.removePoint(e.getX(), e.getY());
 		}
 		
-		if (SwingUtilities.isLeftMouseButton(e) && 
-				this.temView.getTEMEditMode()==TEMEditType.SCALE) {
+		
+		
+		
+		if (SwingUtilities.isLeftMouseButton(e) && this.temView.getTEMEditMode()==TEMEditType.SCALE) {
 		
 			if (this.temView.getScaleReference().leftGripContains(e.getX(), e.getY())==true) {
+				
 				System.out.println("scaleLeftGripChosen");
 				this.scaleLeftGripChosen = true;
+				
+				this.origGribPosInPicCoord = this.temView.getScaleReference().getBegin();
+				this.origGrabPosInPicCoord = new StarPoint (this.temView.getPictureCoordinates(e.getX(), e.getY()));	
+				this.corrInPicCoord = StarPoint.getDifference(this.origGrabPosInPicCoord,this.origGribPosInPicCoord);
+							
 			}
 			
 			if (this.temView.getScaleReference().rightGripContains(e.getX(), e.getY())==true) {
@@ -139,12 +157,30 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 							this.temView.getTEMEditMode()==TEMEditType.SCALE) {
 					
 			if(this.scaleLeftGripChosen==true) {
-				Point2D.Double pt = this.temView.getPictureCoordinates(
-										new Point2D.Double(e.getX(), e.getY())
-										);
+	
+			
+				//this.newGrabPositionInPicCoord = new StarPoint (this.temView.getPictureCoordinates( e.getX(), e.getY() ));
+				this.newGrabPositionInPicCoord.setPoint(this.temView.getPictureCoordinates( e.getX(), e.getY() ));
 				
-				System.out.println("Set Begin to: "+pt.getX()+" "+pt.getY());
-				this.temView.getScaleReference().setBegin((int)pt.getX(), (int)pt.getY());
+				actGrabPosRelativeToEnd = 		StarPoint.getDifference( this.temView.getScaleReference().getEnd(),this.newGrabPositionInPicCoord);
+				origGrabPosRelativToEnd =		StarPoint.getDifference( this.temView.getScaleReference().getEnd(), this.origGrabPosInPicCoord);
+				double angle = StarPoint.getClockWiseAngle(origGrabPosRelativToEnd,actGrabPosRelativeToEnd);	
+			//	double angle2 = StarPoint.getAngle(actGrabPosRelativeToEnd,origGrabPosRelativToEnd);		
+				
+			//	System.out.println("angle "+angle+" angle2 "+angle2);
+				
+				rotCorrInPicCoord = StarPoint.rotateStarPoint(this.corrInPicCoord, Math.toRadians(angle));
+				
+				System.out.println("originalGrabPosition: "+ origGrabPosInPicCoord + " newGrabPosition: "+ newGrabPositionInPicCoord);
+				System.out.println("CorrectionVector: "+rotCorrInPicCoord.toString()+" angle "+angle);
+				
+				//TODO: The new grib position needs to be corrected below ... there is something wrong.
+				newGribPosition = StarPoint.getSum(newGrabPositionInPicCoord, rotCorrInPicCoord);
+				
+				System.out.println("GribPosition: "+ newGribPosition);
+	
+				this.temView.getScaleReference().setBegin(newGribPosition);
+				
 			}
 		
 			if(this.scaleRightGripChosen==true) {
@@ -203,6 +239,7 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 				System.out.println("Grip released");
 				this.scaleLeftGripChosen 	= false;	
 				this.scaleRightGripChosen 	= false;
+				newGribPosition = new StarPoint();
 
 		}
 		

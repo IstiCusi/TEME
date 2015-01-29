@@ -50,6 +50,7 @@ public class DrawableScaleReference extends DrawableComposite {
 		this.end   = end;
 		
 		distance = StarPoint.getDistance(begin, end);
+
 		
 		relativeVector = StarPoint.getDifference(begin, end);
 		unitVector = StarPoint.getUnitVector(relativeVector);
@@ -57,7 +58,7 @@ public class DrawableScaleReference extends DrawableComposite {
 		System.out.println(relativeVector);
 		System.out.println(unitVector);
 		
-		angle = StarPoint.getAngle(new StarPoint(10,0),relativeVector);
+		angle = StarPoint.getPerAngle(new StarPoint(10,0),relativeVector);
 		
 		xMiddle = begin.getX()+relativeVector.getX()/2.0;
 		yMiddle = begin.getY()+relativeVector.getY()/2.0;
@@ -101,23 +102,20 @@ public class DrawableScaleReference extends DrawableComposite {
 		
 	}
 	
+	public StarPoint getRelativeVector() {
+		return relativeVector;
+	}
+
 	public void reCalculateDimensions() {
 		
 		// TODO: Express constructor mainly over this function later (code duplication problem)
-		
-		// TODO: There is somewhere a problem in this recalculation block ... 
-		// 		 For testing we could try to use the constructor to set the
-		//		 begin and end. 
-		
-		
+				
 		distance = StarPoint.getDistance(this.begin, this.end);
 		
 		this.relativeVector = StarPoint.getDifference(this.begin, this.end);
 		this.unitVector = StarPoint.getUnitVector(this.relativeVector);
 				
-		angle = StarPoint.getAngle(new StarPoint(10,0),relativeVector);
-		
-		System.out.println("Angle: "+angle);
+		angle = StarPoint.getPerAngle(new StarPoint(10,0),relativeVector);
 		
 		/** Outer Box */
 
@@ -141,6 +139,9 @@ public class DrawableScaleReference extends DrawableComposite {
 		
 		leftGrip.setStarPoint(starPointLeftGrip);
 		leftGrip.setLocalOrientationState(localOrientationLeftGrip);
+		
+		// TODO: The next properties need not be updated - check this
+		
 		leftGrip.setWidth(sizeOfGrip);
 		leftGrip.setHeight(sizeOfGrip-4);
 		
@@ -151,6 +152,9 @@ public class DrawableScaleReference extends DrawableComposite {
 		
 		rightGrip.setStarPoint(starPointRightGrip);
 		rightGrip.setLocalOrientationState(localOrientationRightGrip);
+		
+		// TODO: The next properties need not be updated - check this
+		
 		rightGrip.setWidth(sizeOfGrip);
 		rightGrip.setHeight(sizeOfGrip-4);
 		

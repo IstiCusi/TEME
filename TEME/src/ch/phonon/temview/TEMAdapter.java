@@ -32,8 +32,8 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 	private int delta_x, delta_y;
 	private boolean scaleLeftGripChosen 	= false;
 	private boolean scaleRightGripChosen 	= false;
-	private StarPoint origGribPosInPicCoord;
-	private StarPoint newGribPosition;
+	private StarPoint origGripPosInPicCoord;
+	private StarPoint newGripPosition;
 	private StarPoint origGrabPosInPicCoord;
 	private StarPoint corrInPicCoord;
 	private StarPoint newGrabPositionInPicCoord;
@@ -45,8 +45,8 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 	public TEMAdapter(TEMView temView) {
 		this.temView = temView; 
 		this.temBegin = new TEMViewState();
-		this.origGribPosInPicCoord = new StarPoint();
-		this.newGribPosition = new StarPoint();
+		this.origGripPosInPicCoord = new StarPoint();
+		this.newGripPosition = new StarPoint();
 		this.newGrabPositionInPicCoord = new StarPoint();
 	}
 
@@ -126,16 +126,19 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 				
 				System.out.println("scaleLeftGripChosen");
 				this.scaleLeftGripChosen = true;
-				
-				this.origGribPosInPicCoord = this.temView.getScaleReference().getBegin();
+				this.origGripPosInPicCoord = this.temView.getScaleReference().getBegin();
 				this.origGrabPosInPicCoord = new StarPoint (this.temView.getPictureCoordinates(e.getX(), e.getY()));	
-				this.corrInPicCoord = StarPoint.getDifference(this.origGrabPosInPicCoord,this.origGribPosInPicCoord);
+				this.corrInPicCoord = StarPoint.getDifference(this.origGrabPosInPicCoord,this.origGripPosInPicCoord);
 							
 			}
 			
 			if (this.temView.getScaleReference().rightGripContains(e.getX(), e.getY())==true) {
 				System.out.println("scaleRightGripChosen");
 				this.scaleRightGripChosen = true;
+				this.origGripPosInPicCoord = this.temView.getScaleReference().getEnd();
+				this.origGrabPosInPicCoord = new StarPoint (this.temView.getPictureCoordinates(e.getX(), e.getY()));	
+				this.corrInPicCoord = StarPoint.getDifference(this.origGrabPosInPicCoord,this.origGripPosInPicCoord);
+
 			}
 
 			
@@ -158,38 +161,26 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 					
 			if(this.scaleLeftGripChosen==true) {
 	
-			
-				//this.newGrabPositionInPicCoord = new StarPoint (this.temView.getPictureCoordinates( e.getX(), e.getY() ));
 				this.newGrabPositionInPicCoord.setPoint(this.temView.getPictureCoordinates( e.getX(), e.getY() ));
 				
 				actGrabPosRelativeToEnd = 		StarPoint.getDifference( this.temView.getScaleReference().getEnd(),this.newGrabPositionInPicCoord);
 				origGrabPosRelativToEnd =		StarPoint.getDifference( this.temView.getScaleReference().getEnd(), this.origGrabPosInPicCoord);
 				double angle = StarPoint.getClockWiseAngle(origGrabPosRelativToEnd,actGrabPosRelativeToEnd);	
-			//	double angle2 = StarPoint.getAngle(actGrabPosRelativeToEnd,origGrabPosRelativToEnd);		
-				
-			//	System.out.println("angle "+angle+" angle2 "+angle2);
-				
-				rotCorrInPicCoord = StarPoint.rotateStarPoint(this.corrInPicCoord, Math.toRadians(angle));
-				
-				System.out.println("originalGrabPosition: "+ origGrabPosInPicCoord + " newGrabPosition: "+ newGrabPositionInPicCoord);
-				System.out.println("CorrectionVector: "+rotCorrInPicCoord.toString()+" angle "+angle);
-				
-				//TODO: The new grib position needs to be corrected below ... there is something wrong.
-				newGribPosition = StarPoint.getSum(newGrabPositionInPicCoord, rotCorrInPicCoord);
-				
-				System.out.println("GribPosition: "+ newGribPosition);
-	
-				this.temView.getScaleReference().setBegin(newGribPosition);
+				rotCorrInPicCoord = StarPoint.rotateStarPoint(this.corrInPicCoord, Math.toRadians(angle));				
+				newGripPosition = StarPoint.getSum(newGrabPositionInPicCoord, rotCorrInPicCoord);	
+				this.temView.getScaleReference().setBegin(newGripPosition);
 				
 			}
 		
 			if(this.scaleRightGripChosen==true) {
-				Point2D.Double pt = this.temView.getPictureCoordinates(
-						new Point2D.Double(e.getX(), e.getY())
-						);
-
-						System.out.println("Set End to: "+pt.getX()+" "+pt.getY());	
-				this.temView.getScaleReference().setEnd((int)pt.getX(), (int)pt.getY());
+				this.newGrabPositionInPicCoord.setPoint(this.temView.getPictureCoordinates( e.getX(), e.getY() ));
+				
+				actGrabPosRelativeToEnd = 		StarPoint.getDifference( this.temView.getScaleReference().getBegin(),this.newGrabPositionInPicCoord);
+				origGrabPosRelativToEnd =		StarPoint.getDifference( this.temView.getScaleReference().getBegin(), this.origGrabPosInPicCoord);
+				double angle = StarPoint.getClockWiseAngle(origGrabPosRelativToEnd,actGrabPosRelativeToEnd);	
+				rotCorrInPicCoord = StarPoint.rotateStarPoint(this.corrInPicCoord, Math.toRadians(angle));				
+				newGripPosition = StarPoint.getSum(newGrabPositionInPicCoord, rotCorrInPicCoord);	
+				this.temView.getScaleReference().setEnd(newGripPosition);
 			}
 
 		
@@ -239,7 +230,7 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 				System.out.println("Grip released");
 				this.scaleLeftGripChosen 	= false;	
 				this.scaleRightGripChosen 	= false;
-				newGribPosition = new StarPoint();
+				newGripPosition = new StarPoint();
 
 		}
 		

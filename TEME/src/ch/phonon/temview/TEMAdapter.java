@@ -166,7 +166,7 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 				actGrabPosRelativeToEnd = 		StarPoint.getDifference( this.temView.getScaleReference().getEnd(),this.newGrabPositionInPicCoord);
 				origGrabPosRelativToEnd =		StarPoint.getDifference( this.temView.getScaleReference().getEnd(), this.origGrabPosInPicCoord);
 				double angle = StarPoint.getClockWiseAngle(origGrabPosRelativToEnd,actGrabPosRelativeToEnd);	
-				rotCorrInPicCoord = StarPoint.rotateStarPoint(this.corrInPicCoord, Math.toRadians(angle));				
+				rotCorrInPicCoord = StarPoint.createRotatedStarPoint(this.corrInPicCoord, Math.toRadians(angle));				
 				newGripPosition = StarPoint.getSum(newGrabPositionInPicCoord, rotCorrInPicCoord);	
 				this.temView.getScaleReference().setBegin(newGripPosition);
 				
@@ -178,7 +178,7 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 				actGrabPosRelativeToEnd = 		StarPoint.getDifference( this.temView.getScaleReference().getBegin(),this.newGrabPositionInPicCoord);
 				origGrabPosRelativToEnd =		StarPoint.getDifference( this.temView.getScaleReference().getBegin(), this.origGrabPosInPicCoord);
 				double angle = StarPoint.getClockWiseAngle(origGrabPosRelativToEnd,actGrabPosRelativeToEnd);	
-				rotCorrInPicCoord = StarPoint.rotateStarPoint(this.corrInPicCoord, Math.toRadians(angle));				
+				rotCorrInPicCoord = StarPoint.createRotatedStarPoint(this.corrInPicCoord, Math.toRadians(angle));				
 				newGripPosition = StarPoint.getSum(newGrabPositionInPicCoord, rotCorrInPicCoord);	
 				this.temView.getScaleReference().setEnd(newGripPosition);
 			}

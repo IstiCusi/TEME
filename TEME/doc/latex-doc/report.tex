@@ -1,10 +1,69 @@
-\documentclass{scrartcl}
+\documentclass[a4paper]{book}
+\usepackage[margin=2cm]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
+\usepackage{svg}
+\usepackage{amsmath}
 \author{Stephan Strauss}
 \begin{document}
 
-    \title{The Development Of The TEME Project - From the idea to the final software}
+    \title{Spare Time Development - A little guide line for software developing hobbyists}
     \maketitle
+    
+\part{Introduction}
+
+\chapter{Why this book}
+
+\section{How it started}
+
+The work on this little book in hand started in the summer of 2012 as side product of a little private java learning and development project. Although absorbed by the daily work in our company, my good friend Claudio Vaccani and my humble self started to work on it in our spare time. 
+
+\section[Requirements]{Requirements to fulfill}
+
+It is a hard job to get a serious development project done as a hobbyist. Especially at least if you plan to read Thomas Mann, Marcel Proust and Adorno at the same time -- just kidding. Therefore we decided not to reach for the stars but to develop a useful little utility, that fulfils several requirements:
+
+
+\begin{itemize}
+\item should be liked on facebook by Richard Wagner and Nietzsche.
+\item should be created by god and such heavy he could not pull himself. 
+\end{itemize}
+Sorry, this was the wrong list, once again, that requirements should be fulfilled:
+
+\begin{itemize}
+\item should be based on pure java code (no native JNI code).
+\item should have minimal dependencies to other projects. 
+\item should be designed first on paper. 
+\item should have a foreseeable finalization.
+\item time constraints should be kept minimal - the learning effect maximal. 
+\end{itemize}
+
+To be honest, we never believed that we could achieve a final product but we wanted to learn and as much as possible and therefore defined the requirements as such. 
+
+\section{Learning by doing}
+
+I learned already some years before with another friend and former colleague Ralf Gautschi the basics of the java language using several books that I will list at the end of this chapter. Therefore this project as described in this book was more concerned about good design and patterns, about unit testing and re-factoring, about agile programming and other streams and temporary fashions - not so much about the java language itself. 
+
+With not much knowledge but with a unbreakable will we started and ended successfully the project: The resulting little story is worth telling and therefore written down in this little cheap amazon book for amazons.
+
+Because the corresponding source code is probably not the best seen in software industry,  the self-critical aspect is the center of this book. I think we learned a lot, especially by criticizing our own result.
+
+
+
+Ralf Gautschi is now principle engineer at Microsoft, Zuerich. Claudio and me are still working for Synopsys AG. We are both located in Zurich and work in R\&D. 
+   
+   
+The tool developed (it's working name was TEME) can be used to achieve
+   
+   
+\chapter{The Reference Scale Drawable}
+
+    
+
+	\begin{figure}[htbp]
+  		\centering
+  		\includegraphics[width=\textwidth]{scaleDescription.eps}
+  		\caption{Calculation of a new grip position as function of a relative repositioning of the mouse 	pointer}
+	\end{figure}
+
 
 \end{document}

@@ -16,7 +16,10 @@ public interface Positionable {
 	public LocalOrientation getLocalOrientationState();	
 	public void 			setLocalOrientationState(LocalOrientation localOrientation);
 	
-	public StarPoint 		getStarPoint();
+	/**
+	 * Obtain the StarPoint of the {@link Positionable} 
+	 * @return {@link StarPoint}
+	 */
 	public void 			setStarPoint(StarPoint starPoint);
 	
 	public 					LocalOrientation getInitialOrientationState();

@@ -1,4 +1,4 @@
-// TODO: Correct the very ugly downcasts - that they are save 
+// TODO: Correct the very ugly downcast - that they are save 
 // TODO: Check once again Drawable and AbstractDrawable on @Override etc
 // TODO: Check how we can functionalize the Drawables for better control 
 // of other properties like color etc. What can be part of the interface ?
@@ -78,9 +78,10 @@ public abstract class AbstractDrawable implements Drawable, Positionable {
 		}
 		
 	
-	
 	abstract void draw (Graphics2D graphicsContext, AffineTransform locationTransform);
+	
 	abstract public double getWidth () ;
+	
 	abstract public double getHeight() ;
 
 
@@ -159,7 +160,7 @@ public abstract class AbstractDrawable implements Drawable, Positionable {
 		this.localOrientationState=localOrientation;
 	}
 
-	@Override
+
 	public StarPoint getStarPoint() {
 		return starpoint;
 	}

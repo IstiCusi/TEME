@@ -75,12 +75,14 @@ public class DrawableScaleReference extends DrawableComposite {
 		localOrientationLeftGrip = new LocalOrientation(new Point2D.Double(0,0),angle,1.0);		
 		leftGrip = new DrawableBox(starPointLeftGrip, localOrientationLeftGrip, (int)(sizeOfGrip), (int)(sizeOfGrip)-4);
 		leftGrip.setColor(new Color(0xFFEA00));
+		leftGrip.setFilled(true);
 		
 		
 		starPointRightGrip = StarPoint.getDifference(StarPoint.getScaledVector(unitVector, -sizeOfGrip/2),end);
 		localOrientationRightGrip = new LocalOrientation(new Point2D.Double(0,0),angle,1.0);
 		rightGrip = new DrawableBox(starPointRightGrip, localOrientationRightGrip, (int)(sizeOfGrip), (int)(sizeOfGrip)-4);
 		rightGrip.setColor(new Color(0xFFEA00));
+		rightGrip.setFilled(true);
 		
 		//TODO: Length of the ScaleReference should scale with the temView state, the thickness however should stay the same.
 		

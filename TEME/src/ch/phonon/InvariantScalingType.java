@@ -15,5 +15,16 @@ import ch.phonon.temview.TEMViewState;
  *
  */
 public enum InvariantScalingType {
-	BOTH,FIXEDX,FIXEDY
+	/**
+	 * Drawable is not allowed to scale in its both local directions
+	 */
+	BOTH,
+	/**
+	 * Drawable is not allowed to scale in its local x direction
+	 */
+	FIXEDX,
+	/**
+	 * Drawable is not allowed to scale in its local y direction
+	 */
+	FIXEDY
 }

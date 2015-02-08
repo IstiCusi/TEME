@@ -18,6 +18,13 @@ import ch.phonon.StarPoint;
  */
 public interface Drawable  {
 	
+	/**
+	 * paints the {@link Drawable} into the graphicsContext.
+	 * The transformation provided in the signature represents the deviation
+	 * from the identity matrix. 
+	 * @param graphicsContext
+	 * @param transformation
+	 */
 	public void paint(Graphics2D graphicsContext, AffineTransform transformation); 		
 	public boolean contains(int x, int y);
 	

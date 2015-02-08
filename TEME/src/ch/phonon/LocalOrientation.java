@@ -4,10 +4,13 @@
 package ch.phonon;
 
 import java.awt.geom.Point2D;
-import java.util.Observable;
-
 import ch.phonon.drawables.Drawable;
 
+
+
+// TODO: Rotation and Shifting are not commutative 
+// We need somehow represent correctly this fact in saying that 
+// we first rotate and than shift.
 
 /**
  * Instances of the class {@link LocalOrientation} store information
@@ -18,12 +21,7 @@ import ch.phonon.drawables.Drawable;
  * @author phonon
  *
  */
-
-// TODO: Rotation and Shifting are not commutative 
-// We need somehow represent correctly this fact in saying that 
-// we first rotate and than shift.
-
-public class LocalOrientation extends Observable  {
+public class LocalOrientation  {
 	
 	
 	public LocalOrientation () {
@@ -44,15 +42,10 @@ public class LocalOrientation extends Observable  {
 	
 	public void setLocalX(Point2D localX) {
 		this.localX = localX;
-		setChanged();
-	    notifyObservers();
 	}
 
 	public void setRotation(double rotation) {
 		this.rotation = rotation;
-		hasChanged();
-		setChanged();
-	    notifyObservers();
 	}
 
 	public Point2D getLocalX() {

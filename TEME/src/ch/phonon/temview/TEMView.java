@@ -167,9 +167,12 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		ArrayList<DrawablePoint> pointList = this.temAllied.getPointsList();
 
 		/** Draw the drawables based on the active viewPort scale/rot/pan state**/
+		
+		this.viewPortTransform = AbstractDrawable.transformViewPort(
+				initial, this.temViewState);
+		
 		for (Drawable drawable : drawableList) {
-			this.viewPortTransform = AbstractDrawable.transformViewPort(
-					initial, this.temViewState);
+			
 			drawable.paint(g2D, this.viewPortTransform);
 
 		}

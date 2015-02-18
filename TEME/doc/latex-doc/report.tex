@@ -1,11 +1,12 @@
-
-
+% ***************************************************************************************************
+% Latex Book: Spare Time Development - A little guide line for software developing hobbyists ********
+% ***************************************************************************************************
 
 \documentclass[a4paper]{book}
 \usepackage[margin=2cm]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-%\usepackage{svg}
+
 \usepackage{graphicx}
 \usepackage{epstopdf}
 \usepackage{amsmath}
@@ -14,29 +15,28 @@
 \usepackage{color}
 \usepackage{courier}
 
-\definecolor{mygreen}{rgb}{0,0.6,0}
-\definecolor{mygray}{rgb}{0.5,0.5,0.5}
-\definecolor{mylightgray}{rgb}{0.9,0.9,0.9}
-\definecolor{mymauve}{rgb}{0.58,0,0.82}
+\definecolor{javaGreen}{rgb}{0,0.6,0}
+\definecolor{javaGray}{rgb}{0.5,0.5,0.5}
+\definecolor{javaLightGray}{rgb}{0.9,0.9,0.9}
+\definecolor{javaMauve}{rgb}{0.58,0,0.82}
 
 
 \usepackage{caption}
 \DeclareCaptionFont{white}{\color{white}}
-\DeclareCaptionFormat{listing}{\colorbox[cmyk]{0.43, 0.35, 0.35,0.01}{\parbox{\dimexpr\textwidth-2\fboxsep\relax}{#1#2#3}}}
-\captionsetup[JAVA]{format=listing,labelfont=white,textfont=white, singlelinecheck=false, margin=0pt, font={bf,footnotesize}}
-
+\DeclareCaptionFormat{javalisting}{\colorbox[cmyk]{0.43, 0.35, 0.35,0.01}{\parbox{\dimexpr\textwidth-2\fboxsep\relax}{#1#2#3}}}
+\captionsetup[JAVA]{format=javalisting,labelfont=white,textfont=white, singlelinecheck=false, margin=0pt, font={bf,footnotesize}}
 
 
 \lstnewenvironment{JAVA}[1][]
 {\lstset{
-  language=Java,                   % the language of the code
-  backgroundcolor=\color{mylightgray},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
-  basicstyle=\footnotesize,        % the size of the fonts that are used for the code
-  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
-  breaklines=true,                 % sets automatic line breaking
-  captionpos=b,                    % sets the caption-position to bottom
-  commentstyle=\color{mygreen},    % comment style
-  deletekeywords={...},            % if you want to delete keywords from the given language
+  language=Java,                   
+  backgroundcolor=\color{javaLightGray},   
+  basicstyle=\footnotesize,       
+  breakatwhitespace=false,        
+  breaklines=true,                
+  captionpos=t,                   
+  commentstyle=\color{javaGreen},   
+  deletekeywords={...},            
   escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
   extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
   frame=single,                    % adds a frame around the code
@@ -45,17 +45,19 @@
   morekeywords={*,...},            % if you want to add more keywords to the set
   numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
   numbersep=5pt,                   % how far the line-numbers are from the code
-  numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
-  rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+  numberstyle=\tiny\color{javaGray}, % the style that is used for the line-numbers
+  rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text
   showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
   showstringspaces=false,          % underline spaces within strings only
   showtabs=false,                  % show tabs within strings adding particular underscores
   stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered
-  stringstyle=\color{mymauve},     % string literal style
+  stringstyle=\color{javaMauve},     % string literal style
   tabsize=2,                       % sets default tabsize to 2 spaces
   title=\lstname,                   % show the filename of files included with \lstinputlisting; also try caption instead of title
   #1
-}} {}
+}
+\captionsetup{options=JAVA}
+} {}
 \author{Stephan Strauss}
 
 \begin{document}
@@ -114,11 +116,13 @@ The tool developed (it's working name was TEME) is used to measure precisely dis
 
 \section{The \texttt{Drawable} Interface}
 
-The basic property of all objects that should be drawn in the \texttt{TEMView} 
+The basic properties of all objects that should be drawn in the \texttt{TEMView} are summarized essentially in two
+interfaces. The first interface is called \texttt{Drawable} (see listing \ref{lst:Drawable}) and implements a
+\texttt{paint} and a \texttt{contains} method.
+The paint method is used after implementation to place the \texttt{Drawable} into the \texttt{TEMView}
+after application of an \texttt{AffineTransform}
 
-
-%\begin{JAVA}[float=htbp, label=Drawable,caption=The Drawable Interface all \texttt{Drawables} are implemented against]
-\begin{JAVA} [label=Drawable,caption=The Drawable Interface all \texttt{Drawables} are implemented against]
+\begin{JAVA} [label=lst:Drawable,caption=The Drawable Interface all \texttt{Drawables} are implemented against]
 public interface Drawable  {	
 	public void paint(Graphics2D graphicsContext, AffineTransform transformation); 		
 	public boolean contains(int x, int y);	
@@ -126,13 +130,25 @@ public interface Drawable  {
 \end{JAVA}
 
 
+\begin{JAVA} [label=lst:TEMView_paintComponent,caption=The transformation of the viewPort (\texttt{viewPortTransform: AffineTransform}) is used by the \texttt{paint} method to place the \texttt{Drawable} objects into TEMView's graphicsContext]
+	@Override
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		Graphics2D g2D = (Graphics2D) g;
+		...
+		for (Drawable drawable : drawableList) {
+			drawable.paint(g2D, this.viewPortTransform);
+		}
+	}
+\end{JAVA}
+
 \section{The Reference Scale Drawable}
 
     
 
 	\begin{figure}[htbp]
   		\centering
-  		\includegraphics[width=\textwidth]{scaleDescription.eps}
+  		\includegraphics[width=\textwidth]{scaleDescription-minimal.eps}
   		\caption{Calculation of a new grip position as function of a relative repositioning of the mouse 	pointer}
 	\end{figure}
 

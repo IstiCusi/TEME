@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project default="javadoc">
     <target name="javadoc">
-        <javadoc access="public" author="true" classpath="." destdir="" doctitle="TEME API" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" packagenames="ch.phonon.drawables,ch.phonon.temview,ch.phonon.projectproperties,ch.phonon" source="1.7" sourcepath="../../unittests:../../src" splitindex="true" use="true" version="true"/>
+        <javadoc access="public" author="true" classpath="/home/phonon/Development/eclipse37_64bit/plugins/org.junit_4.8.2.v4_8_2_v20110321-1705/junit.jar:/home/phonon/Development/eclipse37_64bit/plugins/org.hamcrest.core_1.1.0.v20090501071000.jar" destdir="" doctitle="TEME API" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" packagenames="ch.phonon.drawables,ch.phonon,ch.phonon.temview,ch.phonon.projectproperties" source="1.7" sourcepath="../../unittests:../../src" splitindex="true" use="true" version="true"/>
     </target>
 </project>

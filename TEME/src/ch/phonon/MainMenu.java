@@ -1,6 +1,11 @@
-/**
+/*************************************************************************
  * 
- */
+ *  WWW.PHONON.CH CONFIDENTIAL 
+ *
+ *  2012 - 2020, Stephan Strauss, www.phonon.ch, Zurich, Switzerland
+ *  All Rights Reserved.
+ * 
+ *************************************************************************/
 package ch.phonon;
 
 import javax.swing.JMenu;
@@ -8,6 +13,9 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 /**
+ * The {@link MainMenu} class represents the menu bar of the application.
+ * It is mainly used to save and load the state of the application.
+ * 
  * @author phonon
  *
  */
@@ -19,6 +27,9 @@ public class MainMenu extends JMenuBar {
 	private JMenuItem saveasFile;
 	private JMenuItem exitIt;
 	
+	/**
+	 * The public standard constructor is visible throughout the application.
+	 */
 	public MainMenu() {
 		super();
 		JMenu 	 fileMenue = new JMenu(ResourceLoader.getResource("File"));

@@ -1,13 +1,22 @@
-/**
+/*************************************************************************
  * 
- */
+ *  WWW.PHONON.CH CONFIDENTIAL 
+ *
+ *  2012 - 2020, Stephan Strauss, www.phonon.ch, Zurich, Switzerland
+ *  All Rights Reserved.
+ * 
+ *************************************************************************/
+
 package ch.phonon.temview;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.RenderingHints;
 import java.awt.Toolkit;
+import java.awt.event.MouseAdapter;
 import java.awt.font.TextAttribute;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
@@ -33,6 +42,7 @@ import ch.phonon.TEMAllied;
 import ch.phonon.TextOrientation;
 import ch.phonon.drawables.AbstractDrawable;
 import ch.phonon.drawables.Drawable;
+import ch.phonon.drawables.DrawableBox;
 import ch.phonon.drawables.DrawableCoordinateSystem;
 import ch.phonon.drawables.DrawableDiamondStar;
 import ch.phonon.drawables.DrawablePicture;
@@ -40,7 +50,6 @@ import ch.phonon.drawables.DrawablePoint;
 import ch.phonon.drawables.DrawableScaleReference;
 import ch.phonon.drawables.DrawableText;
 import ch.phonon.projectproperties.TEMTableModel;
-
 
 /**
  * The {@link TEMView} is a {@link JPanel}, that is used to show various
@@ -53,13 +62,16 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 
 	private static final long serialVersionUID = 1L;
 
-	/** The temViewState keeps track about zooming, scaling and center position*/
+	/** The temViewState keeps track about zooming, scaling and center position */
 	private TEMViewState temViewState;
-	
+
 	/** The initial identity state of the viewPort (Unrotated etc) */
 	private AffineTransform initial;
-	
-	/** The total affine transformation needed that is associated with the temViewState */
+
+	/**
+	 * The total affine transformation needed that is associated with the
+	 * temViewState
+	 */
 	private AffineTransform viewPortTransform;
 
 	/** Model used to store all tem images and their descriptive information */
@@ -67,38 +79,41 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 
 	/** The active temAllied container that keeps the tem picture, exif etc */
 	private TEMAllied temAllied;
-	
+
 	/** Adapter used for user interaction */
 	TEMAdapter adapter;
-		
+
 	/** Standard drawables to be painted */
 	private DrawableText informer;
-	private DrawablePicture rose;	//TODO: Can we make a Drawable out of rose ?
+	private DrawablePicture rose; // TODO: Can we make a Drawable out of rose ?
 	private BufferedImage roseImage;
 
 	/** Standard sounds to be used in the temView */
-	private Sound newPoint;
-	private Sound killPoint;
-	private Sound pageturn;
-	private Sound error;
+	private Sound newPointSound;
+	private Sound killPointSound;
+	private Sound pageturnSound;
+	private Sound errorSound;
 
 	/** Standard Edit modes and their associated containers (cursors,...) */
 	private TEMEditMode temEditMode;
 
 	private DrawableScaleReference drawableScaleReference;
-	
-	
 
 	// ------------------------ Constructor ------------------------------------
 
 	TEMView() {
 
 		/** Configure properties of TEMView (Color, Sounds, Cursor ...) */
-		configureEnvironment(); 
+		configureEnvironment();
 
-		/** Initialize state of the TEMView */
+		/**
+		 * Initialize state of the TEMView. The values will be set to the
+		 * correct values after complete construction of the TEMView, for
+		 * example in the containing {@link MainFrame} class by calling the
+		 * centerAll function of the TEMView
+		 */
 		this.temViewState = new TEMViewState();
-		
+
 		/** Add an empty TEMAllied -- The empty screen of the TEMView */
 		temAllied = new TEMAllied();
 		DrawableCoordinateSystem cS = new DrawableCoordinateSystem(
@@ -106,25 +121,26 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		this.temAllied.addDrawable(cS);
 		setInformer(this.temAllied.getInformation());
 		setVisible(true);
-		
+
 		/** Add Listeners to TEMView */
 		this.adapter = new TEMAdapter(this);
 		this.addMouseListener(this.adapter);
 		this.addMouseMotionListener(this.adapter);
 		this.addKeyListener(this.adapter);
-		
 
-		 drawableScaleReference = new DrawableScaleReference(
-				new StarPoint(-900, 550), new StarPoint(-500, 550));
-		 drawableScaleReference.setBegin(-800, 400);
-		 drawableScaleReference.setBegin(-700, 400);
-		 drawableScaleReference.setEnd(-400, 550);
-		
-	
+		drawableScaleReference = new DrawableScaleReference(new StarPoint(-900,
+				550), new StarPoint(-500, 550));
+
 	}
 
 	// -------------------------------------------------------------------------
 
+	/**
+	 * Updates the text informer line in the top left of the temView.
+	 * 
+	 * @param text
+	 *            string informing the user about the actual picture loaded.
+	 */
 	public void setInformer(String text) {
 		Font font = new Font("Helvetica", Font.PLAIN, 30);
 		AttributedString information = new AttributedString(text);
@@ -140,11 +156,19 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 
 	@Override
 	public void paintComponent(Graphics g) {
-		
+
 		super.paintComponent(g);
 		Graphics2D g2D = (Graphics2D) g;
-		
-		/** Initialization of the initialTransformation to Identidy (No Transform) */
+
+		/** Use Antialiasing when rendering */
+		RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON);
+		g2D.setRenderingHints(rh);
+
+		/**
+		 * Initialization of the initialTransformation to Identidy (No
+		 * Transform)
+		 */
 		this.initial = g2D.getTransform();
 		this.initial.setToIdentity();
 
@@ -161,22 +185,19 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		} else {
 			temPicture.paint(g2D, viewPortTransform);
 		}
-		
+
 		/** Obtain all drawables and points from the active temAllied */
 		ArrayList<Drawable> drawableList = this.temAllied.getDrawables();
 		ArrayList<DrawablePoint> pointList = this.temAllied.getPointsList();
 
-		/** Draw the drawables based on the active viewPort scale/rot/pan state**/
-		
-		this.viewPortTransform = AbstractDrawable.transformViewPort(
-				initial, this.temViewState);
-		
+		/** Draw the drawables based on the active viewPort scale/rot/pan state **/
+
 		for (Drawable drawable : drawableList) {
-			
+
 			drawable.paint(g2D, this.viewPortTransform);
 
 		}
-		
+
 		for (DrawablePoint dPoint : pointList) {
 			this.viewPortTransform = AbstractDrawable.transformViewPort(
 					initial, this.temViewState);
@@ -186,44 +207,79 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 
 		// TODO: Take out the following testcode block
 
-		this.viewPortTransform = AbstractDrawable.transformViewPort(initial,
-				this.temViewState);
-		
 		drawableScaleReference.paint(g2D, this.viewPortTransform);
+
+		DrawableBox box1 = new DrawableBox(new StarPoint(-100, -100),
+				new LocalOrientation(), 5, 5);
+		box1.setColor(new Color(255, 0, 0));
+		box1.paint(g2D, this.viewPortTransform);
+
+		LocalOrientation localO2 = new LocalOrientation(new Point(-100, -100),
+				0, 1);
+		DrawableBox box2 = new DrawableBox(new StarPoint(-100, -100), localO2,
+				5, 5);
+		box2.setColor(new Color(255, 0, 0));
+		box2.paint(g2D, this.viewPortTransform);
+
+		LocalOrientation localO3 = new LocalOrientation(new Point(-100, -100),
+				45.0, 4);
+		DrawableBox box3 = new DrawableBox(new StarPoint(-100, -100), localO3,
+				5, 5);
+		box3.setColor(new Color(255, 0, 0));
+		box3.paint(g2D, this.viewPortTransform);
 
 		// Paints the actual temAllied information (top right)
 
 		this.informer.paint(g2D, this.initial);
 
 		// Paints the windrose (bottom left)
-		
+
 		this.rose.setX(100);
 		this.rose.setY(this.getHeight() - 100);
-		
+
 		initial.setToRotation(temViewState.rotation / 360 * 2 * 3.1415,
 				this.rose.getX(), this.rose.getY());
 
-		
 		this.rose.paint(g2D, initial);
 		this.initial.setToIdentity();
 	}
 
-	
 	// -------------------- Shifting scale dimensions --------------------------
-	
+
+	/**
+	 * This getter returns a reference of the active DrawableScaleReference
+	 * 
+	 * @return reference of the active ScaleReference
+	 */
 	public DrawableScaleReference getScaleReference() {
 		return this.drawableScaleReference;
 	}
-	
-	
+
 	// ---------------------Adding and removing points -------------------------
 
-	public Point2D.Double getPictureCoordinates (double x, double y) {
-		Point2D.Double point = new Point2D.Double(x,y);
+	/**
+	 * Recalculates for a given point in the actual zoom/pan/scale state of the
+	 * temView the corresponding point in picture coordinates of the loaded
+	 * image.
+	 * 
+	 * @param x
+	 * @param y
+	 * @return point in the base of the picture coordinate system
+	 */
+	public Point2D.Double getPictureCoordinates(double x, double y) {
+		Point2D.Double point = new Point2D.Double(x, y);
 		return getPictureCoordinates(point);
 	}
-	
-	public Point2D.Double getPictureCoordinates (Point2D point) {
+
+	/**
+	 * Recalculates for a given point in the actual zoom/pan/scale state of the
+	 * temView the corresponding point in picture coordinates of the loaded
+	 * image.
+	 * 
+	 * @param point
+	 * @return point in the base of the picture coordinate system
+	 */
+	public Point2D.Double getPictureCoordinates(Point2D point) {
 		Point2D.Double pt = new Point2D.Double();
 		try {
 			this.viewPortTransform.inverseTransform(point, pt);
@@ -233,22 +289,37 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 
 		return pt;
 	}
-	
+
+	/**
+	 * Adds based on the coordinates of the mouse click inside the zoom/panned/
+	 * scaled temView the corresponding point in picture coordinates to the
+	 * active temAllied ( see {@link TEMAllied}).
+	 * 
+	 * @param point
+	 *            clicked point in the temView
+	 */
 	public void addPoint(Point2D point) {
-		
+
 		Point2D.Double pt = getPictureCoordinates(point);
-		
-		System.out.println("new point added with coordinates: " + pt.getX()+" "+pt.getY());
 
-		StarPoint initialStarpoint = new StarPoint(pt.getX(), pt.getY());
+		System.out.println("new point with tem coordinates: " + point.getX()
+				+ " " + point.getY());
+		System.out.println("new point added with picture coordinates: "
+				+ pt.getX() + " " + pt.getY());
+
+		StarPoint initialStarpoint = new StarPoint(pt.getX(), pt.getY()); // pic
+																			// coordinates
 		DrawableDiamondStar diamondStar = new DrawableDiamondStar(
-				initialStarpoint);
-		DrawablePoint pPoint = new DrawablePoint(diamondStar, pt);
+				initialStarpoint); // pic coordinates
+		DrawablePoint pPoint = new DrawablePoint(diamondStar, pt); // pic
+																	// coordinates
 
-		this.temAllied.addPoint(pPoint);
+		System.out.println(pPoint.getDrawable().toString());
+
+		this.temAllied.addPoint(pPoint); // pic coordinates
 		this.firePropertyChange("addPoint", null, pt);
 
-		new Thread(this.newPoint).start();
+		new Thread(this.newPointSound).start();
 		System.out
 				.println(ManagementFactory.getThreadMXBean().getThreadCount());
 
@@ -256,13 +327,24 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 
 	}
 
+	/**
+	 * Remove point from the active temAllied. TODO: Needs to be checked,
+	 * because for some reason, I do not need to transform into picture
+	 * coordinates, what is really strange.
+	 * 
+	 * @param x
+	 * @param y
+	 */
 	public void removePoint(int x, int y) {
-		
-		//TODO Where is the transformation to picture coordinates happening ?!
-		// Not good API ... needs to be checked
+
+		System.out
+				.println("Coordinates of point removed: x=" + x + " ,y= " + y);
+
+		// TODO Where is the transformation to picture coordinates happening ?!
+		// Not a good API ... needs to be checked
 
 		if (this.temAllied.removePoint(x, y) == true) {
-			new Thread(this.killPoint).start();
+			new Thread(this.killPointSound).start();
 			System.out.println(ManagementFactory.getThreadMXBean()
 					.getThreadCount());
 			repaint();
@@ -273,6 +355,9 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 
 	// TODO: Implement Shift-Home to center to fit picture into window
 
+	/**
+	 * Centers the picture to the view (scale 1:1 of the original image)
+	 */
 	public void centerAll() {
 		temViewState.cWidth = this.getWidth();
 		temViewState.cHeight = this.getHeight();
@@ -284,54 +369,61 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 	}
 
 	private void configureEnvironment() {
-		
+
 		Border emptyBorder = BorderFactory.createEmptyBorder();
 		setBorder(emptyBorder);
-		
-		
+
 		setOpaque(true);
 		setFocusable(true);
 
 		/** Switch off Focus traversal to enable the adapter to use TAB keys */
 		setFocusTraversalKeysEnabled(false);
-		
+
 		/** Standard background and frame color */
 		setBorder(BorderFactory.createLineBorder(Color.white));
 		setBackground(new Color(Integer.parseInt(
 				ResourceLoader.getResource("TEMView_Color").substring(2), 16)));
-		
-		/** Define sounds to use in this component */ 
-		this.newPoint = new Sound(SoundType.POP);
-		this.killPoint = new Sound(SoundType.KILL);
-		this.pageturn = new Sound(SoundType.PAGETURN);
-		this.error = new Sound(SoundType.ERROR);
-		
+
+		/** Define sounds to use in this component */
+		this.newPointSound = new Sound(SoundType.POP);
+		this.killPointSound = new Sound(SoundType.KILL);
+		this.pageturnSound = new Sound(SoundType.PAGETURN);
+		this.errorSound = new Sound(SoundType.ERROR);
+
 		/** Load the rose placed in the bottom left of the temView */
 		try {
-			this.roseImage=ResourceLoader.getBufferedImage("rose.png");			
+			this.roseImage = ResourceLoader.getBufferedImage("rose.png");
 		} catch (IOException ex) {
 			System.out.println("Exception: The rose placed can not be loaded");
 			System.exit(0);
 		}
-		
+
 		/** Predefine the rose to save CPU time */
 		LocalOrientation localOrienation = new LocalOrientation();
 		localOrienation.setScaling(0.35);
-		this.rose = new DrawablePicture(new StarPoint(), localOrienation, this.roseImage);
-		
+		this.rose = new DrawablePicture(new StarPoint(), localOrienation,
+				this.roseImage);
+
 		/** http://www.java-gaming.org/index.php?topic=2227.0 */
-		System.out.println(Toolkit.getDefaultToolkit().getMaximumCursorColors());
-		
+		System.out
+				.println(Toolkit.getDefaultToolkit().getMaximumCursorColors());
+
 		/** Load the standard cursors used inside the temView */
-		
 		this.temEditMode = new TEMEditMode();
 		this.temEditMode.switchToActiveEditTyp(TEMEditType.POINT);
-		setCursor (this.temEditMode.getActiveCursor());
+		setCursor(this.temEditMode.getActiveCursor());
 
 	}
 
 	// --------------------information interchange -----------------------------
 
+	/**
+	 * registers a statusBar as {@link PropertyChangeListener} that is updated
+	 * about several changes in the view as the coordinate of the mouse pointer
+	 * and the last point added to the view.
+	 * 
+	 * @param statusBar
+	 */
 	public void registerStatusBar(TEMStatusBar statusBar) {
 		this.addPropertyChangeListener("coordinateChange",
 				(PropertyChangeListener) statusBar);
@@ -339,6 +431,16 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 				(PropertyChangeListener) statusBar);
 	}
 
+	/**
+	 * Inform all PropertyChangeListeners about the changed coordinate of the
+	 * actual mouse pointer. This is normally called by the a associated
+	 * Adapter, that checks the mouse movement as e.g.
+	 * {@link MouseAdapter#mouseMoved(java.awt.event.MouseEvent)}
+	 * 
+	 * @param point
+	 *            actual point of the cursor to report to
+	 *            PropertyChangeListeners.
+	 */
 	public void fireCoordinatePropertyChange(Point2D point) {
 		Point2D pt = new Point2D.Double();
 		try {
@@ -366,29 +468,65 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 
 	// --------------------------Getters and Setters---------------------------
 
+	// TODO This getter / setters should be replaced (when we do a refactoring
+	// to the Singleton description.
+
+	/**
+	 * Returns the actual {@link TEMViewState} of the TEMView. It contains the
+	 * rotation/pane/zoom state and width, height of the painting canvas
+	 * 
+	 * @return {@link TEMViewState}
+	 */
 	public TEMViewState getTEMViewState() {
 		return temViewState;
 	}
 
+	/**
+	 * Sets the {@link TEMViewState} that contains the rotation/panning/zoom
+	 * state of the TEMView.
+	 * 
+	 * @param temViewState
+	 */
 	public void setTEMViewState(TEMViewState temViewState) {
 		this.temViewState = temViewState;
 	}
 
+	/**
+	 * Get the active {@link TEMAllied}
+	 * 
+	 * @return the active temAllied
+	 */
 	public TEMAllied getTemAllied() {
 		return temAllied;
 	}
 
+	/**
+	 * Sets the active {@link TEMAllied} to work with it and repaints the view
+	 * to show all relevant information stored in it.
+	 * 
+	 * @param temAllied
+	 */
 	public void setTemAllied(TEMAllied temAllied) {
 		this.temAllied = temAllied;
 		repaint();
 	}
-	
+
+	/**
+	 * Get the active edit mode defined by the enum {@link TEMEditType}
+	 * 
+	 * @return edit mode as item of the enum {@link TEMEditType}
+	 */
 	public TEMEditType getTEMEditMode() {
 		return this.temEditMode.getActiveEditType();
 	}
 
 	// ------------------------ Controls ---------------------------------------
 
+	/**
+	 * The {@link TEMTableModel} may contain several {@link TEMAllied}s that had
+	 * been loaded in a previous step. This method allows to switch to the next
+	 * {@link TEMAllied} in the list to be displayed in the {@link TEMView}.
+	 */
 	public void switchToNextTemAllied() {
 
 		try {
@@ -396,18 +534,24 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 			if (helper != null) {
 				setInformer(helper.getInformation());
 				this.temAllied = helper;
-				new Thread(this.pageturn).start();
+				new Thread(this.pageturnSound).start();
 				System.out.println(ManagementFactory.getThreadMXBean()
 						.getThreadCount());
 				repaint();
 			}
 		} catch (Exception e) {
 			System.out.println("No TEMAllied loaded");
-			new Thread(this.error).start();
+			new Thread(this.errorSound).start();
 
 		}
 	}
 
+	/**
+	 * The {@link TEMTableModel} may contain several {@link TEMAllied}s that had
+	 * been loaded in a previous step. This method allows to switch to the
+	 * previous {@link TEMAllied} in the list to be displayed in the
+	 * {@link TEMView}.
+	 */
 	public void switchToPreviousTemAllied() {
 
 		try {
@@ -415,28 +559,42 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 			if (helper != null) {
 				setInformer(helper.getInformation());
 				this.temAllied = helper;
-				new Thread(this.pageturn).start();
+				new Thread(this.pageturnSound).start();
 				System.out.println(ManagementFactory.getThreadMXBean()
 						.getThreadCount());
 				repaint();
 			}
 		} catch (Exception e) {
 			System.out.println("No TEMAllied loaded");
-			new Thread(this.error).start();
+			new Thread(this.errorSound).start();
 		}
 
 	}
 
+	/**
+	 * The TEMView allows different edit modes that are defined by the
+	 * {@link TEMEditType} enumeration and handled in more detail in the
+	 * {@link TEMEditMode} class. This method allows to switch to the previous
+	 * edit mode in the list before the active one. This also will change the
+	 * active cursor shown in the {@link TEMView}.
+	 */
 	public void switchToPreviousEditMode() {
 		this.temEditMode.cycleToPreviousEditType();
 		this.setCursor(this.temEditMode.getActiveCursor());
-		
+
 	}
 
+	/**
+	 * The TEMView allows different edit modes that are defined by the
+	 * {@link TEMEditType} enumeration and handled in more detail in the
+	 * {@link TEMEditMode} class. This method allows to switch to the next edit
+	 * mode in the list after the active one. This also will change the active
+	 * cursor shown in the {@link TEMView}.
+	 */
 	public void switchToNextEditMode() {
 		this.temEditMode.cycleToNextEditType();
 		this.setCursor(this.temEditMode.getActiveCursor());
-		
+
 	}
 
 }

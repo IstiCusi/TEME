@@ -110,4 +110,102 @@ public class StarPointTest {
 		assertFalse(P1.equals(P2));
 	}
 
+
+	/**
+		 * Test method for {@link ch.phonon.StarPoint#getOrientedAngle(ch.phonon.StarPoint, ch.phonon.StarPoint)}.
+		 */
+		@Test
+		public void testGetOrientedAngle()  {
+			
+			double epsilon = 1e-7; 
+			
+			StarPoint a = 		new StarPoint (1, 0);
+			
+			StarPoint b = 		new StarPoint (0, 1);
+			double result = StarPoint.getOrientedAngle(a, b);
+			assertEquals(90, result,epsilon);
+			
+			b = 		new StarPoint (-1, 0);
+			result = StarPoint.getOrientedAngle(a, b);
+			assertEquals(180, result,epsilon);
+			
+			b = 		new StarPoint (0, -1);
+			result = StarPoint.getOrientedAngle(a, b);
+			assertEquals(-90, result,epsilon);
+	
+			b = 		new StarPoint (1, 0);
+			result = StarPoint.getOrientedAngle(a, b);
+			assertEquals(0, result,epsilon);
+			
+			
+			
+		}
+
+
+	/**
+	 * Test method for {@link ch.phonon.StarPoint#getAngle(ch.phonon.StarPoint, ch.phonon.StarPoint)}.
+	 */
+	@Test
+	public void testGetAngle()  {
+		
+		double epsilon = 1e-7;
+		
+		StarPoint a = 		new StarPoint (1, 0);
+		
+		StarPoint b = 		new StarPoint (0, 1);
+		double result = StarPoint.getAngle(a, b);
+		assertEquals(90, result,epsilon);
+		assertEquals(StarPoint.getAngle(a, b), StarPoint.getAngle(b, a),epsilon);
+		
+		b = 		new StarPoint (-1, 0);
+		result = StarPoint.getAngle(a, b);
+		assertEquals(180, result,epsilon);
+		assertEquals(StarPoint.getAngle(a, b), StarPoint.getAngle(b, a),epsilon);
+		
+		b = 		new StarPoint (0, -1);
+		result = StarPoint.getAngle(a, b);
+		assertEquals(90, result,epsilon);
+		assertEquals(StarPoint.getAngle(a, b), StarPoint.getAngle(b, a),epsilon);
+		
+		b = 		new StarPoint (-0.70719, -0.70719);
+		result = StarPoint.getAngle(a, b);
+		assertEquals(135, result,epsilon);
+		assertEquals(StarPoint.getAngle(a, b), StarPoint.getAngle(b, a),epsilon);
+				
+		b = 		new StarPoint (1, 0);
+		result = StarPoint.getAngle(a, b);
+		assertEquals(0, result,epsilon);
+		assertEquals(StarPoint.getAngle(a, b), StarPoint.getAngle(b, a),epsilon);
+		
+	}
+
+
+	/**
+				 * Test method for {@link ch.phonon.StarPoint#getCounterClockWiseAngle(ch.phonon.StarPoint, ch.phonon.StarPoint)}.
+				 */
+				@Test
+				public void testGetCounterClockWiseAngle()  {
+					
+					double epsilon = 1e-7;
+					
+					StarPoint a = 		new StarPoint (1, 0);
+					
+					StarPoint b = 		new StarPoint (0, 1);
+					double result = StarPoint.getCounterClockWiseAngle(a, b);
+					assertEquals(90, result,epsilon);
+					
+					b = 		new StarPoint (-1, 0);
+					result = StarPoint.getCounterClockWiseAngle(a, b);
+					assertEquals(180, result,epsilon);
+		
+					b = 		new StarPoint (-0.70719, -0.70719);
+					result = StarPoint.getCounterClockWiseAngle(a, b);
+					assertEquals(180+45, result,epsilon);
+		
+					b = 		new StarPoint (1, 0);
+					result = StarPoint.getAngle(a, b);
+					assertEquals(0, result,epsilon);
+
+				}
+
 }

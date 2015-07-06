@@ -1,11 +1,24 @@
-/*******************************************************************************
- * Start the program from the command line e.g. like:
+/*************************************************************************
+ * 
+ *  WWW.PHONON.CH CONFIDENTIAL 
+ *
+ *  2012 - 2020, Stephan Strauss, www.phonon.ch, Zurich, Switzerland
+ *  All Rights Reserved.
+ * 
+ *  Start the program from the command line e.g. like:
  * 
  *  /usr/lib/jvm/java-7-oracle/bin/java 
  * 	-classpath /home/phonon/Development/workspace37/TEME_CleanUp/bin 
  * 	ch.phonon.Application
- ******************************************************************************/
+ * 
+ *************************************************************************/
 
+
+
+
+//TODO: Introduce different point types (e.g. picture space point, temView space point)
+//TODO: Rewrite code based on this definitions.
+//TODO: Refactor code based on this new point definitions
 
 //TODO: Check for all drawables, if after dimension changes with setters
 //		you change as well the internal primitive types!!!! Very important
@@ -26,8 +39,6 @@ import javax.swing.UIManager;
  * @author phonon
  *
  */
-
-
 public class Application {
 	
 	static {
@@ -41,7 +52,7 @@ public class Application {
 
 /** 
  * The launching and entrance point of the application
- * @param args
+ * @param args are the command line arguments
  */
 	public static void main(String[] args) {
 		
@@ -74,7 +85,8 @@ public class Application {
 		
 		/** Always say good bye */
 		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-		    public void run() {
+		    @Override
+			public void run() {
 		    	System.out.println(ResourceLoader.getResource("Window_SayBye"));
 		    }
 		}));

@@ -1,20 +1,36 @@
-/**
+/*************************************************************************
  * 
- */
+ *  WWW.PHONON.CH CONFIDENTIAL 
+ *
+ *  2012 - 2020, Stephan Strauss, www.phonon.ch, Zurich, Switzerland
+ *  All Rights Reserved.
+ * 
+ *************************************************************************/
+
 package ch.phonon.temview;
 
 import java.awt.event.MouseEvent;
 
 import ch.phonon.StarPoint;
+import ch.phonon.drawables.DrawableScaleReference;
 
 /**
+ * This class handles the {@link DrawableScaleReference} movement in the
+ * {@link TEMView} based on the mouse input from the user. The scale can be
+ * transformed in several ways pressing the left, the center or the right grip.
+ * The new grip position has to be calculated as shown in the picture below:
+ * <p>
+ * 
+ * <img src="{@docRoot}
+ * /../pictures/scaleDescription.png" width="80%" height="80%" >
+ * 
  * @author phonon
- *
+ * 
  */
 public class TemAdapterScaleTreatment {
-	
+
 	private TEMView temView;
-	private boolean scaleRightGripChosen   = false;
+	private boolean scaleRightGripChosen = false;
 	private StarPoint origGripPosInPicCoord;
 	private StarPoint origGrabPosInPicCoord;
 	private StarPoint corrInPicCoord;
@@ -24,78 +40,127 @@ public class TemAdapterScaleTreatment {
 	private StarPoint actGrabPosRelativeToEnd;
 	private StarPoint origGrabPosRelativToEnd;
 	private StarPoint rotCorrInPicCoord;
-	
-	public TemAdapterScaleTreatment(TEMView temView)  {
+
+	@SuppressWarnings("unused")
+	private TemAdapterScaleTreatment() {
+		/** The standard constructor makes no sense */
+		throw new AssertionError();
+	}
+
+	/**
+	 * This only constructor is used to initialize the class members. The
+	 * transfered temView reference delegates the functions to modify the active
+	 * {@link DrawableScaleReference} location and orientation parameters.
+	 * 
+	 * @param temView
+	 */
+	public TemAdapterScaleTreatment(TEMView temView) {
 		this.temView = temView;
 		this.origGripPosInPicCoord = new StarPoint();
 		this.newGripPosition = new StarPoint();
 		this.newGrabPositionInPicCoord = new StarPoint();
 
 	}
-	
+
 	/**
+	 * Treats the situation, where the right grip of the scale is pressed:
+	 * picture coordinates or the grab position and the grip position is
+	 * calculated and a corrective difference calculated between the grip and
+	 * the grab position.
+	 * 
 	 * @param e
 	 */
 	public void treatRightGripPressed(MouseEvent e) {
 		System.out.println("scaleRightGripChosen");
 		this.scaleRightGripChosen = true;
 		this.origGripPosInPicCoord = this.temView.getScaleReference().getEnd();
-		this.origGrabPosInPicCoord = new StarPoint (this.temView.getPictureCoordinates(e.getX(), e.getY()));	
-		this.corrInPicCoord = StarPoint.getDifference(this.origGrabPosInPicCoord,this.origGripPosInPicCoord);
+		this.origGrabPosInPicCoord = new StarPoint(
+				this.temView.getPictureCoordinates(e.getX(), e.getY()));
+		this.corrInPicCoord = StarPoint.getDifference(
+				this.origGrabPosInPicCoord, this.origGripPosInPicCoord);
 	}
 
-
 	/**
+	 * Treats the situation, where the left grip of the scale is pressed:
+	 * picture coordinates or the grab position and the grip position is
+	 * calculated and a corrective difference calculated between the grip and
+	 * the grab position.
+	 * 
 	 * @param e
 	 */
 	public void treatLeftGripPressed(MouseEvent e) {
 		System.out.println("scaleLeftGripChosen");
 		this.scaleLeftGripChosen = true;
-		this.origGripPosInPicCoord = this.temView.getScaleReference().getBegin();
-		this.origGrabPosInPicCoord = new StarPoint (this.temView.getPictureCoordinates(e.getX(), e.getY()));	
-		this.corrInPicCoord = StarPoint.getDifference(this.origGrabPosInPicCoord,this.origGripPosInPicCoord);
+		this.origGripPosInPicCoord = this.temView.getScaleReference()
+				.getBegin();
+		this.origGrabPosInPicCoord = new StarPoint(
+				this.temView.getPictureCoordinates(e.getX(), e.getY()));
+		this.corrInPicCoord = StarPoint.getDifference(
+				this.origGrabPosInPicCoord, this.origGripPosInPicCoord);
 	}
-	
+
 	/**
+	 * Treats the situation, where one of the grips of the scale was pressed and
+	 * are now active for moving. The new grip position is recalculated and the
+	 * state of the delegated {@link DrawableScaleReference}, that is member of
+	 * the {@link TEMView} - the class constructor parameter - is updated. This
+	 * function should be called after user scale movement in the
+	 * {@link TEMAdapter}.
+	 * 
+	 * 
 	 * @param e
 	 */
 	public void treatGripMovement(MouseEvent e) {
-		if(this.scaleLeftGripChosen==true) {
+		if (this.scaleLeftGripChosen == true) {
 
-			this.newGrabPositionInPicCoord.setPoint(this.temView.getPictureCoordinates( e.getX(), e.getY() ));
-			
-			actGrabPosRelativeToEnd = 		StarPoint.getDifference( this.temView.getScaleReference().getEnd(),this.newGrabPositionInPicCoord);
-			origGrabPosRelativToEnd =		StarPoint.getDifference( this.temView.getScaleReference().getEnd(), this.origGrabPosInPicCoord);
-			double angle = StarPoint.getClockWiseAngle(origGrabPosRelativToEnd,actGrabPosRelativeToEnd);	
-			rotCorrInPicCoord = StarPoint.createRotatedStarPoint(this.corrInPicCoord, Math.toRadians(angle));				
-			newGripPosition = StarPoint.getSum(newGrabPositionInPicCoord, rotCorrInPicCoord);	
+			this.newGrabPositionInPicCoord.setPoint(this.temView
+					.getPictureCoordinates(e.getX(), e.getY()));
+
+			actGrabPosRelativeToEnd = StarPoint.getDifference(this.temView
+					.getScaleReference().getEnd(),
+					this.newGrabPositionInPicCoord);
+			origGrabPosRelativToEnd = StarPoint.getDifference(this.temView
+					.getScaleReference().getEnd(), this.origGrabPosInPicCoord);
+			double angle = StarPoint.getCounterClockWiseAngle(
+					origGrabPosRelativToEnd, actGrabPosRelativeToEnd);
+			rotCorrInPicCoord = StarPoint.createRotatedStarPoint(
+					this.corrInPicCoord, Math.toRadians(angle));
+			newGripPosition = StarPoint.getSum(newGrabPositionInPicCoord,
+					rotCorrInPicCoord);
 			this.temView.getScaleReference().setBegin(newGripPosition);
-			
+
 		}
 
-		if(this.scaleRightGripChosen==true) {
-			this.newGrabPositionInPicCoord.setPoint(this.temView.getPictureCoordinates( e.getX(), e.getY() ));
-			
-			actGrabPosRelativeToEnd = 		StarPoint.getDifference( this.temView.getScaleReference().getBegin(),this.newGrabPositionInPicCoord);
-			origGrabPosRelativToEnd =		StarPoint.getDifference( this.temView.getScaleReference().getBegin(), this.origGrabPosInPicCoord);
-			double angle = StarPoint.getClockWiseAngle(origGrabPosRelativToEnd,actGrabPosRelativeToEnd);	
-			rotCorrInPicCoord = StarPoint.createRotatedStarPoint(this.corrInPicCoord, Math.toRadians(angle));				
-			newGripPosition = StarPoint.getSum(newGrabPositionInPicCoord, rotCorrInPicCoord);	
+		if (this.scaleRightGripChosen == true) {
+			this.newGrabPositionInPicCoord.setPoint(this.temView
+					.getPictureCoordinates(e.getX(), e.getY()));
+
+			actGrabPosRelativeToEnd = StarPoint.getDifference(this.temView
+					.getScaleReference().getBegin(),
+					this.newGrabPositionInPicCoord);
+			origGrabPosRelativToEnd = StarPoint
+					.getDifference(this.temView.getScaleReference().getBegin(),
+							this.origGrabPosInPicCoord);
+			double angle = StarPoint.getCounterClockWiseAngle(
+					origGrabPosRelativToEnd, actGrabPosRelativeToEnd);
+			rotCorrInPicCoord = StarPoint.createRotatedStarPoint(
+					this.corrInPicCoord, Math.toRadians(angle));
+			newGripPosition = StarPoint.getSum(newGrabPositionInPicCoord,
+					rotCorrInPicCoord);
 			this.temView.getScaleReference().setEnd(newGripPosition);
 		}
 	}
-	
+
 	/**
-	 * 
+	 * This function needs to be called in the {@link TEMAdapter}, when the grip
+	 * is released by the user input. After releasing the grip states are
+	 * reinitialized.
 	 */
 	public void treatGripReleased() {
 		System.out.println("Grip released");
-		this.scaleLeftGripChosen 	= false;	
-		this.scaleRightGripChosen 	= false;
+		this.scaleLeftGripChosen = false;
+		this.scaleRightGripChosen = false;
 		newGripPosition = new StarPoint();
-	}	
-
-	
-	
+	}
 
 }

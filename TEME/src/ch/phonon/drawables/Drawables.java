@@ -1,6 +1,12 @@
-/**
+/*************************************************************************
  * 
- */
+ *  WWW.PHONON.CH CONFIDENTIAL 
+ *
+ *  2012 - 2020, Stephan Strauss, www.phonon.ch, Zurich, Switzerland
+ *  All Rights Reserved.
+ * 
+ *************************************************************************/
+
 package ch.phonon.drawables;
 
 /**

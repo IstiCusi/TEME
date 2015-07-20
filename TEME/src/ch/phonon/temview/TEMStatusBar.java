@@ -9,7 +9,7 @@
 
 package ch.phonon.temview;
 
-import java.awt.Color;
+import java.awt.Font;
 import java.awt.geom.Point2D;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -19,8 +19,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
-
-import ch.phonon.ResourceLoader;
 
 /**
  * The TEMStatusBar informs the user about aspects seen in the TEMView as e.g.
@@ -47,11 +45,16 @@ public class TEMStatusBar extends JPanel implements PropertyChangeListener {
 		this.labelText = "Cross hairs: (X: ---------- , Y: ----------) Px";
 		setBorder(new BevelBorder(BevelBorder.LOWERED));
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-		setBackground(new Color(Integer.parseInt(
-				ResourceLoader.getResource("TEMStatusBar_Color").substring(2),
-				16)));
+
+		// TODO Handle loading of background in case of standard color ;
+		// maybe we should check the getResource on a keyword like STANDARD
+
+		// setBackground(new Color(Integer.parseInt(
+		// ResourceLoader.getResource("TEMStatusBar_Color").substring(2),
+		// 16)));
 
 		statusLabel = new JLabel(this.labelText);
+		statusLabel.setFont(new Font("monospaced", Font.PLAIN, 12));
 
 		statusLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		add(statusLabel);
@@ -81,12 +84,13 @@ public class TEMStatusBar extends JPanel implements PropertyChangeListener {
 
 		this.labelText = String
 				.format(
-
-				// TODO StringBuilder better ?
-
+						
 				"Cross hairs: (X: %-7d , Y: %-7d) Px -- Last added Point (X: %-7d , Y: %-7d) Px ",
-						x.intValue(), y.intValue(), addedx.intValue(),
+
+				x.intValue(), y.intValue(), addedx.intValue(),
 						addedy.intValue());
+
+		// System.out.println(this.labelText);
 
 		this.statusLabel.setText(this.labelText);
 	}

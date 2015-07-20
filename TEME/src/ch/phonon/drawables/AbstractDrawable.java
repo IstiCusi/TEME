@@ -305,7 +305,6 @@ public abstract class AbstractDrawable implements Drawable, Positionable {
 
 	@Override
 	public boolean getInvariantRotation() {
-		// TODO Auto-generated method stub
 		return this.invariantRotation;
 	}
 

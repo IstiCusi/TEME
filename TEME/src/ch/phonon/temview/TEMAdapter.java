@@ -44,6 +44,8 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 	private int delta_x, delta_y;
 	private TemAdapterScaleTreatment temAdapterScaleTreatment;
 
+	private Point2D.Double actualMousePosition;
+
 	/**
 	 * This constructor registers the {@link TEMView} to this adapter (copy by
 	 * reference). The TEMView reference is than used in the {@link KeyListener}
@@ -89,6 +91,11 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 			this.temView.switchToNextEditMode();
 		}
 
+		if (!e.isShiftDown() && e.getKeyCode() == KeyEvent.VK_INSERT && 
+			this.temView.getTEMEditMode() == TEMEditType.SCALE) {
+				this.temView.addScale(this.temView.getPictureCoordinates(this.actualMousePosition));
+			}
+		
 	}
 
 	@Override
@@ -201,10 +208,8 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		// TODO: Inform TEMStatusPanel about actual cursor position and
-		// the actual position also calculated by setPoint in TEMView.
-		Point2D.Double point = new Point2D.Double(e.getX(), e.getY());
-		this.temView.fireCoordinatePropertyChange(point);
+		actualMousePosition = new Point2D.Double(e.getX(), e.getY());
+		this.temView.fireCoordinatePropertyChange(actualMousePosition);
 	}
 
 }

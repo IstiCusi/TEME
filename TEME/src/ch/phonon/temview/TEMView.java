@@ -597,4 +597,28 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 
 	}
 
+	/**
+	 * add a scale oriented horizontally around the position normally
+	 * associated with the mouse position.
+	 * 
+	 * The function is momentarily working only for one scale, that is 
+	 * new oriented when using this function.
+	 * 
+	 * @param actualMousePosition in picture coordinate
+	 */
+	public void addScale(Point2D.Double actualMousePosition) {
+		
+		int beginX = 	(int) actualMousePosition.getX()-200;
+		int endX =  	(int) actualMousePosition.getX()+ 200;
+		int yposition = (int) actualMousePosition.getY();
+		
+		
+		drawableScaleReference = new DrawableScaleReference(new StarPoint(beginX,
+				yposition), new StarPoint(endX, yposition));
+		
+		repaint();
+
+		
+	}
+
 }

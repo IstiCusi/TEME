@@ -23,6 +23,7 @@ import ch.phonon.drawables.Drawable;
 import ch.phonon.drawables.DrawableCoordinateSystem;
 import ch.phonon.drawables.DrawablePicture;
 import ch.phonon.drawables.DrawablePoint;
+import ch.phonon.drawables.DrawableScaleReference;
 import ch.phonon.drawables.Drawables;
 
 // TODO The TEMAllied component should also store the viewing state in 
@@ -40,9 +41,21 @@ import ch.phonon.drawables.Drawables;
  */
 public class TEMAllied {
 
+
+	/**
+	 * Get list of associated {@link DrawableScaleReference}s
+	 * @return reference to the list of {@link DrawableScaleReference}
+	 */
+	public ArrayList<DrawableScaleReference> getScaleReferencesList() {
+		return scaleReferencesList;
+	}
+
+	// TODO: Better to use interfaces and not classes as reference type
+	// see Effective Java Book ... in this case e.g. List 
 	private DrawablePicture drawableTEMPicture;
 	private ArrayList<Drawable> drawableList;
 	private ArrayList<DrawablePoint> pointsList;
+	private ArrayList<DrawableScaleReference> scaleReferencesList;
 	private String name;
 	private String information = "";
 	private ImageIcon icon;
@@ -75,15 +88,16 @@ public class TEMAllied {
 	public TEMAllied() {
 		this.drawableList = new ArrayList<Drawable>();
 		this.pointsList = new ArrayList<DrawablePoint>();
+		this.scaleReferencesList = new ArrayList<DrawableScaleReference>();
 		this.information = "No picture loaded";
 		this.name = "no name";
 	}
 
 	/**
 	 * 
-	 * Initializes an empty {@link TEMAllied} container, loads one picture
-	 * from the hard disk and extends the information string directly about the
-	 * file name by concatenation.
+	 * Initializes an empty {@link TEMAllied} container, loads one picture from
+	 * the hard disk and extends the information string directly about the file
+	 * name by concatenation.
 	 * 
 	 * @param fileName
 	 *            of the TEM picture to be loaded into the TEMAllied container
@@ -96,6 +110,7 @@ public class TEMAllied {
 
 		this.drawableList = new ArrayList<Drawable>();
 		this.pointsList = new ArrayList<DrawablePoint>();
+		this.scaleReferencesList = new ArrayList<DrawableScaleReference>();
 
 		// TODO: This is duplicate code... add a class to keep it similar to
 		// the empty TEMView.
@@ -276,7 +291,8 @@ public class TEMAllied {
 	/**
 	 * Get back the actual representative information associated with the TEM
 	 * picture.
-	 * @return information 
+	 * 
+	 * @return information
 	 */
 	public String getInformation() {
 		// TODO Auto-generated method stub
@@ -296,6 +312,17 @@ public class TEMAllied {
 	 */
 	public void setIcon(ImageIcon icon) {
 		this.icon = icon;
+	}
+
+	/**
+	 * Adds an additional {@link DrawableScaleReference} to the list of scales
+	 * associated with the TEM picture.
+	 * 
+	 * @param scale
+	 *            to be added to the associated list of reference scales
+	 */
+	public void addScale(DrawableScaleReference scale) {
+		this.scaleReferencesList.add(scale);
 	}
 
 }

@@ -37,9 +37,11 @@ public class TemAdapterScaleTreatment {
 	private boolean scaleLeftGripChosen = false;;
 	private StarPoint newGrabPositionInPicCoord;
 	private StarPoint newGripPosition;
-	private StarPoint actGrabPosRelativeToEnd;
-	private StarPoint origGrabPosRelativToEnd;
+	private StarPoint actGrabPosRelativeToGripInPicCoord;
+	private StarPoint origGrabPosRelativToGripInPicCoord;
 	private StarPoint rotCorrInPicCoord;
+	
+	private boolean scaleMiddleGripChosen = false;
 
 	@SuppressWarnings("unused")
 	private TemAdapterScaleTreatment() {
@@ -63,6 +65,31 @@ public class TemAdapterScaleTreatment {
 	}
 
 	/**
+	 * Treats the situation, where the middle grip of the scale is pressed:
+	 * picture coordinates or the grab position and the grip position is
+	 * calculated and a corrective difference calculated between the grip and
+	 * the grab position.
+	 * 
+	 * @param e
+	 */
+	public void treatMiddleGripPressed(MouseEvent e) {
+		System.out.println("scaleMiddleGripChosen");
+		this.scaleMiddleGripChosen  = true;
+		this.origGripPosInPicCoord = this.temView.getScaleReference().getCenterStarPoint();		
+		this.origGrabPosInPicCoord = new StarPoint(
+				this.temView.getPictureCoordinates(e.getX(), e.getY()));
+		this.corrInPicCoord = StarPoint.getDifference(
+				this.origGrabPosInPicCoord, this.origGripPosInPicCoord);
+		
+		origGrabPosRelativToGripInPicCoord = StarPoint.getDifference(
+				this.temView.getScaleReference().getCenterStarPoint(), 
+				this.origGrabPosInPicCoord);
+
+	}
+
+	
+	
+	/**
 	 * Treats the situation, where the right grip of the scale is pressed:
 	 * picture coordinates or the grab position and the grip position is
 	 * calculated and a corrective difference calculated between the grip and
@@ -78,6 +105,11 @@ public class TemAdapterScaleTreatment {
 				this.temView.getPictureCoordinates(e.getX(), e.getY()));
 		this.corrInPicCoord = StarPoint.getDifference(
 				this.origGrabPosInPicCoord, this.origGripPosInPicCoord);
+		
+		this.origGrabPosRelativToGripInPicCoord = StarPoint
+		.getDifference(this.temView.getScaleReference().getBegin(),
+				this.origGrabPosInPicCoord);
+
 	}
 
 	/**
@@ -97,6 +129,10 @@ public class TemAdapterScaleTreatment {
 				this.temView.getPictureCoordinates(e.getX(), e.getY()));
 		this.corrInPicCoord = StarPoint.getDifference(
 				this.origGrabPosInPicCoord, this.origGripPosInPicCoord);
+		
+		this.origGrabPosRelativToGripInPicCoord = StarPoint.getDifference(this.temView
+						.getScaleReference().getEnd(), this.origGrabPosInPicCoord);
+
 	}
 
 	/**
@@ -111,18 +147,35 @@ public class TemAdapterScaleTreatment {
 	 * @param e
 	 */
 	public void treatGripMovement(MouseEvent e) {
+		
+		if (this.scaleMiddleGripChosen == true) {
+			
+			//TODO: Change names ... somehow weird and not understandable.
+			
+			this.newGrabPositionInPicCoord.setPoint(this.temView
+					.getPictureCoordinates(e.getX(), e.getY()));
+			actGrabPosRelativeToGripInPicCoord = StarPoint.getDifference(this.temView
+					.getScaleReference().getCenterStarPoint(),
+					this.newGrabPositionInPicCoord);				
+			StarPoint shiftInPicCoord = StarPoint.getDifference(origGrabPosRelativToGripInPicCoord, actGrabPosRelativeToGripInPicCoord);
+			StarPoint newLeftGrip = StarPoint.getSum(this.temView.getScaleReference().getBegin(), shiftInPicCoord);
+			StarPoint newRightGrip = StarPoint.getSum(this.temView.getScaleReference().getEnd(), shiftInPicCoord);	
+			
+			this.temView.getScaleReference().setBegin(newLeftGrip);
+			this.temView.getScaleReference().setEnd(newRightGrip);
+			
+		}
+		
 		if (this.scaleLeftGripChosen == true) {
 
 			this.newGrabPositionInPicCoord.setPoint(this.temView
 					.getPictureCoordinates(e.getX(), e.getY()));
 
-			actGrabPosRelativeToEnd = StarPoint.getDifference(this.temView
+			actGrabPosRelativeToGripInPicCoord = StarPoint.getDifference(this.temView
 					.getScaleReference().getEnd(),
 					this.newGrabPositionInPicCoord);
-			origGrabPosRelativToEnd = StarPoint.getDifference(this.temView
-					.getScaleReference().getEnd(), this.origGrabPosInPicCoord);
 			double angle = StarPoint.getCounterClockWiseAngle(
-					origGrabPosRelativToEnd, actGrabPosRelativeToEnd);
+					origGrabPosRelativToGripInPicCoord, actGrabPosRelativeToGripInPicCoord);
 			rotCorrInPicCoord = StarPoint.createRotatedStarPoint(
 					this.corrInPicCoord, Math.toRadians(angle));
 			newGripPosition = StarPoint.getSum(newGrabPositionInPicCoord,
@@ -135,14 +188,11 @@ public class TemAdapterScaleTreatment {
 			this.newGrabPositionInPicCoord.setPoint(this.temView
 					.getPictureCoordinates(e.getX(), e.getY()));
 
-			actGrabPosRelativeToEnd = StarPoint.getDifference(this.temView
+			actGrabPosRelativeToGripInPicCoord = StarPoint.getDifference(this.temView
 					.getScaleReference().getBegin(),
 					this.newGrabPositionInPicCoord);
-			origGrabPosRelativToEnd = StarPoint
-					.getDifference(this.temView.getScaleReference().getBegin(),
-							this.origGrabPosInPicCoord);
 			double angle = StarPoint.getCounterClockWiseAngle(
-					origGrabPosRelativToEnd, actGrabPosRelativeToEnd);
+					origGrabPosRelativToGripInPicCoord, actGrabPosRelativeToGripInPicCoord);
 			rotCorrInPicCoord = StarPoint.createRotatedStarPoint(
 					this.corrInPicCoord, Math.toRadians(angle));
 			newGripPosition = StarPoint.getSum(newGrabPositionInPicCoord,
@@ -160,6 +210,7 @@ public class TemAdapterScaleTreatment {
 		System.out.println("Grip released");
 		this.scaleLeftGripChosen = false;
 		this.scaleRightGripChosen = false;
+		this.scaleMiddleGripChosen = false;
 		newGripPosition = new StarPoint();
 	}
 

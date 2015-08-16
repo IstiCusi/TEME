@@ -127,6 +127,10 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 
 		if (SwingUtilities.isLeftMouseButton(e)
 				&& this.temView.getTEMEditMode() == TEMEditType.SCALE) {
+			
+			if (this.temView.getScaleReference().middleGripContains(e.getX(),
+					e.getY()) == true)
+				this.temAdapterScaleTreatment.treatMiddleGripPressed(e);
 
 			if (this.temView.getScaleReference().leftGripContains(e.getX(),
 					e.getY()) == true)

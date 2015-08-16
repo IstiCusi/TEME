@@ -34,6 +34,38 @@ import ch.phonon.StarPoint;
  */
 public class DrawableScaleReference extends DrawableComposite {
 
+	/**
+	 *  Get the center point of the scale 
+	 * @return center point of the scale in picture coordinates
+	 */
+	public StarPoint getCenterStarPoint() {
+		return centerStarPoint;
+	}
+
+	static enum ActiveState {
+
+		ACTIVE {
+			@Override
+			Color getColor() {
+				return ACTIVE_COLOR;
+			}
+		},
+		INACTIVE {
+			@Override
+			Color getColor() {
+				return INACTIVE_COLOR;
+			}
+		};
+
+		abstract Color getColor();
+
+		public static final Color ACTIVE_COLOR = new Color(0x00F767);
+		public static final Color INACTIVE_COLOR = new Color(0x890ADF);
+
+	};
+
+	private ActiveState activeState;
+
 	double sizeOfGrip = 20.0; // TODO: put into properties file
 
 	private StarPoint begin;
@@ -42,10 +74,10 @@ public class DrawableScaleReference extends DrawableComposite {
 	private StarPoint relativeVector;
 	private StarPoint unitVector;
 	private double angle;
-	private double xMiddle;
-	private double yMiddle;
+	private double xCenter;
+	private double yCenter;
 
-	private StarPoint drawableMiddleStarPoint;
+	private StarPoint centerStarPoint;
 	private LocalOrientation localOrientationOuterBox;
 	private DrawableBox outerBox;
 	private StarPoint starPointLeftGrip;
@@ -61,13 +93,15 @@ public class DrawableScaleReference extends DrawableComposite {
 
 	/**
 	 * Constructs a {@link DrawableScaleReference} based on a begin point and
-	 * and end point.  
+	 * and end point.
 	 * 
 	 * @param begin
 	 * @param end
 	 */
 	public DrawableScaleReference(StarPoint begin, StarPoint end) {
 		super();
+
+		this.activeState = ActiveState.ACTIVE;
 
 		this.begin = begin;
 		this.end = end;
@@ -83,18 +117,18 @@ public class DrawableScaleReference extends DrawableComposite {
 		angle = StarPoint
 				.getOrientedAngle(new StarPoint(10, 0), relativeVector);
 
-		xMiddle = begin.getX() + relativeVector.getX() / 2.0;
-		yMiddle = begin.getY() + relativeVector.getY() / 2.0;
+		xCenter = begin.getX() + relativeVector.getX() / 2.0;
+		yCenter = begin.getY() + relativeVector.getY() / 2.0;
 
-		drawableMiddleStarPoint = new StarPoint(xMiddle, yMiddle);
+		centerStarPoint = new StarPoint(xCenter, yCenter);
 
 		localOrientationOuterBox = new LocalOrientation(
 				new Point2D.Double(0, 0), angle, 1.0);
 
-		outerBox = new DrawableBox(drawableMiddleStarPoint,
+		outerBox = new DrawableBox(centerStarPoint,
 				localOrientationOuterBox,
 				(int) (Math.round(distance) + 2 * sizeOfGrip), (int) sizeOfGrip);
-		outerBox.setColor(new Color(0x890ADF));
+		outerBox.setColor(ActiveState.ACTIVE_COLOR);
 
 		starPointLeftGrip = StarPoint.getDifference(
 				StarPoint.getScaledVector(unitVector, sizeOfGrip / 2), begin);
@@ -137,9 +171,11 @@ public class DrawableScaleReference extends DrawableComposite {
 	}
 
 	/**
-	 * Get the measured distance represented as {@link StarPoint} vector in 
+	 * Get the measured distance represented as {@link StarPoint} vector in
 	 * picture coordinate dimensions.
-	 * @return relative vector between the left (begin) and right end (end) of the scale.
+	 * 
+	 * @return relative vector between the left (begin) and right end (end) of
+	 *         the scale.
 	 */
 	public StarPoint getRelativeVector() {
 		return relativeVector;
@@ -160,15 +196,15 @@ public class DrawableScaleReference extends DrawableComposite {
 
 		/** Outer Box */
 
-		xMiddle = begin.getX() + relativeVector.getX() / 2.0;
-		yMiddle = begin.getY() + relativeVector.getY() / 2.0;
+		xCenter = begin.getX() + relativeVector.getX() / 2.0;
+		yCenter = begin.getY() + relativeVector.getY() / 2.0;
 
-		drawableMiddleStarPoint.setX(xMiddle);
-		drawableMiddleStarPoint.setY(yMiddle);
+		centerStarPoint.setX(xCenter);
+		centerStarPoint.setY(yCenter);
 
 		localOrientationOuterBox.setRotation(angle);
 
-		outerBox.setStarPoint(drawableMiddleStarPoint);
+		outerBox.setStarPoint(centerStarPoint);
 		outerBox.setLocalOrientationState(localOrientationOuterBox);
 		outerBox.setWidth((int) (Math.round(distance) + 2 * sizeOfGrip));
 		outerBox.setHeight((int) sizeOfGrip);
@@ -204,7 +240,8 @@ public class DrawableScaleReference extends DrawableComposite {
 	}
 
 	/**
-	 * Obtain reference of the begin point of the scale 
+	 * Obtain reference of the begin point of the scale
+	 * 
 	 * @return location in picture coordinates of the begin of the scale
 	 */
 	public StarPoint getBegin() {
@@ -212,7 +249,8 @@ public class DrawableScaleReference extends DrawableComposite {
 	}
 
 	/**
-	 * Obtain reference of the end point of the scale 
+	 * Obtain reference of the end point of the scale
+	 * 
 	 * @return location in picture coordinates of the end of the scale
 	 */
 	public StarPoint getEnd() {
@@ -221,6 +259,7 @@ public class DrawableScaleReference extends DrawableComposite {
 
 	/**
 	 * Set the begin of the scale by using a {@link StarPoint}
+	 * 
 	 * @param begin
 	 */
 	public void setBegin(StarPoint begin) {
@@ -229,7 +268,8 @@ public class DrawableScaleReference extends DrawableComposite {
 	}
 
 	/**
-	 * Set the end of  the scale  by using a {@link StarPoint}
+	 * Set the end of the scale by using a {@link StarPoint}
+	 * 
 	 * @param end
 	 */
 	public void setEnd(StarPoint end) {
@@ -239,8 +279,11 @@ public class DrawableScaleReference extends DrawableComposite {
 
 	/**
 	 * Set the begin of the scale by coordinates
-	 * @param x  x coordinate in picture space 
-	 * @param y  y coordinate in picture space 
+	 * 
+	 * @param x
+	 *            x coordinate in picture space
+	 * @param y
+	 *            y coordinate in picture space
 	 */
 	public void setBegin(int x, int y) {
 		this.begin.setX(x);
@@ -250,8 +293,11 @@ public class DrawableScaleReference extends DrawableComposite {
 
 	/**
 	 * Set the end of the scale by coordinates
-	 * @param x  x coordinate in picture space 
-	 * @param y  y coordinate in picture space 
+	 * 
+	 * @param x
+	 *            x coordinate in picture space
+	 * @param y
+	 *            y coordinate in picture space
 	 */
 	public void setEnd(int x, int y) {
 		this.end.setX(x);
@@ -260,12 +306,33 @@ public class DrawableScaleReference extends DrawableComposite {
 	}
 
 	/**
-	 * Check if the drawn right grip of the scale contains the 
-	 * point given by it's coordinates in the TEMView space
-	 * (coordinates of the mouse pointer)
+	 * Checks if the left to right grip gap (middleGrip) of the scale contains
+	 * the point given by it's coordinates in the TEMView space (coordinates of
+	 * the mouse pointer)
 	 * 
-	 * @param x x-coordinate in the TEMView (Mouse pointer)
-	 * @param y y-coordinate in the TEMView (Mouse pointer)
+	 * @param x
+	 *            x-coordinate in the TEMView (Mouse pointer)
+	 * @param y
+	 *            y-coordinate in the TEMView (Mouse pointer)
+	 * @return true, when the point is contained.
+	 */
+	public boolean middleGripContains(int x, int y) {
+
+		boolean gapContains = this.outerBox.contains(x, y)
+								&& !this.leftGripContains(x, y)
+								&& !this.rightGripContains(x, y);
+
+		return gapContains;
+	}
+
+	/**
+	 * Check if the drawn right grip of the scale contains the point given by
+	 * it's coordinates in the TEMView space (coordinates of the mouse pointer)
+	 * 
+	 * @param x
+	 *            x-coordinate in the TEMView (Mouse pointer)
+	 * @param y
+	 *            y-coordinate in the TEMView (Mouse pointer)
 	 * @return true, when the point is contained.
 	 */
 	public boolean rightGripContains(int x, int y) {
@@ -273,16 +340,37 @@ public class DrawableScaleReference extends DrawableComposite {
 	}
 
 	/**
-	 * Check if the drawn left grip of the scale contains the 
-	 * point given by it's coordinates in the TEMView space
-	 * (coordinates of the mouse pointer)
+	 * Check if the drawn left grip of the scale contains the point given by
+	 * it's coordinates in the TEMView space (coordinates of the mouse pointer)
 	 * 
-	 * @param x x-coordinate in the TEMView (Mouse pointer)
-	 * @param y y-coordinate in the TEMView (Mouse pointer)
+	 * @param x
+	 *            x-coordinate in the TEMView (Mouse pointer)
+	 * @param y
+	 *            y-coordinate in the TEMView (Mouse pointer)
 	 * @return true, when the point is contained.
 	 */
 	public boolean leftGripContains(int x, int y) {
 		return this.leftGrip.contains(x, y);
+	}
+
+	/**
+	 * Set the active state of the ScaleReference
+	 * 
+	 * @param state
+	 *            to set
+	 */
+	public void setActiveState(ActiveState state) {
+		this.activeState = state;
+		this.outerBox.setColor(state.getColor());
+	}
+
+	/**
+	 * returns the active state of the ScaleReference
+	 * 
+	 * @return active state
+	 */
+	public ActiveState getActiveState() {
+		return activeState;
 	}
 
 }

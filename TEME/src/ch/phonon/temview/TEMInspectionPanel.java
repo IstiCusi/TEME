@@ -179,6 +179,8 @@ public class TEMInspectionPanel extends JPanel {
 
 	}
 
+
+
 	/**
 	 * This function delegates the centerAll function from the {@link TEMView}. 
 	 * Because the {@link TEMView} constructors do not have completed information

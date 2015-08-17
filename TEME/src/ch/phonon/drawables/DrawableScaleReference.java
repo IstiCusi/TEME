@@ -35,21 +35,35 @@ import ch.phonon.StarPoint;
 public class DrawableScaleReference extends DrawableComposite {
 
 	/**
-	 *  Get the center point of the scale 
+	 * Get the center point of the scale
+	 * 
 	 * @return center point of the scale in picture coordinates
 	 */
 	public StarPoint getCenterStarPoint() {
 		return centerStarPoint;
 	}
 
-	static enum ActiveState {
+	/**
+	 * This enum lists the possible activity states of the scale.
+	 * When a scale is active it is visually highlighted. Active
+	 * scales can be addressed e.g. for deletion or modification.
+	 * @author phonon
+	 *
+	 */
+	public static enum ActiveState {
 
+		/**
+		 * highlighted when active
+		 */
 		ACTIVE {
 			@Override
 			Color getColor() {
 				return ACTIVE_COLOR;
 			}
 		},
+		/**
+		 * not highlighted when inactive
+		 */
 		INACTIVE {
 			@Override
 			Color getColor() {
@@ -59,8 +73,14 @@ public class DrawableScaleReference extends DrawableComposite {
 
 		abstract Color getColor();
 
-		public static final Color ACTIVE_COLOR = new Color(0x00F767);
-		public static final Color INACTIVE_COLOR = new Color(0x890ADF);
+		/**
+		 *  Active color choice for the outer box of the scale
+		 */
+		static final Color ACTIVE_COLOR = new Color(0x00F767);
+		/**
+		 *  Inactive color choice for the outer box of the scale 
+		 */
+		static final Color INACTIVE_COLOR = new Color(0x890ADF);
 
 	};
 
@@ -93,8 +113,9 @@ public class DrawableScaleReference extends DrawableComposite {
 
 	/**
 	 * Constructs a {@link DrawableScaleReference} based on a begin point and
-	 * and end point.
+	 * and end point. Any new constructed scale in active state. 
 	 * 
+	 * @see ActiveState
 	 * @param begin
 	 * @param end
 	 */
@@ -114,37 +135,29 @@ public class DrawableScaleReference extends DrawableComposite {
 		System.out.println(relativeVector);
 		System.out.println(unitVector);
 
-		angle = StarPoint
-				.getOrientedAngle(new StarPoint(10, 0), relativeVector);
+		angle = StarPoint.getOrientedAngle(new StarPoint(10, 0), relativeVector);
 
 		xCenter = begin.getX() + relativeVector.getX() / 2.0;
 		yCenter = begin.getY() + relativeVector.getY() / 2.0;
 
 		centerStarPoint = new StarPoint(xCenter, yCenter);
 
-		localOrientationOuterBox = new LocalOrientation(
-				new Point2D.Double(0, 0), angle, 1.0);
+		localOrientationOuterBox = new LocalOrientation(new Point2D.Double(0, 0), angle, 1.0);
 
-		outerBox = new DrawableBox(centerStarPoint,
-				localOrientationOuterBox,
+		outerBox = new DrawableBox(centerStarPoint, localOrientationOuterBox,
 				(int) (Math.round(distance) + 2 * sizeOfGrip), (int) sizeOfGrip);
 		outerBox.setColor(ActiveState.ACTIVE_COLOR);
 
-		starPointLeftGrip = StarPoint.getDifference(
-				StarPoint.getScaledVector(unitVector, sizeOfGrip / 2), begin);
-		localOrientationLeftGrip = new LocalOrientation(
-				new Point2D.Double(0, 0), angle, 1.0);
-		leftGrip = new DrawableBox(starPointLeftGrip, localOrientationLeftGrip,
-				(int) (sizeOfGrip), (int) (sizeOfGrip) - 4);
+		starPointLeftGrip = StarPoint.getDifference(StarPoint.getScaledVector(unitVector, sizeOfGrip / 2), begin);
+		localOrientationLeftGrip = new LocalOrientation(new Point2D.Double(0, 0), angle, 1.0);
+		leftGrip = new DrawableBox(starPointLeftGrip, localOrientationLeftGrip, (int) (sizeOfGrip),
+				(int) (sizeOfGrip) - 4);
 		leftGrip.setColor(new Color(0xFFEA00));
 		leftGrip.setFilled(true);
 
-		starPointRightGrip = StarPoint.getDifference(
-				StarPoint.getScaledVector(unitVector, -sizeOfGrip / 2), end);
-		localOrientationRightGrip = new LocalOrientation(new Point2D.Double(0,
-				0), angle, 1.0);
-		rightGrip = new DrawableBox(starPointRightGrip,
-				localOrientationRightGrip, (int) (sizeOfGrip),
+		starPointRightGrip = StarPoint.getDifference(StarPoint.getScaledVector(unitVector, -sizeOfGrip / 2), end);
+		localOrientationRightGrip = new LocalOrientation(new Point2D.Double(0, 0), angle, 1.0);
+		rightGrip = new DrawableBox(starPointRightGrip, localOrientationRightGrip, (int) (sizeOfGrip),
 				(int) (sizeOfGrip) - 4);
 		rightGrip.setColor(new Color(0xFFEA00));
 		rightGrip.setFilled(true);
@@ -191,8 +204,7 @@ public class DrawableScaleReference extends DrawableComposite {
 		this.relativeVector = StarPoint.getDifference(this.begin, this.end);
 		this.unitVector = StarPoint.getUnitVector(this.relativeVector);
 
-		angle = StarPoint
-				.getOrientedAngle(new StarPoint(10, 0), relativeVector);
+		angle = StarPoint.getOrientedAngle(new StarPoint(10, 0), relativeVector);
 
 		/** Outer Box */
 
@@ -211,8 +223,7 @@ public class DrawableScaleReference extends DrawableComposite {
 
 		/** Left Grip */
 
-		starPointLeftGrip = StarPoint.getDifference(
-				StarPoint.getScaledVector(unitVector, sizeOfGrip / 2), begin);
+		starPointLeftGrip = StarPoint.getDifference(StarPoint.getScaledVector(unitVector, sizeOfGrip / 2), begin);
 		localOrientationLeftGrip.setRotation(angle);
 
 		leftGrip.setStarPoint(starPointLeftGrip);
@@ -225,8 +236,7 @@ public class DrawableScaleReference extends DrawableComposite {
 
 		/** Right Grip */
 
-		starPointRightGrip = StarPoint.getDifference(
-				StarPoint.getScaledVector(unitVector, -sizeOfGrip / 2), end);
+		starPointRightGrip = StarPoint.getDifference(StarPoint.getScaledVector(unitVector, -sizeOfGrip / 2), end);
 		localOrientationRightGrip.setRotation(angle);
 
 		rightGrip.setStarPoint(starPointRightGrip);
@@ -318,9 +328,8 @@ public class DrawableScaleReference extends DrawableComposite {
 	 */
 	public boolean middleGripContains(int x, int y) {
 
-		boolean gapContains = this.outerBox.contains(x, y)
-								&& !this.leftGripContains(x, y)
-								&& !this.rightGripContains(x, y);
+		boolean gapContains = this.outerBox.contains(x, y) && !this.leftGripContains(x, y)
+				&& !this.rightGripContains(x, y);
 
 		return gapContains;
 	}

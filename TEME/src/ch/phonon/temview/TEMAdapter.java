@@ -23,6 +23,8 @@ import java.awt.geom.Point2D;
 
 import javax.swing.SwingUtilities;
 
+import ch.phonon.drawables.DrawableScaleReference;
+
 //enum KeyState {pressed, released};
 
 /**
@@ -38,6 +40,9 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 	// private KeyState ShiftkeyState;
 
 	private TEMView temView;
+//	private TEMAllied activeTemAllied;
+//	private Scales scales;
+	
 
 	private TEMViewState temBegin;
 	private int cursorBegin_x, cursorBegin_y;
@@ -45,6 +50,9 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 	private TemAdapterScaleTreatment temAdapterScaleTreatment;
 
 	private Point2D.Double actualMousePosition;
+	
+
+	
 
 	/**
 	 * This constructor registers the {@link TEMView} to this adapter (copy by
@@ -55,6 +63,9 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 	 */
 	public TEMAdapter(TEMView temView) {
 		this.temView = temView;
+//		this.activeTemAllied = this.temView.getTemAllied();
+//		this.scales = this.activeTemAllied.delegateScales();
+		
 		this.temBegin = new TEMViewState();
 		this.temAdapterScaleTreatment = new TemAdapterScaleTreatment(temView);
 	}
@@ -62,7 +73,7 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 	@Override
 	public void keyTyped(KeyEvent e) {
 
-		System.out.println("keyTyped: " + e.getExtendedKeyCode());
+		//System.out.println("keyTyped: " + e.getExtendedKeyCode());
 
 	}
 
@@ -93,7 +104,7 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 
 		if (!e.isShiftDown() && e.getKeyCode() == KeyEvent.VK_INSERT && 
 			this.temView.getTEMEditMode() == TEMEditType.SCALE) {
-				this.temView.addScale(this.temView.getPictureCoordinates(this.actualMousePosition));
+				this.temView.newScale(this.temView.getPictureCoordinates(this.actualMousePosition));
 			}
 		
 	}
@@ -128,14 +139,17 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 		if (SwingUtilities.isLeftMouseButton(e)
 				&& this.temView.getTEMEditMode() == TEMEditType.SCALE) {
 			
-			if (this.temView.getScaleReference().middleGripContains(e.getX(),
+			DrawableScaleReference chosenScale = 
+					this.temView.chooseScale(new Point2D.Double(e.getX(), e.getY()));
+			
+			if (chosenScale.middleGripContains(e.getX(),
 					e.getY()) == true)
 				this.temAdapterScaleTreatment.treatMiddleGripPressed(e);
 
-			if (this.temView.getScaleReference().leftGripContains(e.getX(),
+			if (chosenScale.leftGripContains(e.getX(),
 					e.getY()) == true)
 				this.temAdapterScaleTreatment.treatLeftGripPressed(e);
-			if (this.temView.getScaleReference().rightGripContains(e.getX(),
+			if (chosenScale.rightGripContains(e.getX(),
 					e.getY()) == true)
 				this.temAdapterScaleTreatment.treatRightGripPressed(e);
 		}
@@ -215,5 +229,6 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 		actualMousePosition = new Point2D.Double(e.getX(), e.getY());
 		this.temView.fireCoordinatePropertyChange(actualMousePosition);
 	}
+
 
 }

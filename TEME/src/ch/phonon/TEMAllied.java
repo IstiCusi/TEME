@@ -23,7 +23,6 @@ import ch.phonon.drawables.Drawable;
 import ch.phonon.drawables.DrawableCoordinateSystem;
 import ch.phonon.drawables.DrawablePicture;
 import ch.phonon.drawables.DrawablePoint;
-import ch.phonon.drawables.DrawableScaleReference;
 import ch.phonon.drawables.Drawables;
 
 // TODO The TEMAllied component should also store the viewing state in 
@@ -41,21 +40,13 @@ import ch.phonon.drawables.Drawables;
  */
 public class TEMAllied {
 
-
-	/**
-	 * Get list of associated {@link DrawableScaleReference}s
-	 * @return reference to the list of {@link DrawableScaleReference}
-	 */
-	public ArrayList<DrawableScaleReference> getScaleReferencesList() {
-		return scaleReferencesList;
-	}
-
 	// TODO: Better to use interfaces and not classes as reference type
-	// see Effective Java Book ... in this case e.g. List 
+	// see Effective Java Book ... in this case e.g. List
 	private DrawablePicture drawableTEMPicture;
 	private ArrayList<Drawable> drawableList;
 	private ArrayList<DrawablePoint> pointsList;
-	private ArrayList<DrawableScaleReference> scaleReferencesList;
+	private Scales scales;
+
 	private String name;
 	private String information = "";
 	private ImageIcon icon;
@@ -88,7 +79,7 @@ public class TEMAllied {
 	public TEMAllied() {
 		this.drawableList = new ArrayList<Drawable>();
 		this.pointsList = new ArrayList<DrawablePoint>();
-		this.scaleReferencesList = new ArrayList<DrawableScaleReference>();
+		this.scales = new Scales();
 		this.information = "No picture loaded";
 		this.name = "no name";
 	}
@@ -110,12 +101,11 @@ public class TEMAllied {
 
 		this.drawableList = new ArrayList<Drawable>();
 		this.pointsList = new ArrayList<DrawablePoint>();
-		this.scaleReferencesList = new ArrayList<DrawableScaleReference>();
+		this.scales = new Scales();
 
 		// TODO: This is duplicate code... add a class to keep it similar to
 		// the empty TEMView.
-		DrawableCoordinateSystem cS = new DrawableCoordinateSystem(
-				new StarPoint(), (double) 1000, (double) 1000);
+		DrawableCoordinateSystem cS = new DrawableCoordinateSystem(new StarPoint(), (double) 1000, (double) 1000);
 		addDrawable(cS);
 
 		loadTEMPicture(fileName);
@@ -131,21 +121,23 @@ public class TEMAllied {
 	 */
 	public TEMAllied(BufferedImage image, String fileName) {
 
+		// TODO We should use some this constructor chaining to avoid code
+		// repetition
+
 		this.name = fileName;
 		this.information = this.information + this.name + "\n";
-		generateIcon(image);
+		setIconByBufferedImage(image);
 
 		this.drawableList = new ArrayList<Drawable>();
 		this.pointsList = new ArrayList<DrawablePoint>();
+		this.scales = new Scales();
 
-		DrawableCoordinateSystem cS = new DrawableCoordinateSystem(
-				new StarPoint(), (double) 1000, (double) 1000);
+		DrawableCoordinateSystem cS = new DrawableCoordinateSystem(new StarPoint(), (double) 1000, (double) 1000);
 		addDrawable(cS);
 
 		LocalOrientation initialLocalOrientation = new LocalOrientation();
 		StarPoint initialStarpoint = new StarPoint(0, 0);
-		this.drawableTEMPicture = new DrawablePicture(initialStarpoint,
-				initialLocalOrientation, image);
+		this.drawableTEMPicture = new DrawablePicture(initialStarpoint, initialLocalOrientation, image);
 
 	}
 
@@ -159,7 +151,7 @@ public class TEMAllied {
 	 * 
 	 * @see this#loadTEMPicture(String)
 	 */
-	private void generateIcon(BufferedImage image) {
+	private void setIconByBufferedImage(BufferedImage image) {
 		int width = image.getWidth();
 		int height = image.getHeight();
 
@@ -169,9 +161,8 @@ public class TEMAllied {
 
 		double scalingFactor = 1;
 		scalingFactor = 100.0 / height;
-		this.setIcon(new ImageIcon(image.getScaledInstance(
-				(int) (width * scalingFactor), (int) (height * scalingFactor),
-				java.awt.Image.SCALE_SMOOTH)));
+		this.setIcon(new ImageIcon(image.getScaledInstance((int) (width * scalingFactor),
+				(int) (height * scalingFactor), java.awt.Image.SCALE_SMOOTH)));
 	}
 
 	/**
@@ -183,9 +174,8 @@ public class TEMAllied {
 	private void loadTEMPicture(String fileName) {
 		LocalOrientation initialLocalOrientation = new LocalOrientation();
 		StarPoint initialStarpoint = new StarPoint(0, 0);
-		this.drawableTEMPicture = new DrawablePicture(initialStarpoint,
-				initialLocalOrientation, fileName);
-		generateIcon(this.drawableTEMPicture.getBufferedImage());
+		this.drawableTEMPicture = new DrawablePicture(initialStarpoint, initialLocalOrientation, fileName);
+		setIconByBufferedImage(this.drawableTEMPicture.getBufferedImage());
 	}
 
 	/**
@@ -220,8 +210,7 @@ public class TEMAllied {
 		boolean success = false;
 
 		ArrayList<DrawablePoint> listOfPoints = getPointsList();
-		for (Iterator<DrawablePoint> iterator = listOfPoints.iterator(); iterator
-				.hasNext();) {
+		for (Iterator<DrawablePoint> iterator = listOfPoints.iterator(); iterator.hasNext();) {
 			DrawablePoint element = iterator.next();
 			if (element.contains(x, y)) {
 				iterator.remove();
@@ -314,15 +303,36 @@ public class TEMAllied {
 		this.icon = icon;
 	}
 
+	// /**
+	// * Adds an additional {@link DrawableScaleReference} to the list of scales
+	// * associated with the TEM picture.
+	// *
+	// * @param scale
+	// * to be added to the associated list of reference scales
+	// */
+	// public void addScale(DrawableScaleReference scale) {
+	// this.scales.add(scale);
+	// }
+
 	/**
-	 * Adds an additional {@link DrawableScaleReference} to the list of scales
-	 * associated with the TEM picture.
+	 * This function delegates the associated {@link Scales} object to the given
+	 * TEMAllied to the user for further usage.
 	 * 
-	 * @param scale
-	 *            to be added to the associated list of reference scales
+	 * @return final Scales object
 	 */
-	public void addScale(DrawableScaleReference scale) {
-		this.scaleReferencesList.add(scale);
+	public Scales delegateScales() {
+		return this.scales;
 	}
 
+	@Override
+	public String toString() {
+		
+		//TODO: Add addtional information also for points etc
+		
+		String information = 	"TEMAllied with name: " + this.name + "\n" +
+								"-------------------------------------------" +
+								"Number of scales: " + this.scales.size() + "\n" ;
+							
+		return information;
+	}
 }

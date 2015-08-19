@@ -143,32 +143,7 @@ public class DrawableBox extends AbstractDrawable {
 	@Override
 	public boolean contains(int x, int y) {
 
-	//	Rectangle2D rect = this.box.getBounds();
-
-		// System.out.println(
-		// "Container dimension:"+
-		// "MinX:"+rect.getMinX()+
-		// "MaxX:"+rect.getMaxX()+
-		// "MinY:"+rect.getMinY()+
-		// "MaxY:"+rect.getMaxY()+
-		// "X:"+x +
-		// "Y:"+y
-		// );
-
-	//	Shape container = this.locationTransform.createTransformedShape(this.box);
-
-	//	rect = container.getBounds();
-
-		// System.out.println(
-		// "Container dimension:"+
-		// "MinX:"+rect.getMinX()+
-		// "MaxX:"+rect.getMaxX()+
-		// "MinY:"+rect.getMinY()+
-		// "MaxY:"+rect.getMaxY()+
-		// "X:"+x +
-		// "Y:"+y
-		// );
-
 		return this.locationTransform.createTransformedShape(this.box).contains(x, y);
 	}
+	
 }

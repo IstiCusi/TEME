@@ -280,8 +280,6 @@ public class StarPoint extends PointInPictureBase {
 
 		double angle = Math.toDegrees(Math.atan2(determinant, dotProduct));
 		
-		System.out.println(angle);
-		
 		if (angle < 0 ) {
 			angle = 360.0 + angle;
 		}

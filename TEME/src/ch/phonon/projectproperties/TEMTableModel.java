@@ -81,7 +81,6 @@ public class TEMTableModel extends AbstractTableModel {
 		case 2:
 			BufferedImage image = ((TEMAllied) obj).getDrawableTEMPicture()
 					.getBufferedImage();
-			System.out.println(image);
 			int width = image.getWidth();
 			int height = image.getHeight();
 

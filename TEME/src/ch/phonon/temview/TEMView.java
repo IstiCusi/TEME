@@ -210,10 +210,8 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		// activeScaleReference.paint(g2D, this.viewPortTransform);
 
 		List<DrawableScaleReference> listOfScales = temAllied.delegateScales().getScaleReferencesList();
-		System.out.println(listOfScales.toString());
 
 		for (DrawableScaleReference scale : listOfScales) {
-			System.out.println(scale.toString());
 			scale.paint(g2D, this.viewPortTransform);
 		}
 
@@ -309,8 +307,8 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 
 		Point2D.Double pt = getPictureCoordinates(point);
 
-		System.out.println("new point with tem coordinates: " + point.getX() + " " + point.getY());
-		System.out.println("new point added with picture coordinates: " + pt.getX() + " " + pt.getY());
+//		System.out.println("new point with tem coordinates: " + point.getX() + " " + point.getY());
+//		System.out.println("new point added with picture coordinates: " + pt.getX() + " " + pt.getY());
 
 		StarPoint initialStarpoint = new StarPoint(pt.getX(), pt.getY()); // pic
 																			// coordinates
@@ -319,13 +317,11 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		DrawablePoint pPoint = new DrawablePoint(diamondStar, pt); // pic
 																	// coordinates
 
-		System.out.println(pPoint.getDrawable().toString());
-
 		this.temAllied.addPoint(pPoint); // pic coordinates
 		this.firePropertyChange("addPoint", null, pt);
 
 		new Thread(this.newPointSound).start();
-		System.out.println(ManagementFactory.getThreadMXBean().getThreadCount());
+		System.out.println("Sound Threads:" + ManagementFactory.getThreadMXBean().getThreadCount());
 
 		repaint();
 
@@ -341,14 +337,13 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 	 */
 	public void removePoint(int x, int y) {
 
-		System.out.println("Coordinates of point removed: x=" + x + " ,y= " + y);
 
 		// TODO Where is the transformation to picture coordinates happening ?!
 		// Not a good API ... needs to be checked
 
 		if (this.temAllied.removePoint(x, y) == true) {
 			new Thread(this.killPointSound).start();
-			System.out.println(ManagementFactory.getThreadMXBean().getThreadCount());
+			System.out.println("Sound Threads:" + ManagementFactory.getThreadMXBean().getThreadCount());
 			repaint();
 		}
 	}
@@ -405,7 +400,9 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		this.rose = new DrawablePicture(new StarPoint(), localOrienation, this.roseImage);
 
 		/** http://www.java-gaming.org/index.php?topic=2227.0 */
-		System.out.println(Toolkit.getDefaultToolkit().getMaximumCursorColors());
+		System.out.println("TEMView: This platform supports " 
+				+ Toolkit.getDefaultToolkit().getMaximumCursorColors()
+				+ " cursor colors");
 
 		/** Load the standard cursors used inside the temView */
 		this.temEditMode = new TEMEditMode();
@@ -454,7 +451,6 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 	public void propertyChange(PropertyChangeEvent evt) {
 
 		if (evt.getPropertyName().equals("temTableModelChange")) {
-			System.out.println("Property change");
 			this.temTableModel = (TEMTableModel) (evt.getNewValue());
 			this.temAllied = this.temTableModel.getLastItem();
 			setInformer(this.temAllied.getInformation());
@@ -532,7 +528,7 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 				setInformer(helper.getInformation());
 				this.temAllied = helper;
 				new Thread(this.pageturnSound).start();
-				System.out.println(ManagementFactory.getThreadMXBean().getThreadCount());
+				System.out.println("Sound Threads:" + ManagementFactory.getThreadMXBean().getThreadCount());
 				repaint();
 			}
 		} catch (Exception e) {
@@ -556,7 +552,7 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 				setInformer(helper.getInformation());
 				this.temAllied = helper;
 				new Thread(this.pageturnSound).start();
-				System.out.println(ManagementFactory.getThreadMXBean().getThreadCount());
+				System.out.println("Sound Threads:" + ManagementFactory.getThreadMXBean().getThreadCount());
 				repaint();
 			}
 		} catch (Exception e) {

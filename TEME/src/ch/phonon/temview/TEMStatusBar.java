@@ -90,8 +90,6 @@ public class TEMStatusBar extends JPanel implements PropertyChangeListener {
 				x.intValue(), y.intValue(), addedx.intValue(),
 						addedy.intValue());
 
-		// System.out.println(this.labelText);
-
 		this.statusLabel.setText(this.labelText);
 	}
 

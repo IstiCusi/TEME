@@ -142,8 +142,11 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 			DrawableScaleReference chosenScale = 
 					this.temView.chooseScale(new Point2D.Double(e.getX(), e.getY()));
 			
-			if (chosenScale.middleGripContains(e.getX(),
-					e.getY()) == true)
+			if (chosenScale !=null) {
+			
+			boolean isMiddleGripPressed = chosenScale.middleGripContains(e.getX(), e.getY());
+			
+			if (isMiddleGripPressed == true)
 				this.temAdapterScaleTreatment.treatMiddleGripPressed(e);
 
 			if (chosenScale.leftGripContains(e.getX(),
@@ -152,6 +155,8 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 			if (chosenScale.rightGripContains(e.getX(),
 					e.getY()) == true)
 				this.temAdapterScaleTreatment.treatRightGripPressed(e);
+			
+			}
 		}
 
 	}

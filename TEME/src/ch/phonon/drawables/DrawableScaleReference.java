@@ -132,9 +132,6 @@ public class DrawableScaleReference extends DrawableComposite {
 		relativeVector = StarPoint.getDifference(begin, end);
 		unitVector = StarPoint.getUnitVector(relativeVector);
 
-		System.out.println(relativeVector);
-		System.out.println(unitVector);
-
 		angle = StarPoint.getOrientedAngle(new StarPoint(10, 0), relativeVector);
 
 		xCenter = begin.getX() + relativeVector.getX() / 2.0;

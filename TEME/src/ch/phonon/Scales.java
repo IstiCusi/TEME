@@ -47,7 +47,7 @@ public class Scales {
 		union.addAll(this.inactiveScales);
 		union.addAll(this.activeScales);
 
-		System.out.println("Union: Number of total scales: " + union.size());
+		//System.out.println("Union: Number of total scales: " + union.size());
 
 		return union;
 	}
@@ -60,6 +60,7 @@ public class Scales {
 	public Scales() {
 		this.activeScales = new ArrayList<DrawableScaleReference>();
 		this.inactiveScales = new ArrayList<DrawableScaleReference>();
+		this.chosenScale = null;
 	}
 
 	// --------------------- Add and remove scales ----------------------------
@@ -90,10 +91,10 @@ public class Scales {
 		if (!success) {
 			throw new AssertionError("Could not add an addtional scale");
 		} else {
-			System.out.println("New scale added");
+			//System.out.println("New scale added");
 		}
 
-		System.out.println("NUmber of active scales: " + this.activeScales.size());
+		//System.out.println("NUmber of active scales: " + this.activeScales.size());
 
 	}
 

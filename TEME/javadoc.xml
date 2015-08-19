@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="javadoc">
+    <target name="javadoc">
+        <javadoc access="public" author="true" classpath="/home/phonon/Development/IDEs/eclipse45_64bit/plugins/org.hamcrest.core_1.3.0.v201303031735.jar:/home/phonon/Development/IDEs/eclipse45_64bit/plugins/org.junit_4.12.0.v201504281640/junit.jar:lib/JTattoo-1.6.11.jar" destdir="doc/javadoc" doctitle="TEME Complete API" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" packagenames="ch.phonon.projectproperties,ch.phonon.drawables,ch.phonon,ch.phonon.temview" source="1.7" sourcepath="unittests:src" splitindex="true" use="true" version="true"/>
+    </target>
+</project>

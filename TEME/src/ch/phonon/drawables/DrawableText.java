@@ -70,6 +70,7 @@ public class DrawableText extends AbstractDrawable {
 		FontRenderContext frc = new FontRenderContext(font.getTransform(),
 				true, true);
 		AttributedCharacterIterator aci = aString.getIterator();
+		//TODO: Eclipse claims, that there is a hidden null pointer exception happening ?!?!
 		TextLayout textLayout = new TextLayout(aci, frc);
 		Shape outLine = textLayout.getOutline(null);
 		this.height = outLine.getBounds2D().getHeight();

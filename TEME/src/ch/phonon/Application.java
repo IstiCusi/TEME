@@ -20,13 +20,18 @@
  * java -cp ./bin/:/home/phonon/Development/libraries/jtatto/JTattoo-1.6.11.jar ch.phonon.Application
  */
 
-//TODO: Introduce different point types (e.g. picture space point, temView space point)
-//TODO: Rewrite code based on this definitions.
-//TODO: Refactor code based on this new point definitions
+/*
+	TODO: Introduce different point types (e.g. picture space point, temView space point)
+	Rewrite code based on this definitions.
+	Do a code refactoring based on this new point definitions
+*/
 
-//TODO: Check for all drawables, if after dimension changes with setters
-//		you change as well the internal primitive types!!!! Very important
-// 		TODO. Do not forget to do this.
+/*
+	TODO: Check for all drawables, if after dimension changes with setters
+	you change as well the internal primitive types!!!! Very important
+ 	Do not forget to do this.
+*/
+
 
 package ch.phonon;
 
@@ -78,29 +83,28 @@ public class Application {
 
 		/** Define the Look and File - TODO: Define per system */
 
-		// UIManager.setLookAndFeel("com.jtattoo.plaf.aero.AeroLookAndFeel");
-
 		try {
 			UIManager.setLookAndFeel("com.jtattoo.plaf.hifi.HiFiLookAndFeel");
 			Properties props = new Properties();
-			props.put("logoString", "TEME");;
+			props.put("logoString", "TEME");
+			;
 			HiFiLookAndFeel.setCurrentTheme(props);
-		} catch (ClassNotFoundException | InstantiationException
-				| IllegalAccessException | UnsupportedLookAndFeelException e) {
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+				| UnsupportedLookAndFeelException e) {
 			// TODO Auto-generated catch block
-			
-			 try {
-			 UIManager.setLookAndFeel(
-			 UIManager.getSystemLookAndFeelClassName());
-			 } catch (Exception ex) {
-			 System.err.println("Exception: standard look and feel not found");
-			 e.printStackTrace();
-			 }
-			
+
+			try {
+				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			} catch (Exception ex) {
+				System.err.println("Exception: standard look and feel not found");
+				e.printStackTrace();
+			}
+
 			e.printStackTrace();
 		}
 
 		/** Invoke the Swing application on a separate thread */
+		
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {

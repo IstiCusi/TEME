@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.text.AttributedString;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -81,7 +80,7 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 	private TEMTableModel temTableModel;
 
 	/** The active temAllied container that keeps the tem picture, exif etc */
-	private TEMAllied temAllied;
+	private TEMAllied temAllied = null;
 	// private DrawableScaleReference activeScaleReference;
 
 	/** Adapter used for user interaction */
@@ -209,9 +208,11 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 
 		// activeScaleReference.paint(g2D, this.viewPortTransform);
 
-		List<DrawableScaleReference> listOfScales = temAllied.delegateScales().getScaleReferencesList();
-
-		for (DrawableScaleReference scale : listOfScales) {
+		//List<DrawableScaleReference> scales = temAllied.delegateScales().updateAndGetAllScales();
+		
+		Scales scalesToDraw = temAllied.delegateScales();
+		
+		for (DrawableScaleReference scale : scalesToDraw) {
 			scale.paint(g2D, this.viewPortTransform);
 		}
 

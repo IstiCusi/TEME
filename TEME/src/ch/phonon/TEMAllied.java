@@ -45,7 +45,7 @@ public class TEMAllied {
 	private DrawablePicture drawableTEMPicture;
 	private ArrayList<Drawable> drawableList;
 	private ArrayList<DrawablePoint> pointsList;
-	private Scales scales;
+	private Scales scales = null;
 
 	private String name;
 	private String information = "";

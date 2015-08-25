@@ -1,16 +1,25 @@
-/*************************************************************************
+/******************************************************************************
  * 
- *  WWW.PHONON.CH CONFIDENTIAL 
+ * WWW.PHONON.CH CONFIDENTIAL
  *
- *  2012 - 2020, Stephan Strauss, www.phonon.ch, Zurich, Switzerland
- *  All Rights Reserved.
+ * 2012 - 2020, Stephan Strauss, www.phonon.ch,
  * 
- *************************************************************************/
+ * Zurich, Switzerland All Rights Reserved.
+ * 
+ ******************************************************************************/
+
+/*
+ * TODO: Rewrite the Scales class not to update the union every time the
+ * Iterator is needed ... do it pro-actively at any changing event to raise
+ * performance. At the moment, I observe no performance hit. But this pattern
+ * could be similarly used for the points etc container.
+ */
 
 package ch.phonon;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import ch.phonon.drawables.Drawable;
@@ -28,29 +37,15 @@ import ch.phonon.temview.TEMView;
  * @author phonon
  *
  */
-public class Scales {
+public class Scales implements Iterable<DrawableScaleReference> {
 
 	private List<DrawableScaleReference> inactiveScales;
 	private List<DrawableScaleReference> activeScales;
-	private DrawableScaleReference chosenScale;
+	private List<DrawableScaleReference> union; // union of active and inactive
 
-	/**
-	 * Get list of associated {@link DrawableScaleReference}s
-	 * 
-	 * @return reference to the list of {@link DrawableScaleReference}
-	 */
-	public List<DrawableScaleReference> getScaleReferencesList() {
+	private DrawableScaleReference lastActivated; // chosen scale (the last
 
-		// TODO: Is it possible to construct something like a view,
-		// so that we do not need to construct a new object
-		List<DrawableScaleReference> union = new ArrayList<>();
-		union.addAll(this.inactiveScales);
-		union.addAll(this.activeScales);
-
-		//System.out.println("Union: Number of total scales: " + union.size());
-
-		return union;
-	}
+	// activated)
 
 	// --------------------- Constructors -------------------------------------
 
@@ -58,9 +53,25 @@ public class Scales {
 	 * Constructs the Scales value container.
 	 */
 	public Scales() {
+
 		this.activeScales = new ArrayList<DrawableScaleReference>();
 		this.inactiveScales = new ArrayList<DrawableScaleReference>();
-		this.chosenScale = null;
+		this.lastActivated = null;
+	}
+
+	/**
+	 * The Scales value class is an {@link Iterable}. That means, you can loop
+	 * with an foreach loop over all scales (the union of active and inactive
+	 * ones).
+	 * 
+	 * @return Iterator used by foreach loops over ALL Scales
+	 */
+	@Override
+	public Iterator<DrawableScaleReference> iterator() {
+
+		updateAndGetAllScales();
+		Iterator<DrawableScaleReference> unionIterator = this.union.iterator();
+		return unionIterator;
 	}
 
 	// --------------------- Add and remove scales ----------------------------
@@ -71,31 +82,27 @@ public class Scales {
 	 * therefore to be calculated by the
 	 * {@link TEMView#getPictureCoordinates(Point2D)} function). All actual
 	 * active scales are marked as inactive at this moment. The new scale is
-	 * oriented horizontally around the chosen position.
+	 * oriented horizontally around the chosen position. A general remark: The
+	 * scales can be categorized in active (selected) and inactive (unselected)
+	 * scales. The last activated scale is the chosen scale.
 	 * 
 	 * @param actualMousePosition
+	 *
 	 */
 	public void newScale(Point2D.Double actualMousePosition) {
+
+		moveAlltoInactive();
 
 		int beginX = (int) actualMousePosition.getX() - 200;
 		int endX = (int) actualMousePosition.getX() + 200;
 		int yposition = (int) actualMousePosition.getY();
 
-		moveAlltoInactive();
+		DrawableScaleReference newScale = new DrawableScaleReference(new StarPoint(beginX, yposition), new StarPoint(
+				endX, yposition));
 
-		DrawableScaleReference newScale = new DrawableScaleReference(new StarPoint(beginX, yposition),
-				new StarPoint(endX, yposition));
-
-		boolean success = this.activeScales.add(newScale);
-
-		if (!success) {
-			throw new AssertionError("Could not add an addtional scale");
-		} else {
-			//System.out.println("New scale added");
+		if (!this.activeScales.add(newScale)) {
+			throw new AssertionError("Could not add an additional scale");
 		}
-
-		//System.out.println("NUmber of active scales: " + this.activeScales.size());
-
 	}
 
 	/**
@@ -114,7 +121,6 @@ public class Scales {
 		DrawableScaleReference scale = findFirstScaleThatContains(actualMousePosition);
 
 		if (scale != null) {
-
 			moveAlltoInactive();
 			this.inactiveScales.remove(scale);
 			scale.setActiveState(ActiveState.ACTIVE);
@@ -127,16 +133,46 @@ public class Scales {
 		}
 	}
 
+	/**
+	 * After chosing a scale by mouse pointer (see this
+	 * {@link #chooseScale(java.awt.geom.Point2D.Double)} the chosen state is
+	 * changed. This function allows to get a reference to the chosen scale.
+	 * 
+	 * @return chosen scale reference
+	 */
+	public DrawableScaleReference getChosenScale() {
+		return this.lastActivated;
+	}
+
 	// -------------------- helper functions ----------------------------------
 
-	private void setChosenScale(DrawableScaleReference scale) {
-		this.chosenScale = scale;
+	private List<DrawableScaleReference> updateAndGetAllScales() {
+
+		List<DrawableScaleReference> union = unifyScales();
+		this.setUnion(union);
+		return union;
+	}
+
+	private void setUnion(List<DrawableScaleReference> union) {
+		this.union = union;
 
 	}
 
-	/**
-	 * Move all stored scales into inactive mode
-	 */
+	private List<DrawableScaleReference> unifyScales() {
+
+		// TODO: Is is possible to construct something like a view,
+		// so that we do not need to construct a new object
+		List<DrawableScaleReference> union = new ArrayList<>();
+		union.addAll(this.inactiveScales);
+		union.addAll(this.activeScales);
+		return union;
+	}
+
+	private void setChosenScale(DrawableScaleReference scale) {
+		this.lastActivated = scale;
+
+	}
+
 	private void moveAlltoInactive() {
 		for (DrawableScaleReference drawableScaleReference : activeScales) {
 			drawableScaleReference.setActiveState(ActiveState.INACTIVE);
@@ -155,7 +191,7 @@ public class Scales {
 	 *            {@link Drawable#contains(int, int)} check.
 	 * @return the first selected Scale
 	 */
-	public DrawableScaleReference findFirstScaleThatContains(Point2D.Double actualMousePosition) {
+	private DrawableScaleReference findFirstScaleThatContains(Point2D.Double actualMousePosition) {
 
 		for (DrawableScaleReference drawableScaleReference : activeScales) {
 			if (drawableScaleReference.contains((int) actualMousePosition.getX(), (int) actualMousePosition.getY()))
@@ -166,17 +202,6 @@ public class Scales {
 				return drawableScaleReference;
 		}
 		return null; // no scale was found at the provided position
-	}
-
-	/**
-	 * After chosing a scale by mouse pointer (see this
-	 * {@link #chooseScale(java.awt.geom.Point2D.Double)} the chosen state is
-	 * changed. This function allows to get a reference to the chosen scale.
-	 * 
-	 * @return chosen scale reference
-	 */
-	public DrawableScaleReference getChosenScale() {
-		return this.chosenScale;
 	}
 
 	/**

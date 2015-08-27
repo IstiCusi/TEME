@@ -1,13 +1,13 @@
-/*************************************************************************
+/*******************************************************************************
  * 
- *  WWW.PHONON.CH CONFIDENTIAL 
+ * WWW.PHONON.CH CONFIDENTIAL
  *
- *  2012 - 2020, Stephan Strauss, www.phonon.ch, Zurich, Switzerland
- *  All Rights Reserved.
+ * 2012 - 2020, Stephan Strauss, www.phonon.ch, Zurich, Switzerland All Rights
+ * Reserved.
  * 
- *************************************************************************/
+ ******************************************************************************/
 
-//TODO Add functionality, that a chosen TEM picture in the table is chosen
+// TODO Add functionality, that a chosen TEM picture in the table is chosen
 // in the TEMView as well.
 
 package ch.phonon.projectproperties;
@@ -16,9 +16,13 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.MouseAdapter;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeListener;
 import java.io.File;
@@ -35,6 +39,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
 import ch.phonon.ResourceLoader;
@@ -51,13 +56,13 @@ import ch.phonon.temview.TEMView;
  * listed (as representative small pictures together with properties as the e.g.
  * the dimension of the loaded picture). The bottom panel, where all the user
  * can modify the list of loaded items in adding, removing, copying items and
- * clearing all. The class is an {@link ActionListener}, that reacts itself on 
- * button clicks. 
+ * clearing all. The class is an {@link ActionListener}, that reacts itself on
+ * button clicks.
  * 
  * @author phonon
  * 
  */
-public class ProjectPropertiesPanel extends JPanel implements ActionListener {
+public class ProjectPropertiesPanel extends JPanel implements ActionListener, FocusListener {
 
 	private static final long serialVersionUID = 1L;
 	private JButton openButton;
@@ -78,8 +83,8 @@ public class ProjectPropertiesPanel extends JPanel implements ActionListener {
 
 	/**
 	 * This constructor initializes the {@link JTextField}s to contain 20
-	 * characters. The center table is the instance of an anonymous class, that 
-	 * refers to the {@link TEMTableModel}. 
+	 * characters. The center table is the instance of an anonymous class, that
+	 * refers to the {@link TEMTableModel}.
 	 */
 	public ProjectPropertiesPanel() {
 
@@ -120,6 +125,7 @@ public class ProjectPropertiesPanel extends JPanel implements ActionListener {
 		this.temTableModel = new TEMTableModel();
 
 		this.temTable = new JTable(this.temTableModel) {
+
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -128,10 +134,12 @@ public class ProjectPropertiesPanel extends JPanel implements ActionListener {
 			}
 
 			@Override
-			public Component prepareRenderer(TableCellRenderer renderer,
-					int row, int column) {
+			public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
 
 				Component table = super.prepareRenderer(renderer, row, column);
+
+				//table.setForeground(new Color(0x50, 0x50, 0x50));
+
 				if (row % 2 == 0) {
 					table.setBackground(Color.WHITE);
 				} else {
@@ -140,6 +148,7 @@ public class ProjectPropertiesPanel extends JPanel implements ActionListener {
 
 				if (isCellSelected(row, column)) {
 					table.setBackground(Color.GREEN);
+
 				}
 				return table;
 			}
@@ -151,6 +160,32 @@ public class ProjectPropertiesPanel extends JPanel implements ActionListener {
 			}
 
 		};
+
+		this.temTable.addMouseListener(new MouseAdapter() {
+
+			public void mouseClicked(java.awt.event.MouseEvent evt) {
+				int row = temTable.rowAtPoint(evt.getPoint());
+				// int col = temTable.columnAtPoint(evt.getPoint());
+				temTableModel.setActiveItemByIndex(row + 1);
+				firePropertyChange("newSelectionInTable", null, temTableModel);
+			}
+
+		});
+
+		int fontSize =Integer.valueOf(ResourceLoader.getResource("TEMTable_FontSize"));
+		this.temTable.setFont(new Font("Arial", Font.BOLD, fontSize));
+		
+		Color fontColor = new Color(Integer.parseInt(
+				ResourceLoader.getResource("TEMViewSwitch_Color").substring(2),
+				16));
+			
+		this.temTable.setForeground(fontColor);
+
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+		for (int i = 1; i < this.temTable.getColumnModel().getColumnCount(); i++) {
+			this.temTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+		}
 
 		temTable.setFillsViewportHeight(true);
 		temTable.setRowHeight(100);
@@ -167,12 +202,10 @@ public class ProjectPropertiesPanel extends JPanel implements ActionListener {
 		openButton.addActionListener(this);
 
 		temFileChooser = new JFileChooser();
-		temFileChooser.addChoosableFileFilter(new FileNameExtensionFilter(
-				"Images", "jpg", "png", "gif", "bmp"));
+		temFileChooser.addChoosableFileFilter(new FileNameExtensionFilter("Images", "jpg", "png", "gif", "bmp"));
 		temFileChooser.setAcceptAllFileFilterUsed(false);
 		temFileChooser.setMultiSelectionEnabled(true);
-		temFileChooser.setCurrentDirectory(new File(ResourceLoader.getResource(
-				"PictureFolder").toString()));
+		temFileChooser.setCurrentDirectory(new File(ResourceLoader.getResource("PictureFolder").toString()));
 
 		url = ResourceLoader.getUrl("pics/Remove16.gif");
 		removeButton = new JButton("Remove TEM picture(s) ...", new ImageIcon(url));
@@ -205,6 +238,7 @@ public class ProjectPropertiesPanel extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+
 		if (e.getSource() == openButton) {
 			int returnVal = temFileChooser.showOpenDialog(this);
 
@@ -216,14 +250,11 @@ public class ProjectPropertiesPanel extends JPanel implements ActionListener {
 					try {
 						this.image = ImageIO.read(temFile);
 						if (this.image != null) {
-							this.temAllied = new TEMAllied(image,
-									temFile.getName());
+							this.temAllied = new TEMAllied(image, temFile.getName());
 							this.temTableModel.add(this.temAllied);
 							this.temTableModel.fireTableDataChanged();
-							firePropertyChange("temTableModelChange", null,
-									this.temTableModel);
-							System.out.println("Opening: " + temFile.getName()
-									+ ".");
+							firePropertyChange("temTableModelChange", null, this.temTableModel);
+							System.out.println("Opening: " + temFile.getName() + ".");
 						}
 
 					} catch (IOException ex) {
@@ -255,10 +286,9 @@ public class ProjectPropertiesPanel extends JPanel implements ActionListener {
 	 *            to register
 	 */
 	public void registerTEMView(TEMView temView) {
-		this.addPropertyChangeListener("temAlliedChange",
-				(PropertyChangeListener) temView);
-		this.addPropertyChangeListener("temTableModelChange",
-				(PropertyChangeListener) temView);
+		this.addPropertyChangeListener("temAlliedChange", (PropertyChangeListener) temView);
+		this.addPropertyChangeListener("temTableModelChange", (PropertyChangeListener) temView);
+		this.addPropertyChangeListener("newSelectionInTable", (PropertyChangeListener) temView);
 	}
 
 	@SuppressWarnings("unused")
@@ -268,16 +298,27 @@ public class ProjectPropertiesPanel extends JPanel implements ActionListener {
 				int rowHeight = temTable.getRowHeight();
 
 				for (int column = 0; column < temTable.getColumnCount(); column++) {
-					Component comp = temTable.prepareRenderer(
-							temTable.getCellRenderer(row, column), row, column);
-					rowHeight = Math.max(rowHeight,
-							comp.getPreferredSize().height);
+					Component comp = temTable.prepareRenderer(temTable.getCellRenderer(row, column), row, column);
+					rowHeight = Math.max(rowHeight, comp.getPreferredSize().height);
 				}
 
 				temTable.setRowHeight(row, rowHeight);
 			}
 		} catch (ClassCastException e) {
 		}
+	}
+
+	@Override
+	public void focusGained(FocusEvent e) {
+		// TODO: Maybe this is too defensive and expensive and should be done 
+		// somewhere else to update the table, before it can be seen in chosing this panel
+		this.temTableModel.fireTableDataChanged();
+	}
+
+	@Override
+	public void focusLost(FocusEvent e) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

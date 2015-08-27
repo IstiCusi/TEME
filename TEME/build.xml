@@ -3,31 +3,32 @@
               Any modifications will be overwritten.
               To include a user specific buildfile here, simply create one in the same
               directory with the processing instruction <?eclipse.ant.import?>
-              as the first entry and export the buildfile again. --><project basedir="." default="build" name="TEME_CleanUp">
+              as the first entry and export the buildfile again. --><project basedir="." default="build" name="TEME">
     <property environment="env"/>
-    <property name="ECLIPSE_HOME" value="../../eclipse37_64bit"/>
-    <property name="junit.output.dir" value="junit"/>
+    <property name="ECLIPSE_HOME" value="../../../../IDEs/eclipse45_64bit"/>
     <property name="debuglevel" value="source,lines,vars"/>
     <property name="target" value="1.7"/>
     <property name="source" value="1.7"/>
     <path id="JUnit 4.libraryclasspath">
-        <pathelement location="${ECLIPSE_HOME}/plugins/org.junit_4.8.2.v4_8_2_v20110321-1705/junit.jar"/>
-        <pathelement location="${ECLIPSE_HOME}/plugins/org.hamcrest.core_1.1.0.v20090501071000.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.junit_4.12.0.v201504281640/junit.jar"/>
+        <pathelement location="${ECLIPSE_HOME}/plugins/org.hamcrest.core_1.3.0.v201303031735.jar"/>
     </path>
-    <path id="TEME_CleanUp.classpath">
+    <path id="TEME.classpath">
         <pathelement location="bin"/>
+        <pathelement location="lib/JTattoo-1.6.11.jar"/>
         <path refid="JUnit 4.libraryclasspath"/>
-        <pathelement location="../../libraries/jtatto/JTattoo-1.6.11.jar"/>
     </path>
     <target name="init">
         <mkdir dir="bin"/>
         <copy includeemptydirs="false" todir="bin">
             <fileset dir="src">
+                <exclude name="**/*.launch"/>
                 <exclude name="**/*.java"/>
             </fileset>
         </copy>
         <copy includeemptydirs="false" todir="bin">
             <fileset dir="unittests">
+                <exclude name="**/*.launch"/>
                 <exclude name="**/*.java"/>
             </fileset>
         </copy>
@@ -40,13 +41,10 @@
     <target name="build-subprojects"/>
     <target depends="init" name="build-project">
         <echo message="${ant.project.name}: ${ant.file}"/>
-        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" source="${source}" target="${target}">
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
             <src path="src"/>
-            <classpath refid="TEME_CleanUp.classpath"/>
-        </javac>
-        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" source="${source}" target="${target}">
             <src path="unittests"/>
-            <classpath refid="TEME_CleanUp.classpath"/>
+            <classpath refid="TEME.classpath"/>
         </javac>
     </target>
     <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
@@ -63,67 +61,9 @@
         <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
         <antcall target="build"/>
     </target>
-    <target name="StarPointTest">
-        <mkdir dir="${junit.output.dir}"/>
-        <junit fork="yes" printsummary="withOutAndErr">
-            <formatter type="xml"/>
-            <test name="ch.phonon.StarPointTest" todir="${junit.output.dir}"/>
-            <classpath refid="TEME_CleanUp.classpath"/>
-        </junit>
-    </target>
-    <target name="DrawablePropertiesTest">
-        <mkdir dir="${junit.output.dir}"/>
-        <junit fork="yes" printsummary="withOutAndErr">
-            <formatter type="xml"/>
-            <test name="ch.phonon.drawables.DrawablePropertiesTest" todir="${junit.output.dir}"/>
-            <classpath refid="TEME_CleanUp.classpath"/>
-        </junit>
-    </target>
-    <target name="AllTests">
-        <mkdir dir="${junit.output.dir}"/>
-        <junit fork="yes" printsummary="withOutAndErr">
-            <formatter type="xml"/>
-            <test name="ch.phonon.AllTests" todir="${junit.output.dir}"/>
-            <classpath refid="TEME_CleanUp.classpath"/>
-        </junit>
-    </target>
-    <target name="TEMViewStateTest">
-        <mkdir dir="${junit.output.dir}"/>
-        <junit fork="yes" printsummary="withOutAndErr">
-            <formatter type="xml"/>
-            <test name="ch.phonon.temview.TEMViewStateTest" todir="${junit.output.dir}"/>
-            <classpath refid="TEME_CleanUp.classpath"/>
-        </junit>
-    </target>
-    <target name="teme">
+    <target name="TEME Repo">
         <java classname="ch.phonon.Application" failonerror="true" fork="yes">
-            <classpath refid="TEME_CleanUp.classpath"/>
+            <classpath refid="TEME.classpath"/>
         </java>
-    </target>
-    <target name="unittests (1)">
-        <mkdir dir="${junit.output.dir}"/>
-        <junit fork="yes" printsummary="withOutAndErr">
-            <formatter type="xml"/>
-            <test name="ch.phonon.StarPointTest" todir="${junit.output.dir}"/>
-            <test name="ch.phonon.drawables.DrawablePropertiesTest" todir="${junit.output.dir}"/>
-            <test name="ch.phonon.temview.TEMViewStateTest" todir="${junit.output.dir}"/>
-            <classpath refid="TEME_CleanUp.classpath"/>
-        </junit>
-    </target>
-    <target name="ch.phonon">
-        <mkdir dir="${junit.output.dir}"/>
-        <junit fork="yes" printsummary="withOutAndErr">
-            <formatter type="xml"/>
-            <test name="ch.phonon.StarPointTest" todir="${junit.output.dir}"/>
-            <classpath refid="TEME_CleanUp.classpath"/>
-        </junit>
-    </target>
-    <target name="junitreport">
-        <junitreport todir="${junit.output.dir}">
-            <fileset dir="${junit.output.dir}">
-                <include name="TEST-*.xml"/>
-            </fileset>
-            <report format="frames" todir="${junit.output.dir}"/>
-        </junitreport>
     </target>
 </project>

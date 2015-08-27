@@ -83,6 +83,8 @@ public class MainFrame extends JFrame {
 
 		tabbedPane.addTab("Project Properties", this.projectPropPanel);
 		tabbedPane.addTab("TEM Inspection", this.temInspectionPanel);
+		
+		tabbedPane.addFocusListener(this.projectPropPanel);
 
 		add(tabbedPane);
 

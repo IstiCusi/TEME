@@ -1,13 +1,13 @@
-/*************************************************************************
+/******************************************************************************
  * 
- *  WWW.PHONON.CH CONFIDENTIAL 
+ * WWW.PHONON.CH CONFIDENTIAL
  *
- *  2012 - 2020, Stephan Strauss, www.phonon.ch, Zurich, Switzerland
- *  All Rights Reserved.
+ * 2012 - 2020, Stephan Strauss, www.phonon.ch, Zurich, Switzerland All Rights
+ * Reserved.
  * 
- *************************************************************************/
+ ******************************************************************************/
 
-//TODO Check if members are all initialized (icon e.g.) and make this more
+// TODO Check if members are all initialized (icon e.g.) and make this more
 // robust -- no unidentified state should be possible. Write unit tests.
 
 package ch.phonon;
@@ -25,9 +25,9 @@ import ch.phonon.drawables.DrawablePicture;
 import ch.phonon.drawables.DrawablePoint;
 import ch.phonon.drawables.Drawables;
 
-// TODO The TEMAllied component should also store the viewing state in 
+// TODO The TEMAllied component should also store the viewing state in
 // the TEMView so that when the user changes to the old view of another
-// picture can go on working from his old settings 
+// picture can go on working from his old settings
 
 /**
  * 
@@ -326,13 +326,12 @@ public class TEMAllied {
 
 	@Override
 	public String toString() {
-		
-		//TODO: Add addtional information also for points etc
-		
-		String information = 	"TEMAllied with name: " + this.name + "\n" +
-								"-------------------------------------------" +
-								"Number of scales: " + this.scales.size() + "\n" ;
-							
+
+		// TODO: Add addtional information also for points etc
+
+		String information = "TEMAllied with name: " + this.name + "\n" + "-------------------------------------------"
+				+ "Number of scales: " + this.scales.size() + "\n";
+
 		return information;
 	}
 }

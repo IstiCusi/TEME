@@ -1,16 +1,16 @@
 /*************************************************************************
  * 
- *  WWW.PHONON.CH CONFIDENTIAL 
+ * WWW.PHONON.CH CONFIDENTIAL
  *
- *  2012 - 2020, Stephan Strauss, www.phonon.ch, Zurich, Switzerland
- *  All Rights Reserved.
+ * 2012 - 2020, Stephan Strauss, www.phonon.ch, Zurich, Switzerland All Rights
+ * Reserved.
  * 
  *************************************************************************/
 
-//TODO Add functionality, that a chosen TEM picture in the table is chosen
+// TODO Add functionality, that a chosen TEM picture in the table is chosen
 // in the TEMView as well.
-//TODO Add functionality to remove all TEMAllieds
-//TODO Add functionality to remove a certain marked list of TEMAllieds
+// TODO Add functionality to remove all TEMAllieds
+// TODO Add functionality to remove a certain marked list of TEMAllieds
 
 package ch.phonon.projectproperties;
 
@@ -62,7 +62,7 @@ public class TEMTableModel extends AbstractTableModel {
 	@Override
 	public int getColumnCount() {
 		// TODO Auto-generated method stub
-		return 4;
+		return 5;
 	}
 
 	@Override
@@ -79,18 +79,21 @@ public class TEMTableModel extends AbstractTableModel {
 			value = ((TEMAllied) obj).getFileName();
 			break;
 		case 2:
-			BufferedImage image = ((TEMAllied) obj).getDrawableTEMPicture()
-					.getBufferedImage();
+			BufferedImage image = ((TEMAllied) obj).getDrawableTEMPicture().getBufferedImage();
 			int width = image.getWidth();
 			int height = image.getHeight();
 
 			value = width + " x " + height + " Pixels";
 			break;
 		case 3:
-			value = "col4";
+			value = ((TEMAllied) obj).delegateScales().size();
+			break;
+		case 4:
+			value = ((TEMAllied) obj).getPointsList().size();
 			break;
 
 		}
+
 		return value;
 	}
 
@@ -110,10 +113,13 @@ public class TEMTableModel extends AbstractTableModel {
 			value = "Size";
 			break;
 		case 3:
-			value = "Number of associated polygons";
+			value = "Number of associated scales";
 			break;
-
+		case 4:
+			value = "Number of points added";
+			break;
 		}
+
 		return value;
 	}
 
@@ -133,6 +139,32 @@ public class TEMTableModel extends AbstractTableModel {
 	// ------------------------ Inspection ------------------------------------
 
 	/**
+	 * Give back the active temAllied 
+	 * @return active temAllied
+	 */
+	public TEMAllied getActiveItem() {
+		return this.listOfTEMAllied.get(this.activeTemAllied - 1);
+	}
+	
+	/**
+	 * Set the active temAllied by index and get back the corresponding active
+	 * temAllied value.
+	 * 
+	 * @param index
+	 *            of the loaded temAllied in the table 
+	 * @throws IndexOutOfBoundsException
+	 * @return chosen and activated temAllied
+	 */
+	public TEMAllied setActiveItemByIndex(int index) {
+		if (index > this.countOfTemAllieds || index < 1) {
+			throw new IndexOutOfBoundsException();
+		}
+		//System.out.println("Active Index");
+		this.activeTemAllied = index;
+		return this.listOfTEMAllied.get(this.activeTemAllied - 1);
+	}
+
+	/**
 	 * Get the next TEMAllied item relative to the active one in the list
 	 * 
 	 * @return next {@link TEMAllied}
@@ -146,8 +178,7 @@ public class TEMTableModel extends AbstractTableModel {
 			return null;
 
 		this.activeTemAllied = this.activeTemAllied + 1;
-		if (this.countOfTemAllieds > 0
-				&& this.activeTemAllied > this.countOfTemAllieds) {
+		if (this.countOfTemAllieds > 0 && this.activeTemAllied > this.countOfTemAllieds) {
 			this.activeTemAllied = 1;
 		}
 
@@ -185,7 +216,6 @@ public class TEMTableModel extends AbstractTableModel {
 			return null;
 		return this.listOfTEMAllied.get(this.countOfTemAllieds - 1);
 	}
-
 
 	/**
 	 * Get the first TEMAllied item in the list

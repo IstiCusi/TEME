@@ -180,10 +180,10 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		Drawable temPicture = this.temAllied.getDrawableTEMPicture();
 
 		/** Handle the situation, when no temPicture is present */
-		if (temPicture == null) {
-			System.out.println("No tem picture loaded");
-		} else {
+		if (temPicture != null) {
 			temPicture.paint(g2D, viewPortTransform);
+		} else {
+			//TODO: Decice what you would like to do in case of no tem picture.
 		}
 
 		/** Obtain all drawables and points from the active temAllied */
@@ -451,9 +451,15 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 
+		if(evt.getPropertyName().equals("newSelectionInTable")) {
+			System.out.println("ich hab dich gehoert");
+			this.temAllied = this.temTableModel.getActiveItem();
+		}
+		
 		if (evt.getPropertyName().equals("temTableModelChange")) {
 			this.temTableModel = (TEMTableModel) (evt.getNewValue());
-			this.temAllied = this.temTableModel.getLastItem();
+			//this.temAllied = this.temTableModel.getLastItem();
+			this.temAllied = this.temTableModel.getActiveItem();
 			setInformer(this.temAllied.getInformation());
 			repaint();
 		}

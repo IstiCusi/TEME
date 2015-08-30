@@ -452,13 +452,11 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 	public void propertyChange(PropertyChangeEvent evt) {
 
 		if(evt.getPropertyName().equals("newSelectionInTable")) {
-			System.out.println("ich hab dich gehoert");
 			this.temAllied = this.temTableModel.getActiveItem();
 		}
 		
 		if (evt.getPropertyName().equals("temTableModelChange")) {
 			this.temTableModel = (TEMTableModel) (evt.getNewValue());
-			//this.temAllied = this.temTableModel.getLastItem();
 			this.temAllied = this.temTableModel.getActiveItem();
 			setInformer(this.temAllied.getInformation());
 			repaint();

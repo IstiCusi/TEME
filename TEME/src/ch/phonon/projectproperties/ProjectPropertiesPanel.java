@@ -40,7 +40,6 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableCellRenderer;
 
 import ch.phonon.ResourceLoader;
 import ch.phonon.Sound;
@@ -79,7 +78,7 @@ public class ProjectPropertiesPanel extends JPanel implements ActionListener, Fo
 	private JButton copyButton;
 	private JPanel middlePanel;
 	private JPanel bottomPanel;
-	private JTable temTable;
+	private TemTable temTable;
 
 	/**
 	 * This constructor initializes the {@link JTextField}s to contain 20
@@ -117,80 +116,15 @@ public class ProjectPropertiesPanel extends JPanel implements ActionListener, Fo
 		upperPanel.add(technologyLabel);
 		upperPanel.add(technology);
 
-		// ------------------- Center table ------------------------------------
+		// ------------------------- Center table ------------------------------
+
+		this.temTableModel = new TEMTableModel();
+		this.temTable = new TemTable(this.temTableModel);
+		this.temTable.configureTable();
 
 		middlePanel = new JPanel();
 		middlePanel.setLayout(new BorderLayout());
-
-		this.temTableModel = new TEMTableModel();
-
-		this.temTable = new JTable(this.temTableModel) {
-
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public boolean isCellEditable(int datas, int columns) {
-				return false;
-			}
-
-			@Override
-			public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
-
-				Component table = super.prepareRenderer(renderer, row, column);
-
-				//table.setForeground(new Color(0x50, 0x50, 0x50));
-
-				if (row % 2 == 0) {
-					table.setBackground(Color.WHITE);
-				} else {
-					table.setBackground(Color.LIGHT_GRAY);
-				}
-
-				if (isCellSelected(row, column)) {
-					table.setBackground(Color.GREEN);
-
-				}
-				return table;
-			}
-
-			@Override
-			public Class<?> getColumnClass(int column) {
-				// TODO Auto-generated method stub
-				return getValueAt(0, column).getClass();
-			}
-
-		};
-
-		this.temTable.addMouseListener(new MouseAdapter() {
-
-			public void mouseClicked(java.awt.event.MouseEvent evt) {
-				int row = temTable.rowAtPoint(evt.getPoint());
-				// int col = temTable.columnAtPoint(evt.getPoint());
-				temTableModel.setActiveItemByIndex(row + 1);
-				firePropertyChange("newSelectionInTable", null, temTableModel);
-			}
-
-		});
-
-		int fontSize =Integer.valueOf(ResourceLoader.getResource("TEMTable_FontSize"));
-		this.temTable.setFont(new Font("Arial", Font.BOLD, fontSize));
-		
-		Color fontColor = new Color(Integer.parseInt(
-				ResourceLoader.getResource("TEMViewSwitch_Color").substring(2),
-				16));
-			
-		this.temTable.setForeground(fontColor);
-
-		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-		for (int i = 1; i < this.temTable.getColumnModel().getColumnCount(); i++) {
-			this.temTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-		}
-
-		temTable.setFillsViewportHeight(true);
-		temTable.setRowHeight(100);
-
-		JScrollPane scrollPane = new JScrollPane(temTable);
+		JScrollPane scrollPane = new JScrollPane(this.temTable);
 		middlePanel.add(scrollPane, BorderLayout.CENTER);
 
 		// ------------------------- bottom panel-------------------------------
@@ -288,7 +222,7 @@ public class ProjectPropertiesPanel extends JPanel implements ActionListener, Fo
 	public void registerTEMView(TEMView temView) {
 		this.addPropertyChangeListener("temAlliedChange", (PropertyChangeListener) temView);
 		this.addPropertyChangeListener("temTableModelChange", (PropertyChangeListener) temView);
-		this.addPropertyChangeListener("newSelectionInTable", (PropertyChangeListener) temView);
+		this.temTable.registerTEMView(temView);
 	}
 
 	@SuppressWarnings("unused")
@@ -310,8 +244,9 @@ public class ProjectPropertiesPanel extends JPanel implements ActionListener, Fo
 
 	@Override
 	public void focusGained(FocusEvent e) {
-		// TODO: Maybe this is too defensive and expensive and should be done 
-		// somewhere else to update the table, before it can be seen in chosing this panel
+		// TODO: Maybe this is too defensive and expensive and should be done
+		// somewhere else to update the table, before it can be seen in chosing
+		// this panel
 		this.temTableModel.fireTableDataChanged();
 	}
 

@@ -102,7 +102,7 @@ public class DrawableLine extends AbstractDrawable {
 
 	@Override
 	public boolean contains(int x, int y) {
-		// TODO Auto-generated method stub
+		// A line never contains ... 
 		return false;
 	}
 }

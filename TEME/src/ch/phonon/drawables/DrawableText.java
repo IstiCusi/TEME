@@ -113,7 +113,7 @@ public class DrawableText extends AbstractDrawable {
 
 	@Override
 	public boolean contains(int x, int y) {
-		// TODO Auto-generated method stub
+		// A text never contains ...
 		return false;
 	}
 

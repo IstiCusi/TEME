@@ -1,11 +1,11 @@
-/*************************************************************************
+/*******************************************************************************
  * 
- *  WWW.PHONON.CH CONFIDENTIAL 
+ * WWW.PHONON.CH CONFIDENTIAL
  *
- *  2012 - 2020, Stephan Strauss, www.phonon.ch, Zurich, Switzerland
- *  All Rights Reserved.
+ * 2012 - 2020, Stephan Strauss, www.phonon.ch, Zurich, Switzerland All Rights
+ * Reserved.
  * 
- *************************************************************************/
+ *******************************************************************************/
 
 package ch.phonon;
 
@@ -15,7 +15,7 @@ import ch.phonon.temview.TEMViewState;
 /**
  * {@link Drawable} items can have some invariant behavior concerning the
  * {@link TEMViewState}. E.g you would like to keep the same size of points
- * added to the view. These enum takes care about that. 
+ * added to the view. These enum takes care about that.
  * 
  * @author phonon
  *

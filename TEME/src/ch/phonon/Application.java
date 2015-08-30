@@ -1,37 +1,36 @@
-/*************************************************************************
+/*******************************************************************************
  * 
- *  WWW.PHONON.CH CONFIDENTIAL 
+ * WWW.PHONON.CH CONFIDENTIAL
  *
- *  2012 - 2020, Stephan Strauss, www.phonon.ch, Zurich, Switzerland
- *  All Rights Reserved.
+ * 2012 - 2020, Stephan Strauss, www.phonon.ch, Zurich, Switzerland All Rights
+ * Reserved.
  * 
- *  Start the program from the command line e.g. like:
+ * Start the program from the command line e.g. like:
  * 
- *  /usr/lib/jvm/java-7-oracle/bin/java 
- * 	-classpath /home/phonon/Development/workspace37/TEME_CleanUp/bin 
- * 	ch.phonon.Application
+ * /usr/lib/jvm/java-7-oracle/bin/java -classpath
+ * /home/phonon/Development/workspace37/TEME_CleanUp/bin ch.phonon.Application
  * 
- *************************************************************************/
+ ******************************************************************************/
 
-/* 
- * Compile from the command line: 
- * javac -d bin -classpath "/home/phonon/Development/libraries/jtatto/JTattoo-1.6.11.jar:./src:./bin" -sourcepath src/ src/ch/phonon/*.java
- * Start from the command line 
- * java -cp ./bin/:/home/phonon/Development/libraries/jtatto/JTattoo-1.6.11.jar ch.phonon.Application
+/*
+ * Compile from the command line: javac -d bin -classpath
+ * "/home/phonon/Development/libraries/jtatto/JTattoo-1.6.11.jar:./src:./bin"
+ * -sourcepath src/ src/ch/phonon/*.java Start from the command line java -cp
+ * ./bin/:/home/phonon/Development/libraries/jtatto/JTattoo-1.6.11.jar
+ * ch.phonon.Application
  */
 
 /*
-	TODO: Introduce different point types (e.g. picture space point, temView space point)
-	Rewrite code based on this definitions.
-	Do a code refactoring based on this new point definitions
-*/
+ * TODO: Introduce different point types (e.g. picture space point, temView
+ * space point) Rewrite code based on this definitions. Do a code refactoring
+ * based on this new point definitions
+ */
 
 /*
-	TODO: Check for all drawables, if after dimension changes with setters
-	you change as well the internal primitive types!!!! Very important
- 	Do not forget to do this.
-*/
-
+ * TODO: Check for all drawables, if after dimension changes with setters you
+ * change as well the internal primitive types!!!! Very important Do not forget
+ * to do this.
+ */
 
 package ch.phonon;
 
@@ -89,14 +88,17 @@ public class Application {
 			props.put("logoString", "TEME");
 			;
 			HiFiLookAndFeel.setCurrentTheme(props);
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+		} catch (ClassNotFoundException | InstantiationException
+				| IllegalAccessException
 				| UnsupportedLookAndFeelException e) {
 			// TODO Auto-generated catch block
 
 			try {
-				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+				UIManager.setLookAndFeel(UIManager
+						.getSystemLookAndFeelClassName());
 			} catch (Exception ex) {
-				System.err.println("Exception: standard look and feel not found");
+				System.err
+						.println("Exception: standard look and feel not found");
 				e.printStackTrace();
 			}
 
@@ -104,8 +106,9 @@ public class Application {
 		}
 
 		/** Invoke the Swing application on a separate thread */
-		
+
 		SwingUtilities.invokeLater(new Runnable() {
+
 			@Override
 			public void run() {
 
@@ -115,6 +118,7 @@ public class Application {
 
 		/** Always say good bye */
 		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+
 			@Override
 			public void run() {
 				System.out.println(ResourceLoader.getResource("Window_SayBye"));

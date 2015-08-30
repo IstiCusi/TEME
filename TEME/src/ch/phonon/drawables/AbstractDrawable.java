@@ -177,7 +177,7 @@ public abstract class AbstractDrawable implements Drawable, Positionable {
 				drawableOrientationState.getLocalX().getY());
 
 		double rotationCorrection = 0.0;
-		if (getInvariantRotation() == true) {
+		if ( getInvariantRotation() ) {
 			rotationCorrection = temViewState.rotation;
 		}
 
@@ -191,7 +191,7 @@ public abstract class AbstractDrawable implements Drawable, Positionable {
 		double localScalingX = localScaling;
 		double localScalingY = localScaling;
 
-		if (getInvariantScaling() == true
+		if ( getInvariantScaling() 
 				&& this.invariantScalingType == InvariantScalingType.BOTH) {
 
 			viewScaling = temViewState.scaling;
@@ -199,7 +199,7 @@ public abstract class AbstractDrawable implements Drawable, Positionable {
 			localScalingY = localScaling / viewScaling;
 		}
 
-		if (getInvariantScaling() == true
+		if ( getInvariantScaling() 
 				&& this.invariantScalingType == InvariantScalingType.FIXEDX) {
 
 			viewScaling = temViewState.scaling;
@@ -207,7 +207,7 @@ public abstract class AbstractDrawable implements Drawable, Positionable {
 			localScalingY = localScaling;
 		}
 
-		if (getInvariantScaling() == true
+		if ( getInvariantScaling() 
 				&& this.invariantScalingType == InvariantScalingType.FIXEDY) {
 
 			viewScaling = temViewState.scaling;

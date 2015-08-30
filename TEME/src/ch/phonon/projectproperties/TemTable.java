@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * 
+ * WWW.PHONON.CH CONFIDENTIAL
+ *
+ * 2012 - 2020, Stephan Strauss, www.phonon.ch, Zurich, Switzerland All Rights
+ * Reserved.
+ * 
+ ******************************************************************************/
+
 package ch.phonon.projectproperties;
 
 import java.awt.Color;
@@ -49,7 +58,8 @@ public final class TemTable extends JTable {
 	}
 
 	@Override
-	public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+	public Component prepareRenderer(TableCellRenderer renderer, int row,
+			int column) {
 
 		Component table = super.prepareRenderer(renderer, row, column);
 
@@ -83,22 +93,27 @@ public final class TemTable extends JTable {
 				int row = rowAtPoint(evt.getPoint());
 				// int col = temTable.columnAtPoint(evt.getPoint());
 				self.temTableModel.setActiveItemByIndex(row + 1);
-				firePropertyChange("newSelectionInTable", null, self.temTableModel);
+				firePropertyChange("newSelectionInTable", null,
+						self.temTableModel);
 				new Thread(new Sound(SoundType.TICK)).start();
 			}
 
 		});
 
-		int fontSize = Integer.valueOf(ResourceLoader.getResource("TEMTable_FontSize"));
+		int fontSize = Integer.valueOf(ResourceLoader
+				.getResource("TEMTable_FontSize"));
 		setFont(new Font("Arial", Font.BOLD, fontSize));
 
 		Color fontColor = new Color(
-				Integer.parseInt(ResourceLoader.getResource("TEMViewSwitch_Color").substring(2), 16));
+				Integer.parseInt(
+						ResourceLoader.getResource("TEMViewSwitch_Color")
+								.substring(2), 16));
 
 		setForeground(fontColor);
 
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+
 		for (int i = 1; i < getColumnModel().getColumnCount(); i++) {
 			getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
 		}
@@ -109,15 +124,15 @@ public final class TemTable extends JTable {
 	}
 
 	/**
-	 * Registers the TEMView as listener to property changes
-	 * The following events are delivered to the registered 
-	 * {@link TEMView}: 
+	 * Registers the TEMView as listener to property changes The following
+	 * events are delivered to the registered {@link TEMView}:
 	 * 
 	 * 
 	 * @param temView
 	 */
 	public void registerTEMView(TEMView temView) {
-		this.addPropertyChangeListener("newSelectionInTable", (PropertyChangeListener) temView);
+		this.addPropertyChangeListener("newSelectionInTable",
+				(PropertyChangeListener) temView);
 
 	}
 

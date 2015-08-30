@@ -1,11 +1,11 @@
-/*************************************************************************
+/*******************************************************************************
  * 
  * WWW.PHONON.CH CONFIDENTIAL
  *
  * 2012 - 2020, Stephan Strauss, www.phonon.ch, Zurich, Switzerland All Rights
  * Reserved.
  * 
- *************************************************************************/
+ ******************************************************************************/
 
 // TODO Add functionality, that a chosen TEM picture in the table is chosen
 // in the TEMView as well.

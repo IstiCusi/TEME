@@ -113,7 +113,7 @@ public class DrawableBox extends AbstractDrawable {
 		graphicsContext.setColor(this.color);
 		graphicsContext.setStroke(new BasicStroke(2.0f));
 		Shape rotatedBox = locationTransform.createTransformedShape(this.box);
-		if (this.getFilled() == true) {
+		if ( this.isFilled() ) {
 			graphicsContext.fill(rotatedBox);
 		}
 		graphicsContext.draw(rotatedBox);
@@ -125,7 +125,7 @@ public class DrawableBox extends AbstractDrawable {
 	 * 
 	 * @return filling status of the {@link Drawable}
 	 */
-	public boolean getFilled() {
+	public boolean isFilled() {
 		// TODO Auto-generated method stub
 		return this.filled;
 	}

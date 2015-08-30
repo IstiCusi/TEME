@@ -1,11 +1,11 @@
-/*************************************************************************
+/*******************************************************************************
  * 
- *  WWW.PHONON.CH CONFIDENTIAL 
+ * WWW.PHONON.CH CONFIDENTIAL
  *
- *  2012 - 2020, Stephan Strauss, www.phonon.ch, Zurich, Switzerland
- *  All Rights Reserved.
+ * 2012 - 2020, Stephan Strauss, www.phonon.ch, Zurich, Switzerland All Rights
+ * Reserved.
  * 
- *************************************************************************/
+ ******************************************************************************/
 
 package ch.phonon.temview;
 
@@ -29,8 +29,8 @@ import ch.phonon.ResourceLoader;
  */
 public class TEMEditMode {
 
-	private EnumMap<TEMEditType, Cursor> cursors = new EnumMap<TEMEditType, Cursor>(
-			TEMEditType.class);
+	private EnumMap<TEMEditType, Cursor> cursors =
+			new EnumMap<TEMEditType, Cursor>(TEMEditType.class);
 	private TEMEditType activeType;
 
 	TEMEditMode() {
@@ -101,7 +101,7 @@ public class TEMEditMode {
 	 * Get mouse pointer {@link Cursor} associated with the active
 	 * {@link TEMEditType}
 	 * 
-	 * @return active cursor 
+	 * @return active cursor
 	 * 
 	 */
 	public Cursor getActiveCursor() {

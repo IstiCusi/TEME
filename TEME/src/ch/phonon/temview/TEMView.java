@@ -117,6 +117,7 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 
 		/** Add an empty TEMAllied -- The empty screen of the TEMView */
 		temAllied = new TEMAllied();
+		//temAllied = temTableModel.getActiveItem(); // TODO: Make static ?
 
 		/** Add Listeners to TEMView */
 		this.adapter = new TEMAdapter(this);
@@ -165,7 +166,7 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		g2D.setRenderingHints(rh);
 
 		/**
-		 * Initialization of the initialTransformation to Identidy (No
+		 * Initialization of the initialTransformation to Identify (No
 		 * Transform)
 		 */
 		this.initial = g2D.getTransform();
@@ -183,7 +184,7 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		if (temPicture != null) {
 			temPicture.paint(g2D, viewPortTransform);
 		} else {
-			//TODO: Decice what you would like to do in case of no tem picture.
+			//TODO: Decide what you would like to do in case of no tem picture.
 		}
 
 		/** Obtain all drawables and points from the active temAllied */
@@ -391,7 +392,7 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		try {
 			this.roseImage = ResourceLoader.getBufferedImage("rose.png");
 		} catch (IOException ex) {
-			System.out.println("Exception: The rose placed can not be loaded");
+			System.out.println("Exception: The rose can not be loaded");
 			System.exit(0);
 		}
 

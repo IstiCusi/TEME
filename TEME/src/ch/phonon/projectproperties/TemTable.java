@@ -14,9 +14,13 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.beans.PropertyChangeListener;
+import java.util.TreeSet;
 
 import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
@@ -39,6 +43,16 @@ public final class TemTable extends JTable {
 	private TemTable self = this;
 	private static final long serialVersionUID = 1L;
 	private TEMTableModel temTableModel;
+	private TreeSet<Integer> setOfSelectedRows = new TreeSet<>();
+
+	/**
+	 * Get the indices set of selected rows in the TemTable.
+	 * 
+	 * @return set of selected indices
+	 */
+	public TreeSet<Integer> getSetOfSelectedRows() {
+		return setOfSelectedRows;
+	}
 
 	/**
 	 * This constructor builds the complete table with all his features.
@@ -83,7 +97,9 @@ public final class TemTable extends JTable {
 	}
 
 	/**
-	 * 
+	 * This public method summarizes a very specific implementation 
+	 * of this class. This is done for simplicity at the moment
+	 * and should later be brought in a much better design. 
 	 */
 	public void configureTable() {
 
@@ -92,10 +108,12 @@ public final class TemTable extends JTable {
 			public void mouseClicked(java.awt.event.MouseEvent evt) {
 				int row = rowAtPoint(evt.getPoint());
 				// int col = temTable.columnAtPoint(evt.getPoint());
-				self.temTableModel.setActiveItemByIndex(row + 1);
-				firePropertyChange("newSelectionInTable", null,
-						self.temTableModel);
-				new Thread(new Sound(SoundType.TICK)).start();
+				if (row >= 0) {
+					self.temTableModel.setActiveItemByIndex(row + 1);
+					firePropertyChange("newSelectionInTable", null,
+							self.temTableModel);
+					new Thread(new Sound(SoundType.TICK)).start();
+				}
 			}
 
 		});
@@ -120,6 +138,31 @@ public final class TemTable extends JTable {
 
 		setFillsViewportHeight(true);
 		setRowHeight(100);
+
+		ListSelectionModel selectionModel = this.getSelectionModel();
+
+		selectionModel.addListSelectionListener(new ListSelectionListener() {
+
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+
+				// TODO For some reason ... any state change of
+				// selection leads to two times running this method.
+
+				ListSelectionModel lsm = (ListSelectionModel) e.getSource();
+
+				setOfSelectedRows.clear();
+
+				int minIndex = lsm.getMinSelectionIndex();
+				int maxIndex = lsm.getMaxSelectionIndex();
+				for (int i = minIndex; i <= maxIndex; i++) {
+					if (lsm.isSelectedIndex(i)) {
+						setOfSelectedRows.add(i);
+					}
+				}
+				// System.out.println(setOfSelectedRows.toString());
+			}
+		});
 
 	}
 

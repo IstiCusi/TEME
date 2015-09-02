@@ -14,15 +14,24 @@
 
 package ch.phonon.projectproperties;
 
+import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.TreeSet;
 
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
+import ch.phonon.LocalOrientation;
+import ch.phonon.ResourceLoader;
+import ch.phonon.StarPoint;
 import ch.phonon.TEMAllied;
+import ch.phonon.drawables.DrawableCoordinateSystem;
+import ch.phonon.drawables.DrawablePicture;
 
 /**
  * The class logically spans a table, that gives an overview about the loaded
@@ -39,17 +48,37 @@ public class TEMTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 1L;
 	List<TEMAllied> listOfTEMAllied;
+	TEMAllied standardAllied = new TEMAllied();
 
 	private int countOfTemAllieds = 0;
 	private int activeTemAllied = 0;
 
 	/**
 	 * Once the {@link TEMTableModel} is created the list of {@link TEMAllied}s
-	 * is initialized.
+	 * is initialized. A standard TEMAllied is created to be exposed to the
+	 * user, when no TEM pictures had been loaded.
 	 */
 	public TEMTableModel() {
 		super();
 		this.listOfTEMAllied = new ArrayList<TEMAllied>();
+
+		BufferedImage logo = null;
+
+		/** Load the TEME Logo into the standarAllied */
+		try {
+			logo = ResourceLoader.getBufferedImage("logo.png");
+		} catch (IOException ex) {
+			System.out.println("Exception: The logo cannot be loaded");
+			System.exit(0);
+		}
+		DrawablePicture temLogo = new DrawablePicture(new StarPoint(),
+				new LocalOrientation(), logo);
+		this.standardAllied.addDrawable(temLogo);
+
+		DrawableCoordinateSystem cS = new DrawableCoordinateSystem(
+				new StarPoint(), (double) 1000, (double) 1000);
+		this.standardAllied.addDrawable(cS);
+
 	}
 
 	// -------------------- Overridden methods from TableModel ----------------
@@ -79,7 +108,8 @@ public class TEMTableModel extends AbstractTableModel {
 			value = ((TEMAllied) obj).getFileName();
 			break;
 		case 2:
-			BufferedImage image = ((TEMAllied) obj).getDrawableTEMPicture().getBufferedImage();
+			BufferedImage image = ((TEMAllied) obj).getDrawableTEMPicture()
+					.getBufferedImage();
 			int width = image.getWidth();
 			int height = image.getHeight();
 
@@ -126,6 +156,26 @@ public class TEMTableModel extends AbstractTableModel {
 	// ------------------------ Data manipulation -----------------------------
 
 	/**
+	 * This function allows to remove items based on the indices stored in the
+	 * {@link TreeSet} the reflect the chosen items in the TemTable.
+	 * 
+	 * @param setOfIndicesToRemove
+	 *            indices of the items to remove
+	 */
+	public void removeTEMAllieds(TreeSet<Integer> setOfIndicesToRemove) {
+
+		this.countOfTemAllieds =
+				this.countOfTemAllieds - setOfIndicesToRemove.size();
+
+		for (int i : setOfIndicesToRemove.descendingSet()) {
+			this.listOfTEMAllied.remove(i);
+		}
+
+		this.activeTemAllied = this.listOfTEMAllied.size();
+
+	}
+
+	/**
 	 * Allows to add a new {@link TEMAllied} to the end of the list
 	 * 
 	 * @param temAllied
@@ -139,19 +189,38 @@ public class TEMTableModel extends AbstractTableModel {
 	// ------------------------ Inspection ------------------------------------
 
 	/**
-	 * Give back the active temAllied 
+	 * Give back the active temAllied
+	 * 
 	 * @return active temAllied
 	 */
 	public TEMAllied getActiveItem() {
+
+		// TODO: We need here to better model ... let us
+		// check if this is a reasonable way to treat
+		// the case of no TEMAllied existing.
+		// The best would be to have always a dummy
+		// already initialized maybe with a typical
+		// background image ... than we also do not
+		// need to construct a new one. Empty is also
+		// a state of the model and should be treated correctly.
+		System.out.println("Hallo");
+
+		System.out.println(this.activeTemAllied);
+
+		if (this.activeTemAllied == 0) {
+
+			return this.standardAllied;
+		}
+
 		return this.listOfTEMAllied.get(this.activeTemAllied - 1);
 	}
-	
+
 	/**
 	 * Set the active temAllied by index and get back the corresponding active
 	 * temAllied value.
 	 * 
 	 * @param index
-	 *            of the loaded temAllied in the table 
+	 *            of the loaded temAllied in the table
 	 * @throws IndexOutOfBoundsException
 	 * @return chosen and activated temAllied
 	 */
@@ -159,7 +228,7 @@ public class TEMTableModel extends AbstractTableModel {
 		if (index > this.countOfTemAllieds || index < 1) {
 			throw new IndexOutOfBoundsException();
 		}
-		//System.out.println("Active Index");
+		// System.out.println("Active Index");
 		this.activeTemAllied = index;
 		return this.listOfTEMAllied.get(this.activeTemAllied - 1);
 	}
@@ -178,7 +247,8 @@ public class TEMTableModel extends AbstractTableModel {
 			return null;
 
 		this.activeTemAllied = this.activeTemAllied + 1;
-		if (this.countOfTemAllieds > 0 && this.activeTemAllied > this.countOfTemAllieds) {
+		if (this.countOfTemAllieds > 0
+				&& this.activeTemAllied > this.countOfTemAllieds) {
 			this.activeTemAllied = 1;
 		}
 

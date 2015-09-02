@@ -1,9 +1,9 @@
 /*************************************************************************
  * 
- *  WWW.PHONON.CH CONFIDENTIAL 
+ * WWW.PHONON.CH CONFIDENTIAL
  *
- *  2012 - 2020, Stephan Strauss, www.phonon.ch, Zurich, Switzerland
- *  All Rights Reserved.
+ * 2012 - 2020, Stephan Strauss, www.phonon.ch, Zurich, Switzerland All Rights
+ * Reserved.
  * 
  *************************************************************************/
 
@@ -116,8 +116,7 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		this.temViewState = new TEMViewState();
 
 		/** Add an empty TEMAllied -- The empty screen of the TEMView */
-		temAllied = new TEMAllied();
-		//temAllied = temTableModel.getActiveItem(); // TODO: Make static ?
+		temAllied = TEMTableModel.standardAllied;
 
 		/** Add Listeners to TEMView */
 		this.adapter = new TEMAdapter(this);
@@ -125,8 +124,9 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		this.addMouseMotionListener(this.adapter);
 		this.addKeyListener(this.adapter);
 
-		DrawableCoordinateSystem cS = new DrawableCoordinateSystem(new StarPoint(), (double) 1000, (double) 1000);
-		this.temAllied.addDrawable(cS);
+//		DrawableCoordinateSystem cS = new DrawableCoordinateSystem(
+//				new StarPoint(), (double) 1000, (double) 1000);
+//		this.temAllied.addDrawable(cS);
 		setInformer(this.temAllied.getInformation());
 		setVisible(true);
 
@@ -149,7 +149,8 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		information.addAttribute(TextAttribute.FONT, font);
 		information.addAttribute(TextAttribute.FOREGROUND, Color.YELLOW);
 
-		this.informer = new DrawableText(new StarPoint(10, 20), new LocalOrientation(), information);
+		this.informer = new DrawableText(new StarPoint(10, 20),
+				new LocalOrientation(), information);
 		this.informer.textOrientation = TextOrientation.LEFT;
 	}
 
@@ -162,7 +163,8 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		Graphics2D g2D = (Graphics2D) g;
 
 		/** Use Antialiasing when rendering */
-		RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON);
 		g2D.setRenderingHints(rh);
 
 		/**
@@ -173,7 +175,8 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		this.initial.setToIdentity();
 
 		/** Calculate the total transformation from the actual temViewState */
-		this.viewPortTransform = AbstractDrawable.transformViewPort(initial, this.temViewState);
+		this.viewPortTransform = AbstractDrawable.transformViewPort(initial,
+				this.temViewState);
 
 		/**
 		 * Get the drawable tem picture from the *active* temAllied container
@@ -184,7 +187,7 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		if (temPicture != null) {
 			temPicture.paint(g2D, viewPortTransform);
 		} else {
-			//TODO: Decide what you would like to do in case of no tem picture.
+			// TODO: Decide what you would like to do in case of no tem picture.
 		}
 
 		/** Obtain all drawables and points from the active temAllied */
@@ -202,17 +205,19 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		}
 
 		for (DrawablePoint dPoint : pointList) {
-			this.viewPortTransform = AbstractDrawable.transformViewPort(initial, this.temViewState);
+			this.viewPortTransform = AbstractDrawable.transformViewPort(
+					initial, this.temViewState);
 			dPoint.paint(g2D, this.viewPortTransform);
 
 		}
 
 		// activeScaleReference.paint(g2D, this.viewPortTransform);
 
-		//List<DrawableScaleReference> scales = temAllied.delegateScales().updateAndGetAllScales();
-		
+		// List<DrawableScaleReference> scales =
+// temAllied.delegateScales().updateAndGetAllScales();
+
 		Scales scalesToDraw = temAllied.delegateScales();
-		
+
 		for (DrawableScaleReference scale : scalesToDraw) {
 			scale.paint(g2D, this.viewPortTransform);
 		}
@@ -256,7 +261,8 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		this.rose.setX(100);
 		this.rose.setY(this.getHeight() - 100);
 
-		initial.setToRotation(temViewState.rotation / 360 * 2 * 3.1415, this.rose.getX(), this.rose.getY());
+		initial.setToRotation(temViewState.rotation / 360 * 2 * 3.1415,
+				this.rose.getX(), this.rose.getY());
 
 		this.rose.paint(g2D, initial);
 		this.initial.setToIdentity();
@@ -309,13 +315,16 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 
 		Point2D.Double pt = getPictureCoordinates(point);
 
-//		System.out.println("new point with tem coordinates: " + point.getX() + " " + point.getY());
-//		System.out.println("new point added with picture coordinates: " + pt.getX() + " " + pt.getY());
+// System.out.println("new point with tem coordinates: " + point.getX() + " " +
+// point.getY());
+// System.out.println("new point added with picture coordinates: " + pt.getX() +
+// " " + pt.getY());
 
 		StarPoint initialStarpoint = new StarPoint(pt.getX(), pt.getY()); // pic
 																			// coordinates
-		DrawableDiamondStar diamondStar = new DrawableDiamondStar(initialStarpoint); // pic
-																						// coordinates
+		DrawableDiamondStar diamondStar = new DrawableDiamondStar(
+				initialStarpoint); // pic
+									// coordinates
 		DrawablePoint pPoint = new DrawablePoint(diamondStar, pt); // pic
 																	// coordinates
 
@@ -323,7 +332,8 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		this.firePropertyChange("addPoint", null, pt);
 
 		new Thread(this.newPointSound).start();
-		System.out.println("Sound Threads:" + ManagementFactory.getThreadMXBean().getThreadCount());
+		System.out.println("Sound Threads:"
+				+ ManagementFactory.getThreadMXBean().getThreadCount());
 
 		repaint();
 
@@ -339,13 +349,13 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 	 */
 	public void removePoint(int x, int y) {
 
-
 		// TODO Where is the transformation to picture coordinates happening ?!
 		// Not a good API ... needs to be checked
 
 		if (this.temAllied.removePoint(x, y) == true) {
 			new Thread(this.killPointSound).start();
-			System.out.println("Sound Threads:" + ManagementFactory.getThreadMXBean().getThreadCount());
+			System.out.println("Sound Threads:"
+					+ ManagementFactory.getThreadMXBean().getThreadCount());
 			repaint();
 		}
 	}
@@ -380,7 +390,8 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 
 		/** Standard background and frame color */
 		setBorder(BorderFactory.createLineBorder(Color.white));
-		setBackground(new Color(Integer.parseInt(ResourceLoader.getResource("TEMView_Color").substring(2), 16)));
+		setBackground(new Color(Integer.parseInt(
+				ResourceLoader.getResource("TEMView_Color").substring(2), 16)));
 
 		/** Define sounds to use in this component */
 		this.newPointSound = new Sound(SoundType.POP);
@@ -399,10 +410,11 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		/** Predefine the rose to save CPU time */
 		LocalOrientation localOrienation = new LocalOrientation();
 		localOrienation.setScaling(0.35);
-		this.rose = new DrawablePicture(new StarPoint(), localOrienation, this.roseImage);
+		this.rose = new DrawablePicture(new StarPoint(), localOrienation,
+				this.roseImage);
 
 		/** http://www.java-gaming.org/index.php?topic=2227.0 */
-		System.out.println("TEMView: This platform supports " 
+		System.out.println("TEMView: This platform supports "
 				+ Toolkit.getDefaultToolkit().getMaximumCursorColors()
 				+ " cursor colors");
 
@@ -423,8 +435,10 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 	 * @param statusBar
 	 */
 	public void registerStatusBar(TEMStatusBar statusBar) {
-		this.addPropertyChangeListener("coordinateChange", (PropertyChangeListener) statusBar);
-		this.addPropertyChangeListener("addPoint", (PropertyChangeListener) statusBar);
+		this.addPropertyChangeListener("coordinateChange",
+				(PropertyChangeListener) statusBar);
+		this.addPropertyChangeListener("addPoint",
+				(PropertyChangeListener) statusBar);
 	}
 
 	/**
@@ -452,11 +466,12 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 
-		if(evt.getPropertyName().equals("newSelectionInTable")) {
+		if (evt.getPropertyName().equals("newSelectionInTable")) {
 			this.temAllied = this.temTableModel.getActiveItem();
 		}
-		
+
 		if (evt.getPropertyName().equals("temTableModelChange")) {
+			System.out.println("Test");
 			this.temTableModel = (TEMTableModel) (evt.getNewValue());
 			this.temAllied = this.temTableModel.getActiveItem();
 			setInformer(this.temAllied.getInformation());
@@ -534,7 +549,8 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 				setInformer(helper.getInformation());
 				this.temAllied = helper;
 				new Thread(this.pageturnSound).start();
-				System.out.println("Sound Threads:" + ManagementFactory.getThreadMXBean().getThreadCount());
+				System.out.println("Sound Threads:"
+						+ ManagementFactory.getThreadMXBean().getThreadCount());
 				repaint();
 			}
 		} catch (Exception e) {
@@ -558,7 +574,8 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 				setInformer(helper.getInformation());
 				this.temAllied = helper;
 				new Thread(this.pageturnSound).start();
-				System.out.println("Sound Threads:" + ManagementFactory.getThreadMXBean().getThreadCount());
+				System.out.println("Sound Threads:"
+						+ ManagementFactory.getThreadMXBean().getThreadCount());
 				repaint();
 			}
 		} catch (Exception e) {
@@ -622,12 +639,13 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 	 */
 	public DrawableScaleReference chooseScale(Point2D.Double actualMousePosition) {
 
-		DrawableScaleReference chosenScale = this.temAllied.delegateScales().chooseScale(actualMousePosition);
+		DrawableScaleReference chosenScale = this.temAllied.delegateScales()
+				.chooseScale(actualMousePosition);
 		repaint();
 
 		return chosenScale;
 	}
-	
+
 	/**
 	 * This legated method After chosing a scale by mouse pointer (see this
 	 * {@link #chooseScale(java.awt.geom.Point2D.Double)} the chosen state is
@@ -636,7 +654,8 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 	 * @return chosen scale reference
 	 */
 	public DrawableScaleReference getChosenScale() {
-		DrawableScaleReference chosenScale = this.temAllied.delegateScales().getChosenScale();
+		DrawableScaleReference chosenScale = this.temAllied.delegateScales()
+				.getChosenScale();
 		return chosenScale;
 	}
 

@@ -7,18 +7,11 @@
  * 
  ******************************************************************************/
 
-// TODO Add functionality, that a chosen TEM picture in the table is chosen
-// in the TEMView as well.
-// TODO Add functionality to remove all TEMAllieds
-// TODO Add functionality to remove a certain marked list of TEMAllieds
-
 package ch.phonon.projectproperties;
 
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.TreeSet;
 
@@ -48,19 +41,17 @@ public class TEMTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 1L;
 	List<TEMAllied> listOfTEMAllied;
-	TEMAllied standardAllied = new TEMAllied();
 
 	private int countOfTemAllieds = 0;
 	private int activeTemAllied = 0;
 
 	/**
-	 * Once the {@link TEMTableModel} is created the list of {@link TEMAllied}s
-	 * is initialized. A standard TEMAllied is created to be exposed to the
-	 * user, when no TEM pictures had been loaded.
+	 * This immutable constant is filled with a {@link TEMAllied} that can be 
+	 * shown in case of no loaded items. 
 	 */
-	public TEMTableModel() {
-		super();
-		this.listOfTEMAllied = new ArrayList<TEMAllied>();
+	static public final TEMAllied standardAllied = new TEMAllied();
+
+	static {
 
 		BufferedImage logo = null;
 
@@ -73,11 +64,22 @@ public class TEMTableModel extends AbstractTableModel {
 		}
 		DrawablePicture temLogo = new DrawablePicture(new StarPoint(),
 				new LocalOrientation(), logo);
-		this.standardAllied.addDrawable(temLogo);
+		standardAllied.addDrawable(temLogo);
 
 		DrawableCoordinateSystem cS = new DrawableCoordinateSystem(
 				new StarPoint(), (double) 1000, (double) 1000);
-		this.standardAllied.addDrawable(cS);
+		standardAllied.addDrawable(cS);
+
+	}
+
+	/**
+	 * Once the {@link TEMTableModel} is created the list of {@link TEMAllied}s
+	 * is initialized. A standard TEMAllied is created to be exposed to the
+	 * user, when no TEM pictures had been loaded.
+	 */
+	public TEMTableModel() {
+		super();
+		this.listOfTEMAllied = new ArrayList<TEMAllied>();
 
 	}
 
@@ -209,7 +211,7 @@ public class TEMTableModel extends AbstractTableModel {
 
 		if (this.activeTemAllied == 0) {
 
-			return this.standardAllied;
+			return standardAllied;
 		}
 
 		return this.listOfTEMAllied.get(this.activeTemAllied - 1);

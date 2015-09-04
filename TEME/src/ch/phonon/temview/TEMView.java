@@ -42,7 +42,6 @@ import ch.phonon.TEMAllied;
 import ch.phonon.TextOrientation;
 import ch.phonon.drawables.AbstractDrawable;
 import ch.phonon.drawables.Drawable;
-import ch.phonon.drawables.DrawableCoordinateSystem;
 import ch.phonon.drawables.DrawableDiamondStar;
 import ch.phonon.drawables.DrawablePicture;
 import ch.phonon.drawables.DrawablePoint;
@@ -261,7 +260,7 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		this.rose.setX(100);
 		this.rose.setY(this.getHeight() - 100);
 
-		initial.setToRotation(temViewState.rotation / 360 * 2 * 3.1415,
+		initial.setToRotation(temViewState.rotation / 360 * 2 * Math.PI,
 				this.rose.getX(), this.rose.getY());
 
 		this.rose.paint(g2D, initial);

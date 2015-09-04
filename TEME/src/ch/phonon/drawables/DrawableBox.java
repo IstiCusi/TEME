@@ -33,6 +33,7 @@ public class DrawableBox extends AbstractDrawable {
 
 	private Rectangle2D box;
 	private Color color;
+	double  x,y;
 	double width, height;
 	AffineTransform locationTransform;
 	private boolean filled = false;
@@ -53,12 +54,42 @@ public class DrawableBox extends AbstractDrawable {
 
 		super(starpoint, localOrientation);
 
+		this.x=0;
+		this.y=0;
 		this.width = width;
 		this.height = height;
-		this.box = new Rectangle2D.Double(0, 0, width, height);
+		
+		// TODO: Is it easier for the compiler to optimize the stack 
+		// if we directly use this.x and this.y, when calling 0,0 in Rect.
+		
+		this.box = new Rectangle2D.Double(this.x, this.y, width, height);
 		this.color = new Color(255, 0, 0);
 
 	}
+	
+	/**
+	 * 
+	 * Constructs a box centered around x, y in picture coordinates 
+	 * @param starpoint
+	 * @param localOrientation
+	 * @param x
+	 * @param y
+	 * @param width
+	 * @param height
+	 */
+	public DrawableBox(StarPoint starpoint, LocalOrientation localOrientation, int x, int y, int width, int height) {
+
+		super(starpoint, localOrientation);
+
+		this.x=x;
+		this.y=y;		
+		this.width = width;
+		this.height = height;
+		this.box = new Rectangle2D.Double(this.x, this.y, width, height);
+		this.color = new Color(255, 0, 0);
+
+	}
+
 
 	/**
 	 * sets the color of the drawable box.
@@ -78,7 +109,7 @@ public class DrawableBox extends AbstractDrawable {
 		this.width = width;
 		// TODO Is it necessary to generate a new object or is it somehow
 		// possible to modify the existing box.
-		this.box = new Rectangle2D.Double(0, 0, this.width, this.height);
+		this.box = new Rectangle2D.Double(this.x, this.y, this.width, this.height);
 	}
 
 	/**
@@ -88,7 +119,7 @@ public class DrawableBox extends AbstractDrawable {
 	 */
 	public void setHeight(double height) {
 		this.height = height;
-		this.box = new Rectangle2D.Double(0, 0, this.width, this.height);
+		this.box = new Rectangle2D.Double(this.x, this.y, this.width, this.height);
 	}
 
 	// ************************** Getters **************************************

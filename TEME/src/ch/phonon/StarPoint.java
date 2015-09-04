@@ -1,9 +1,9 @@
 /*************************************************************************
  * 
- *  WWW.PHONON.CH CONFIDENTIAL 
+ * WWW.PHONON.CH CONFIDENTIAL
  *
- *  2012 - 2020, Stephan Strauss, www.phonon.ch, Zurich, Switzerland
- *  All Rights Reserved.
+ * 2012 - 2020, Stephan Strauss, www.phonon.ch, Zurich, Switzerland All Rights
+ * Reserved.
  * 
  *************************************************************************/
 
@@ -13,19 +13,19 @@ import java.awt.geom.Point2D;
 
 import ch.phonon.drawables.Drawable;
 
-/** 
- * A {@link StarPoint} represents the global location of an object 
- * in reference to the global coordinate system in the pictureSystem 
- * base . {@link Drawable}
+/**
+ * A {@link StarPoint} represents the global location of an object in reference
+ * to the global coordinate system in the pictureSystem base . {@link Drawable}
  * objects have an internal {@link LocalOrientation} relative to the
  * {@link StarPoint}.
+ * 
  * @author phonon
  */
 // public class StarPoint extends Observable {
 public class StarPoint extends PointInPictureBase {
 
 	Point2D.Double star;
-	
+
 	/* ********************** Constructors ************************************* */
 
 	/**
@@ -42,8 +42,10 @@ public class StarPoint extends PointInPictureBase {
 	 * This constructor allows to set directly the components of the star point
 	 * in the PictureBase.
 	 * 
-	 * @param x component in PictureBase
-	 * @param y component in PictureBase
+	 * @param x
+	 *            component in PictureBase
+	 * @param y
+	 *            component in PictureBase
 	 */
 	public StarPoint(double x, double y) {
 		this.star = new Point2D.Double();
@@ -52,8 +54,8 @@ public class StarPoint extends PointInPictureBase {
 	}
 
 	/**
-	 *  This constructor creates a StarPoint based on a {@link Point2D}.
-	 *  
+	 * This constructor creates a StarPoint based on a {@link Point2D}.
+	 * 
 	 * @param point
 	 */
 	public StarPoint(Point2D.Double point) {
@@ -64,7 +66,8 @@ public class StarPoint extends PointInPictureBase {
 	}
 
 	/**
-	 * @param point set position of the StarPoint
+	 * @param point
+	 *            set position of the StarPoint
 	 */
 	public void setPoint(StarPoint point) {
 		this.star.x = point.getX();
@@ -72,7 +75,8 @@ public class StarPoint extends PointInPictureBase {
 	}
 
 	/**
-	 * @param point position of the StarPoint 
+	 * @param point
+	 *            position of the StarPoint
 	 */
 	public void setPoint(Point2D.Double point) {
 		if (point instanceof Point2D.Double) {
@@ -87,7 +91,6 @@ public class StarPoint extends PointInPictureBase {
 		return star.x;
 	}
 
-	
 	/**
 	 * @return Y component of the {@link StarPoint}
 	 */
@@ -95,17 +98,17 @@ public class StarPoint extends PointInPictureBase {
 		return star.y;
 	}
 
-	
 	/**
-	 * @param x component of the {@link StarPoint}
+	 * @param x
+	 *            component of the {@link StarPoint}
 	 */
 	public void setX(double x) {
 		star.x = x;
 	}
 
-	
 	/**
-	 * @param y component of the {@link StarPoint}
+	 * @param y
+	 *            component of the {@link StarPoint}
 	 */
 	public void setY(double y) {
 		star.y = y;
@@ -118,12 +121,15 @@ public class StarPoint extends PointInPictureBase {
 
 	/**
 	 * Get vector difference (end - start) as {@link StarPoint} representation
-	 * @param start substrahend vector 
-	 * @param end  	minuend vector 
-	 * @return vector difference 
+	 * 
+	 * @param start
+	 *            substrahend vector
+	 * @param end
+	 *            minuend vector
+	 * @return vector difference
 	 */
 	public static StarPoint getDifference(StarPoint start, StarPoint end) {
-			
+
 		double x = end.getX() - start.getX();
 		double y = end.getY() - start.getY();
 
@@ -133,8 +139,9 @@ public class StarPoint extends PointInPictureBase {
 	}
 
 	/**
-	 * Rotates the components of the <b>this </b>object about an angle and
-	 * gives back a reference for convinience. 
+	 * Rotates the components of the <b>this </b>object about an angle and gives
+	 * back a reference for convinience.
+	 * 
 	 * @param angle
 	 * @return reference to <b>this </b>
 	 */
@@ -148,12 +155,15 @@ public class StarPoint extends PointInPictureBase {
 		this.setY(yNew);
 		return this;
 	}
+
 	/**
-	 * Rotates the components of a {@link StarPoint} about an angle and
-	 * gives back a new {@link StarPoint} object with the resulting rotated
-	 * {@link StarPoint}. 
-	 * @param a original {@link StarPoint} to be rotated 
-	 * @param angle 
+	 * Rotates the components of a {@link StarPoint} about an angle and gives
+	 * back a new {@link StarPoint} object with the resulting rotated
+	 * {@link StarPoint}.
+	 * 
+	 * @param a
+	 *            original {@link StarPoint} to be rotated
+	 * @param angle
 	 * @return new rotated {@link StarPoint} object
 	 */
 	public static StarPoint createRotatedStarPoint(StarPoint a, double angle) {
@@ -168,9 +178,12 @@ public class StarPoint extends PointInPictureBase {
 	/**
 	 * Calculates vector sum of two {@link StarPoint}s and gives back a new
 	 * object.
-	 * @param a first {@link StarPoint} vector
-	 * @param b second {@link StarPoint} vector
-	 * @return new object of the sum of the two 
+	 * 
+	 * @param a
+	 *            first {@link StarPoint} vector
+	 * @param b
+	 *            second {@link StarPoint} vector
+	 * @return new object of the sum of the two
 	 */
 	public static StarPoint getSum(StarPoint a, StarPoint b) {
 
@@ -184,7 +197,9 @@ public class StarPoint extends PointInPictureBase {
 
 	/**
 	 * Calculates the length norm of the {@link StarPoint}
-	 * @param sPoint {@link StarPoint} vector
+	 * 
+	 * @param sPoint
+	 *            {@link StarPoint} vector
 	 * @return length of the {@link StarPoint} vector
 	 */
 	public static double getNorm(StarPoint sPoint) {
@@ -195,6 +210,7 @@ public class StarPoint extends PointInPictureBase {
 
 	/**
 	 * Calculates the scalar distance between two {@link StarPoint}s
+	 * 
 	 * @param begin
 	 * @param end
 	 * @return scalar distance of <b>begin</b> and <b>end</b>
@@ -207,7 +223,8 @@ public class StarPoint extends PointInPictureBase {
 
 	/**
 	 * Calculates vector dot product of two {@link StarPoint} vectors
-	 * @param a 
+	 * 
+	 * @param a
 	 * @param b
 	 * @return dot product
 	 */
@@ -216,8 +233,9 @@ public class StarPoint extends PointInPictureBase {
 	}
 
 	/**
-	 * Calculates the angle orientation of b above a. It is negative,
-	 * when the oriented angle(a,b) > 180 degree.
+	 * Calculates the angle orientation of b above a. It is negative, when the
+	 * oriented angle(a,b) > 180 degree.
+	 * 
 	 * @param a
 	 * @param b
 	 * @return angle orientation
@@ -227,17 +245,18 @@ public class StarPoint extends PointInPictureBase {
 	}
 
 	/**
-	 * Calculates the oriented angle of two {@link StarPoint}s
-	 * The angle is oriented from a to b. Angle of b above a 
-	 * is counted negative, when it exceeds 180 degree.
+	 * Calculates the oriented angle of two {@link StarPoint}s The angle is
+	 * oriented from a to b. Angle of b above a is counted negative, when it
+	 * exceeds 180 degree.
+	 * 
 	 * @param a
 	 * @param b
 	 * @return perproduct
-	 */	
+	 */
 	public static double getOrientedAngle(StarPoint a, StarPoint b) {
 
 		double angle = getAngle(a, b);
-		
+
 		if (getAngleOrientation(a, b) < 0) {
 			angle = -angle;
 		}
@@ -245,15 +264,17 @@ public class StarPoint extends PointInPictureBase {
 	}
 
 	/**
-	 * Calculates the (smaller and always positive angle) of two {@link StarPoint}s
-	 * using the cosine equation.
-	 * The angle is not oriented: angle(a,b) = angle(b,a) with 0 < angle < 180
+	 * Calculates the (smaller and always positive angle) of two
+	 * {@link StarPoint}s using the cosine equation. The angle is not oriented:
+	 * angle(a,b) = angle(b,a) with 0 < angle < 180
+	 * 
 	 * @param a
 	 * @param b
 	 * @return smaller unoriented angle
 	 * @see <a href=""http://math.stackexchange.com/questions/317874/
-	 * calculate-the-angle-between-two-vectors"">oriented angle</a>
-	 */	
+
+	 *      calculate-the-angle-between-two-vectors"">oriented angle</a>
+	 */
 	public static double getAngle(StarPoint a, StarPoint b) {
 		double normA = getNorm(a);
 		double normB = getNorm(b);
@@ -266,7 +287,7 @@ public class StarPoint extends PointInPictureBase {
 	}
 
 	/**
-	 * Calculates the ciunter clockwise oriented angle, that is positive from 
+	 * Calculates the ciunter clockwise oriented angle, that is positive from
 	 * StarPoint a to b ; 0 <= angle(b,a) < 360.0
 	 * 
 	 * @param a
@@ -279,16 +300,17 @@ public class StarPoint extends PointInPictureBase {
 		double determinant = getDerminant(a, b);
 
 		double angle = Math.toDegrees(Math.atan2(determinant, dotProduct));
-		
-		if (angle < 0 ) {
+
+		if (angle < 0) {
 			angle = 360.0 + angle;
 		}
-		
+
 		return angle;
 	}
 
 	/**
 	 * Calculates the determinat spanned by the two StarPoint vectors a and b
+	 * 
 	 * @param a
 	 * @param b
 	 * @return determinant
@@ -300,10 +322,10 @@ public class StarPoint extends PointInPictureBase {
 	}
 
 	/**
-	 * Calculates the unit vector in direction of vector in it's 
-	 * base.
+	 * Calculates the unit vector in direction of vector in it's base.
+	 * 
 	 * @param vector
-	 * @return unit vector 
+	 * @return unit vector
 	 */
 	public static StarPoint getUnitVector(StarPoint vector) {
 
@@ -313,9 +335,9 @@ public class StarPoint extends PointInPictureBase {
 		return unitVector;
 	}
 
-	
 	/**
 	 * Gives back a new scaled vector.
+	 * 
 	 * @param vector
 	 * @param scale
 	 * @return scaled vector as {@link StarPoint}.
@@ -326,8 +348,6 @@ public class StarPoint extends PointInPictureBase {
 		return scaledVector;
 	}
 
-	
-	
 	@Override
 	/**
 	 * Gives back a string representation, that reflects the coordinates
@@ -346,11 +366,11 @@ public class StarPoint extends PointInPictureBase {
 				+ ((star == null) ? 0 : star.hashCode());
 		return result;
 	}
-	
 
-	/** 
-	 * StarPoint equality means bit level equality of the double precission coordinate
-	 * components. The slightest difference would lead already to false.
+	/**
+	 * StarPoint equality means bit level equality of the double precission
+	 * coordinate components. The slightest difference would lead already to
+	 * false.
 	 */
 	@Override
 	public boolean equals(Object obj) {
@@ -364,9 +384,36 @@ public class StarPoint extends PointInPictureBase {
 		if (star == null) {
 			if (other.star != null)
 				return false;
-		} else if (!star.equals(other.star))
-			return false;
+		} else
+			if (!star.equals(other.star))
+				return false;
 		return true;
 	}
-	
+
+	/**
+	 * Change the x component of the StarPoint and give back a new copy with the
+	 * obtained new coordinates
+	 * 
+	 * @param deltaX
+	 *            difference in X to be added to the x component of this
+	 *            StarPoint.
+	 * @return new StarPoint changed about deltaX in the x component
+	 */
+	public StarPoint plusX(int deltaX) {
+		return new StarPoint(this.getX() + deltaX, this.getY());
+	}
+
+	/**
+	 * Change the y component of the StarPoint and give back a new copy with the
+	 * obtained new coordinates
+	 * 
+	 * @param deltaY
+	 *            difference in Y to be added to the x component of this
+	 *            StarPoint.
+	 * @return new StarPoint changed about deltaY in the x component
+	 */
+	public StarPoint plusY(int deltaY) {
+		return new StarPoint(this.getX(), this.getY() + deltaY);
+	}
+
 }

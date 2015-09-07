@@ -1,9 +1,9 @@
 /*************************************************************************
  * 
- *  WWW.PHONON.CH CONFIDENTIAL 
+ * WWW.PHONON.CH CONFIDENTIAL
  *
- *  2012 - 2020, Stephan Strauss, www.phonon.ch, Zurich, Switzerland
- *  All Rights Reserved.
+ * 2012 - 2020, Stephan Strauss, www.phonon.ch, Zurich, Switzerland All Rights
+ * Reserved.
  * 
  *************************************************************************/
 package ch.phonon.drawables;
@@ -33,7 +33,7 @@ public class DrawableBox extends AbstractDrawable {
 
 	private Rectangle2D box;
 	private Color color;
-	double  x,y;
+	double x, y;
 	double width, height;
 	AffineTransform locationTransform;
 	private boolean filled = false;
@@ -50,26 +50,28 @@ public class DrawableBox extends AbstractDrawable {
 	 * @param height
 	 *            height of the {@link DrawableBox}
 	 */
-	public DrawableBox(StarPoint starpoint, LocalOrientation localOrientation, int width, int height) {
+	public DrawableBox(StarPoint starpoint, LocalOrientation localOrientation,
+			int width, int height) {
 
 		super(starpoint, localOrientation);
 
-		this.x=0;
-		this.y=0;
+		this.x = 0;
+		this.y = 0;
 		this.width = width;
 		this.height = height;
-		
-		// TODO: Is it easier for the compiler to optimize the stack 
+
+		// TODO: Is it easier for the compiler to optimize the stack
 		// if we directly use this.x and this.y, when calling 0,0 in Rect.
-		
+
 		this.box = new Rectangle2D.Double(this.x, this.y, width, height);
 		this.color = new Color(255, 0, 0);
 
 	}
-	
+
 	/**
 	 * 
-	 * Constructs a box centered around x, y in picture coordinates 
+	 * Constructs a box centered around x, y in picture coordinates
+	 * 
 	 * @param starpoint
 	 * @param localOrientation
 	 * @param x
@@ -77,12 +79,13 @@ public class DrawableBox extends AbstractDrawable {
 	 * @param width
 	 * @param height
 	 */
-	public DrawableBox(StarPoint starpoint, LocalOrientation localOrientation, int x, int y, int width, int height) {
+	public DrawableBox(StarPoint starpoint, LocalOrientation localOrientation,
+			int x, int y, int width, int height) {
 
 		super(starpoint, localOrientation);
 
-		this.x=x;
-		this.y=y;		
+		this.x = x;
+		this.y = y;
 		this.width = width;
 		this.height = height;
 		this.box = new Rectangle2D.Double(this.x, this.y, width, height);
@@ -90,6 +93,19 @@ public class DrawableBox extends AbstractDrawable {
 
 	}
 
+	/**
+	 * Creates a standard Drawable at the origin. It is 10x10 pixel of size.
+	 */
+	public DrawableBox() {
+
+		super(new StarPoint(), new LocalOrientation());
+		this.x = 0;
+		this.y = 0;
+		this.width = 10;
+		this.height = 10;
+		this.box = new Rectangle2D.Double(this.x, this.y, width, height);
+		this.color = new Color(255, 0, 0);
+	}
 
 	/**
 	 * sets the color of the drawable box.
@@ -109,7 +125,8 @@ public class DrawableBox extends AbstractDrawable {
 		this.width = width;
 		// TODO Is it necessary to generate a new object or is it somehow
 		// possible to modify the existing box.
-		this.box = new Rectangle2D.Double(this.x, this.y, this.width, this.height);
+		this.box = new Rectangle2D.Double(this.x, this.y, this.width,
+				this.height);
 	}
 
 	/**
@@ -119,7 +136,8 @@ public class DrawableBox extends AbstractDrawable {
 	 */
 	public void setHeight(double height) {
 		this.height = height;
-		this.box = new Rectangle2D.Double(this.x, this.y, this.width, this.height);
+		this.box = new Rectangle2D.Double(this.x, this.y, this.width,
+				this.height);
 	}
 
 	// ************************** Getters **************************************
@@ -144,7 +162,7 @@ public class DrawableBox extends AbstractDrawable {
 		graphicsContext.setColor(this.color);
 		graphicsContext.setStroke(new BasicStroke(2.0f));
 		Shape rotatedBox = locationTransform.createTransformedShape(this.box);
-		if ( this.isFilled() ) {
+		if (this.isFilled()) {
 			graphicsContext.fill(rotatedBox);
 		}
 		graphicsContext.draw(rotatedBox);
@@ -174,7 +192,8 @@ public class DrawableBox extends AbstractDrawable {
 	@Override
 	public boolean contains(int x, int y) {
 
-		return this.locationTransform.createTransformedShape(this.box).contains(x, y);
+		return this.locationTransform.createTransformedShape(this.box)
+				.contains(x, y);
 	}
-	
+
 }

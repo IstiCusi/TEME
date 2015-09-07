@@ -137,75 +137,58 @@ public class DrawableScaleReference extends DrawableComposite {
 		this.begin = begin;
 		this.end = end;
 
-		distance = StarPoint.getDistance(begin, end);
+		calculateDimensions();
 
-		relativeVector = StarPoint.getDifference(begin, end);
-		StarPoint.getUnitVector(relativeVector);
+		this.centerStarPoint = new StarPoint();
+		this.localOrientationOuterBox = new LocalOrientation();
 
-		angle = StarPoint
-				.getOrientedAngle(new StarPoint(10, 0), relativeVector);
+		this.outerBox = new DrawableBox();
+		this.outerBox.setHeight((int) sizeOfGrip);
+		this.outerBox.setColor(ActiveState.ACTIVE_COLOR);
 
-		xCenter = begin.getX() + relativeVector.getX() / 2.0;
-		yCenter = begin.getY() + relativeVector.getY() / 2.0;
-
-		centerStarPoint = new StarPoint(xCenter, yCenter);
-		localOrientationOuterBox = new LocalOrientation(
-				new Point2D.Double(0, 0), angle, 1.0);
-
-		outerBox = new DrawableBox(centerStarPoint, localOrientationOuterBox,
-				(int) (Math.round(distance)), (int) sizeOfGrip);
-		outerBox.setColor(ActiveState.ACTIVE_COLOR);
-
-		starPointLeftGrip = this.begin;
-		localOrientationLeftGrip = new LocalOrientation(
-				new Point2D.Double(0, 0), angle, 1.0);
-		leftGrip = new DrawableBox(starPointLeftGrip, localOrientationLeftGrip,
+		this.starPointLeftGrip = this.begin;
+		this.localOrientationLeftGrip = new LocalOrientation();
+		this.leftGrip = new DrawableBox(starPointLeftGrip,
+				localOrientationLeftGrip,
 				-10, 0,
 				(int) (sizeOfGrip),
 				(int) (sizeOfGrip));
-		leftGrip.setColor(new Color(0xFFEA00));
-		leftGrip.setFilled(true);
+		this.leftGrip.setColor(new Color(0xFFEA00));
+		this.leftGrip.setFilled(true);
 
-		starPointRightGrip = this.end;
-		localOrientationRightGrip = new LocalOrientation(new Point2D.Double(0,
-				0), angle, 1.0);
-		rightGrip = new DrawableBox(starPointRightGrip,
+		this.starPointRightGrip = this.end;
+		this.localOrientationRightGrip = new LocalOrientation(
+				new Point2D.Double(0,
+						0), angle, 1.0);
+		this.rightGrip = new DrawableBox(starPointRightGrip,
 				localOrientationRightGrip, +10, 0, (int) (sizeOfGrip),
 				(int) (sizeOfGrip));
-		rightGrip.setColor(new Color(0xFFEA00));
-		rightGrip.setFilled(true);
+		this.rightGrip.setColor(new Color(0xFFEA00));
+		this.rightGrip.setFilled(true);
 
-		localOrientationLeftMarker = new LocalOrientation(
-				new Point2D.Double(0, 0), angle, 1.0);
-		distanceMarkerLeft = new DrawableLine(
+		this.localOrientationLeftMarker = new LocalOrientation();
+		this.distanceMarkerLeft = new DrawableLine(
 				this.begin, localOrientationLeftMarker,
 				new Point2D.Double(0, 0), new Point2D.Double(0, 30));
-		distanceMarkerLeft.setInvariantScaling(true);
-		distanceMarkerLeft.setColor(Color.RED);
-		
-		localOrientationRightMarker = new LocalOrientation(
-				new Point2D.Double(0, 0), angle, 1.0);
-		distanceMarkerRight = new DrawableLine(
+
+		this.distanceMarkerLeft.setColor(Color.RED);
+
+		this.localOrientationRightMarker = new LocalOrientation();
+		this.distanceMarkerRight = new DrawableLine(
 				this.end, localOrientationLeftMarker,
 				new Point2D.Double(0, 0), new Point2D.Double(0, 30));
-		distanceMarkerRight.setInvariantScaling(true);
-		distanceMarkerRight.setColor(Color.RED);
+		this.distanceMarkerRight.setColor(Color.RED);
 
+		this.outerBox.setInvariantScaling(true);
+		this.outerBox.invariantScalingType = InvariantScalingType.FIXEDY;
 
-		// TODO: Length of the ScaleReference should scale with the temView
-		// state, the thickness however should stay the same.
+		this.leftGrip.setInvariantScaling(true);
+		this.rightGrip.setInvariantScaling(true);
 
-		outerBox.setInvariantRotation(false);
-		outerBox.setInvariantScaling(true);
-		outerBox.invariantScalingType = InvariantScalingType.FIXEDY;
+		this.distanceMarkerRight.setInvariantScaling(true);
+		this.distanceMarkerLeft.setInvariantScaling(true);
 
-		leftGrip.setInvariantRotation(false);
-		leftGrip.setInvariantScaling(true);
-		leftGrip.invariantScalingType = InvariantScalingType.BOTH;
-
-		rightGrip.setInvariantRotation(false);
-		rightGrip.setInvariantScaling(true);
-		rightGrip.invariantScalingType = InvariantScalingType.BOTH;
+		updateDrawables();
 
 		this.add(outerBox);
 		this.add(leftGrip);
@@ -226,68 +209,67 @@ public class DrawableScaleReference extends DrawableComposite {
 		return relativeVector;
 	}
 
-	private void reCalculateDimensions() {
+	private void update() {
 
-		// TODO: Express constructor mainly over this function later (code
-		// duplication problem)
+		calculateDimensions();
+		updateDrawables();
 
-		distance = StarPoint.getDistance(this.begin, this.end);
+	}
 
-		this.relativeVector = StarPoint.getDifference(this.begin, this.end);
-
-		angle = StarPoint
-				.getOrientedAngle(new StarPoint(10, 0), relativeVector);
+	private void updateDrawables() {
 
 		/** Outer Box */
 
-		xCenter = begin.getX() + relativeVector.getX() / 2.0;
-		yCenter = begin.getY() + relativeVector.getY() / 2.0;
-
-		centerStarPoint.setX(xCenter);
-		centerStarPoint.setY(yCenter);
+		this.centerStarPoint.setX(xCenter);
+		this.centerStarPoint.setY(yCenter);
 
 		localOrientationOuterBox.setRotation(angle);
 
-		outerBox.setStarPoint(centerStarPoint);
-		outerBox.setLocalOrientationState(localOrientationOuterBox);
-		outerBox.setWidth((int) (Math.round(distance)));
-		outerBox.setHeight((int) sizeOfGrip);
+		this.outerBox.setStarPoint(centerStarPoint);
+		this.outerBox.setLocalOrientationState(localOrientationOuterBox);
+		this.outerBox.setWidth((int) (Math.round(distance)));
 
 		/** Left Grip */
 
-		starPointLeftGrip = this.begin;
-		leftGrip.setStarPoint(starPointLeftGrip);
-		localOrientationLeftGrip.setRotation(angle);
-		leftGrip.setLocalOrientationState(localOrientationLeftGrip);
-
-		// TODO: The next properties need not be updated - check this
-
-		leftGrip.setWidth(sizeOfGrip);
-		leftGrip.setHeight(sizeOfGrip);
+		this.starPointLeftGrip = this.begin;
+		this.leftGrip.setStarPoint(starPointLeftGrip);
+		this.localOrientationLeftGrip.setRotation(angle);
+		this.leftGrip.setLocalOrientationState(localOrientationLeftGrip);
 
 		/** Right Grip */
 
-		starPointRightGrip = this.end;
-		rightGrip.setStarPoint(starPointRightGrip);
-		localOrientationRightGrip.setRotation(angle);
-		rightGrip.setLocalOrientationState(localOrientationRightGrip);
+		this.starPointRightGrip = this.end;
+		this.rightGrip.setStarPoint(starPointRightGrip);
+		this.localOrientationRightGrip.setRotation(angle);
+		this.rightGrip.setLocalOrientationState(localOrientationRightGrip);
 
-		// TODO: The next properties need not be updated - check this
+		/** Left distance marker */
 
-		rightGrip.setWidth(sizeOfGrip);
-		rightGrip.setHeight(sizeOfGrip);
+		this.distanceMarkerLeft.setX(begin.getX());
+		this.distanceMarkerLeft.setY(begin.getY());
+		this.localOrientationLeftMarker.setRotation(angle);
+		this.distanceMarkerLeft
+				.setLocalOrientationState(localOrientationLeftMarker);
 
-		distanceMarkerLeft.setX(begin.getX());
-		distanceMarkerLeft.setY(begin.getY());
-		localOrientationLeftMarker.setRotation(angle);
-		distanceMarkerLeft.setLocalOrientationState(localOrientationLeftMarker);
+		/** Right distance marker */
 
-		distanceMarkerRight.setX(end.getX());
-		distanceMarkerRight.setY(end.getY());
-		localOrientationRightMarker.setRotation(angle);
-		distanceMarkerRight.setLocalOrientationState(localOrientationLeftMarker);
+		this.distanceMarkerRight.setX(end.getX());
+		this.distanceMarkerRight.setY(end.getY());
+		this.localOrientationRightMarker.setRotation(angle);
+		this.distanceMarkerRight
+				.setLocalOrientationState(localOrientationLeftMarker);
+	}
 
-		
+	private void calculateDimensions() {
+
+		this.distance = StarPoint.getDistance(this.begin, this.end);
+		this.relativeVector = StarPoint.getDifference(this.begin, this.end);
+
+		this.angle = StarPoint
+				.getOrientedAngle(new StarPoint(10, 0), relativeVector);
+
+		this.xCenter = begin.getX() + relativeVector.getX() / 2.0;
+		this.yCenter = begin.getY() + relativeVector.getY() / 2.0;
 	}
 
 	/**
@@ -315,7 +297,7 @@ public class DrawableScaleReference extends DrawableComposite {
 	 */
 	public void setBegin(StarPoint begin) {
 		this.begin = begin;
-		reCalculateDimensions();
+		update();
 	}
 
 	/**
@@ -325,7 +307,7 @@ public class DrawableScaleReference extends DrawableComposite {
 	 */
 	public void setEnd(StarPoint end) {
 		this.end = end;
-		reCalculateDimensions();
+		update();
 	}
 
 	/**
@@ -339,7 +321,7 @@ public class DrawableScaleReference extends DrawableComposite {
 	public void setBegin(int x, int y) {
 		this.begin.setX(x);
 		this.begin.setY(y);
-		reCalculateDimensions();
+		update();
 	}
 
 	/**
@@ -353,7 +335,7 @@ public class DrawableScaleReference extends DrawableComposite {
 	public void setEnd(int x, int y) {
 		this.end.setX(x);
 		this.end.setY(y);
-		reCalculateDimensions();
+		update();
 	}
 
 	/**

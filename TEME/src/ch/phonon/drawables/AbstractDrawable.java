@@ -1,24 +1,24 @@
 /*************************************************************************
  * 
- *  WWW.PHONON.CH CONFIDENTIAL 
+ * WWW.PHONON.CH CONFIDENTIAL
  *
- *  2012 - 2020, Stephan Strauss, www.phonon.ch, Zurich, Switzerland
- *  All Rights Reserved.
+ * 2012 - 2020, Stephan Strauss, www.phonon.ch, Zurich, Switzerland All Rights
+ * Reserved.
  * 
  *************************************************************************/
 
-// TODO: Correct the very ugly downcast - that they are save 
+// TODO: Correct the very ugly downcast - that they are save
 // TODO: Check once again Drawable and AbstractDrawable on @Override etc
-// TODO: Check how we can functionalize the Drawables for better control 
+// TODO: Check how we can functionalize the Drawables for better control
 // see DrawableProperties
 // of other properties like color etc. What can be part of the interface ?
 // TODO: Check all types on clone(), equals ...etc Unit Tests
-// TODO: Implement a correct handling of exceptions ... CloneBlaBlaException 
+// TODO: Implement a correct handling of exceptions ... CloneBlaBlaException
 
-// TODO:  make transformViewPort a wrapper class including the temViewState
-// and the corresponding AffineTransform. Makes it probably much easier to 
+// TODO: make transformViewPort a wrapper class including the temViewState
+// and the corresponding AffineTransform. Makes it probably much easier to
 // handle. The paint method can directly access than the temViewState and does
-// not need to get it from a different source. 
+// not need to get it from a different source.
 
 package ch.phonon.drawables;
 
@@ -88,7 +88,7 @@ public abstract class AbstractDrawable implements Drawable, Positionable {
 
 		viewPortTransform.setToTranslation(temviewState.x, temviewState.y);
 		viewPortTransform.rotate(Math.toRadians(temviewState.rotation), 0, 0);
-		viewPortTransform.scale(temviewState.scaling, temviewState.scaling);
+		viewPortTransform.scale(temviewState.getScaling(), temviewState.getScaling());
 
 		return viewPortTransform;
 	}
@@ -177,7 +177,7 @@ public abstract class AbstractDrawable implements Drawable, Positionable {
 				drawableOrientationState.getLocalX().getY());
 
 		double rotationCorrection = 0.0;
-		if ( getInvariantRotation() ) {
+		if (getInvariantRotation()) {
 			rotationCorrection = temViewState.rotation;
 		}
 
@@ -191,26 +191,26 @@ public abstract class AbstractDrawable implements Drawable, Positionable {
 		double localScalingX = localScaling;
 		double localScalingY = localScaling;
 
-		if ( getInvariantScaling() 
+		if (getInvariantScaling()
 				&& this.invariantScalingType == InvariantScalingType.BOTH) {
 
-			viewScaling = temViewState.scaling;
+			viewScaling = temViewState.getScaling();
 			localScalingX = localScaling / viewScaling;
 			localScalingY = localScaling / viewScaling;
 		}
 
-		if ( getInvariantScaling() 
+		if (getInvariantScaling()
 				&& this.invariantScalingType == InvariantScalingType.FIXEDX) {
 
-			viewScaling = temViewState.scaling;
+			viewScaling = temViewState.getScaling();
 			localScalingX = localScaling / viewScaling;
 			localScalingY = localScaling;
 		}
 
-		if ( getInvariantScaling() 
+		if (getInvariantScaling()
 				&& this.invariantScalingType == InvariantScalingType.FIXEDY) {
 
-			viewScaling = temViewState.scaling;
+			viewScaling = temViewState.getScaling();
 			localScalingX = localScaling;
 			localScalingY = localScaling / viewScaling;
 

@@ -39,14 +39,14 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 	// private KeyState CtrlkeyState;
 	// private KeyState ShiftkeyState;
 
-	private TEMView temView;
+	private final TEMView temView;
 	// private TEMAllied activeTemAllied;
 	// private Scales scales;
 
-	private TEMViewState temBegin;
+	private final TEMViewState temBegin;
 	private int cursorBegin_x, cursorBegin_y;
 	private int delta_x, delta_y;
-	private TemAdapterScaleTreatment temAdapterScaleTreatment;
+	private final TemAdapterScaleTreatment temAdapterScaleTreatment;
 
 	private Point2D.Double actualMousePosition;
 
@@ -59,9 +59,6 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 	 */
 	public TEMAdapter(TEMView temView) {
 		this.temView = temView;
-		// this.activeTemAllied = this.temView.getTemAllied();
-		// this.scales = this.activeTemAllied.delegateScales();
-
 		this.temBegin = new TEMViewState();
 		this.temAdapterScaleTreatment = new TemAdapterScaleTreatment(temView);
 	}
@@ -109,7 +106,6 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -184,8 +180,11 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 		if (SwingUtilities.isMiddleMouseButton(e) && e.isControlDown()) {
 
 			// Scaling
-
-			temViewState.scaling = this.temBegin.scaling - this.delta_y * 0.01;
+                       
+			temViewState.setScaling(this.temBegin.getScaling() - this.delta_y
+					* 0.01);
+			
+			
 		}
 
 		// TODO: I do not like this conditional expressions - check if there is

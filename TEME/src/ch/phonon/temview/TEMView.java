@@ -371,7 +371,7 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		temViewState.cHeight = this.getHeight();
 		temViewState.x = temViewState.cWidth / 2;
 		temViewState.y = temViewState.cHeight / 2;
-		temViewState.scaling = 1;
+		temViewState.setScaling(1);
 		temViewState.rotation = 0;
 		this.repaint();
 	}

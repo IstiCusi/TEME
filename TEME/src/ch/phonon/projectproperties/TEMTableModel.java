@@ -46,8 +46,8 @@ public class TEMTableModel extends AbstractTableModel {
 	private int activeTemAllied = 0;
 
 	/**
-	 * This immutable constant is filled with a {@link TEMAllied} that can be 
-	 * shown in case of no loaded items. 
+	 * This immutable constant is filled with a {@link TEMAllied} that can be
+	 * shown in case of no loaded items.
 	 */
 	static public final TEMAllied standardAllied = new TEMAllied();
 

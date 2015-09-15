@@ -54,8 +54,10 @@ public class TEMViewState {
 	 */
 	public int y;
 
-	static private double lowerBoundZoom = Double.valueOf(ResourceLoader.getResource("TEMView_Zoom_LowerBound"));
-	static private double upperBoundZoom = Double.valueOf(ResourceLoader.getResource("TEMView_Zoom_UpperBound"));
+	static private double lowerBoundZoom = Double
+			.valueOf(ResourceLoader.getResource("TEMView_Zoom_LowerBound"));
+	static private double upperBoundZoom = Double
+			.valueOf(ResourceLoader.getResource("TEMView_Zoom_UpperBound"));
 
 	/**
 	 * The standard constructor is used to construct the unmodified state of the
@@ -95,7 +97,8 @@ public class TEMViewState {
 	 * @param x
 	 * @param y
 	 */
-	TEMViewState(int cWidth, int cHeight, double scaling, double rotation, int x, int y) {
+	TEMViewState(int cWidth, int cHeight, double scaling, double rotation,
+			int x, int y) {
 
 		scaling = limitScaling(scaling);
 
@@ -169,10 +172,12 @@ public class TEMViewState {
 		if (cWidth != other.cWidth) {
 			return false;
 		}
-		if (Double.doubleToLongBits(rotation) != Double.doubleToLongBits(other.rotation)) {
+		if (Double.doubleToLongBits(rotation) != Double
+				.doubleToLongBits(other.rotation)) {
 			return false;
 		}
-		if (Double.doubleToLongBits(getScaling()) != Double.doubleToLongBits(other.getScaling())) {
+		if (Double.doubleToLongBits(getScaling()) != Double
+				.doubleToLongBits(other.getScaling())) {
 			return false;
 		}
 		if (x != other.x) {

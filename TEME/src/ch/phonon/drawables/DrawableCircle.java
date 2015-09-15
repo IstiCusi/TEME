@@ -11,8 +11,6 @@
 
 package ch.phonon.drawables;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
@@ -28,21 +26,30 @@ import ch.phonon.StarPoint;
  * @author phonon
  * 
  */
-public class DrawableCircle extends AbstractDrawable {
+public class DrawableCircle extends AbstractDrawable
+		implements Decoratable<DrawableShapeDecorations> {
 
 	private Ellipse2D ellipse;
-	private Color color;
 	double width, height;
 	AffineTransform localTransform;
+
+	private DrawableShapeDecorations decorations =
+			DrawableShapeDecorations.STANDARD_DECORATIONS;
+
+	// ----------------------------Constructors --------------------------------
 
 	/**
 	 * This constructor is used to define a {@link DrawableCircle} object by
 	 * providing its {@link StarPoint} position and {@link LocalOrientation}
 	 * 
 	 * @param starpoint
+	 *            global position of the {@link DrawableCircle}
 	 * @param localOrientation
+	 *            local orientation of the {@link DrawableCircle}
 	 * @param width
+	 *            width of the {@link DrawableCircle}
 	 * @param height
+	 *            height of the {@link DrawableCircle}
 	 */
 	public DrawableCircle(StarPoint starpoint,
 			LocalOrientation localOrientation, int width, int height) {
@@ -52,31 +59,49 @@ public class DrawableCircle extends AbstractDrawable {
 		this.width = width;
 		this.height = height;
 		this.ellipse = new Ellipse2D.Double(0, 0, width, height);
-		this.color = new Color(255, 0, 0);
 
 	}
 
-	/**
-	 * Sets the color of the circle
-	 * 
-	 * @param color
-	 */
-	public void setColor(Color color) {
-		this.color = color;
-	}
-
+	// ----------------------- Drawable contract -------------------------------
+	
 	@Override
-	void draw(Graphics2D graphicsContext, AffineTransform locationTransform) {
+	public void draw(Graphics2D graphicsContext,
+			AffineTransform locationTransform) {
 
 		this.localTransform = locationTransform;
 
-		graphicsContext.setColor(this.color);
-		graphicsContext.setStroke(new BasicStroke(2.0f));
-		graphicsContext.draw(locationTransform
-				.createTransformedShape(this.ellipse));
+		graphicsContext.setColor(this.decorations.getColor());
+		graphicsContext.setStroke(this.decorations.getStroke());
+		graphicsContext
+				.draw(locationTransform.createTransformedShape(this.ellipse));
 
 	}
 
+	// ----------------------- Decoratable contract ----------------------------
+
+	/**
+	 * Applies {@link DrawableShapeDecorations} to the Drawable
+	 */
+
+	@Override
+	public void applyDecorations(DrawableShapeDecorations d) {
+		this.decorations = d;
+	}
+
+	/**
+	 * Returns a delegate from the used {@link DrawableShapeDecorations} of this
+	 * {@link DrawableCircle}.
+	 * 
+	 * @return {@link DrawableShapeDecorations}
+	 * 
+	 */
+	@Override
+	public DrawableShapeDecorations getDecorations() {
+		return this.decorations;
+	}
+
+	// ----------------------- Setter and Getters ------------------------------
+	
 	@Override
 	public double getWidth() {
 		return this.width;
@@ -92,4 +117,5 @@ public class DrawableCircle extends AbstractDrawable {
 		return this.localTransform.createTransformedShape(this.ellipse)
 				.contains(x, y);
 	}
+	
 }

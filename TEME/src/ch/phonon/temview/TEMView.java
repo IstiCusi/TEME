@@ -123,9 +123,9 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		this.addMouseMotionListener(this.adapter);
 		this.addKeyListener(this.adapter);
 
-//		DrawableCoordinateSystem cS = new DrawableCoordinateSystem(
-//				new StarPoint(), (double) 1000, (double) 1000);
-//		this.temAllied.addDrawable(cS);
+		// DrawableCoordinateSystem cS = new DrawableCoordinateSystem(
+		// new StarPoint(), (double) 1000, (double) 1000);
+		// this.temAllied.addDrawable(cS);
 		setInformer(this.temAllied.getInformation());
 		setVisible(true);
 
@@ -174,8 +174,8 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		this.initial.setToIdentity();
 
 		/** Calculate the total transformation from the actual temViewState */
-		this.viewPortTransform = AbstractDrawable.transformViewPort(initial,
-				this.temViewState);
+		this.viewPortTransform =
+				AbstractDrawable.transformViewPort(initial, this.temViewState);
 
 		/**
 		 * Get the drawable tem picture from the *active* temAllied container
@@ -204,8 +204,8 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		}
 
 		for (DrawablePoint dPoint : pointList) {
-			this.viewPortTransform = AbstractDrawable.transformViewPort(
-					initial, this.temViewState);
+			this.viewPortTransform = AbstractDrawable.transformViewPort(initial,
+					this.temViewState);
 			dPoint.paint(g2D, this.viewPortTransform);
 
 		}
@@ -213,7 +213,7 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		// activeScaleReference.paint(g2D, this.viewPortTransform);
 
 		// List<DrawableScaleReference> scales =
-// temAllied.delegateScales().updateAndGetAllScales();
+		// temAllied.delegateScales().updateAndGetAllScales();
 
 		Scales scalesToDraw = temAllied.delegateScales();
 
@@ -314,16 +314,18 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 
 		Point2D.Double pt = getPictureCoordinates(point);
 
-// System.out.println("new point with tem coordinates: " + point.getX() + " " +
-// point.getY());
-// System.out.println("new point added with picture coordinates: " + pt.getX() +
-// " " + pt.getY());
+		// System.out.println("new point with tem coordinates: " + point.getX()
+		// + " " +
+		// point.getY());
+		// System.out.println("new point added with picture coordinates: " +
+		// pt.getX() +
+		// " " + pt.getY());
 
 		StarPoint initialStarpoint = new StarPoint(pt.getX(), pt.getY()); // pic
 																			// coordinates
-		DrawableDiamondStar diamondStar = new DrawableDiamondStar(
-				initialStarpoint); // pic
-									// coordinates
+		DrawableDiamondStar diamondStar =
+				new DrawableDiamondStar(initialStarpoint); // pic
+															// coordinates
 		DrawablePoint pPoint = new DrawablePoint(diamondStar, pt); // pic
 																	// coordinates
 
@@ -467,10 +469,11 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 
 		if (evt.getPropertyName().equals("newSelectionInTable")) {
 			this.temAllied = this.temTableModel.getActiveItem();
+			setInformer(this.temAllied.getInformation());
+			repaint();
 		}
 
 		if (evt.getPropertyName().equals("temTableModelChange")) {
-			System.out.println("Test");
 			this.temTableModel = (TEMTableModel) (evt.getNewValue());
 			this.temAllied = this.temTableModel.getActiveItem();
 			setInformer(this.temAllied.getInformation());
@@ -636,7 +639,8 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 	 * @param actualMousePosition
 	 * @return chosen scale or null
 	 */
-	public DrawableScaleReference chooseScale(Point2D.Double actualMousePosition) {
+	public DrawableScaleReference
+			chooseScale(Point2D.Double actualMousePosition) {
 
 		DrawableScaleReference chosenScale = this.temAllied.delegateScales()
 				.chooseScale(actualMousePosition);
@@ -653,8 +657,8 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 	 * @return chosen scale reference
 	 */
 	public DrawableScaleReference getChosenScale() {
-		DrawableScaleReference chosenScale = this.temAllied.delegateScales()
-				.getChosenScale();
+		DrawableScaleReference chosenScale =
+				this.temAllied.delegateScales().getChosenScale();
 		return chosenScale;
 	}
 

@@ -50,8 +50,8 @@ public class MainFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// Load the JFrame icon from the reference in the properties file
-		Image img = ResourceLoader.getImage(ResourceLoader
-				.getResource("Window_icon"));
+		Image img = ResourceLoader
+				.getImage(ResourceLoader.getResource("Window_icon"));
 		setIconImage(img);
 
 		// Obtain the screen size from the toolkit
@@ -60,13 +60,13 @@ public class MainFrame extends JFrame {
 		double heightDesktop = screenSize.getHeight();
 
 		// Load the shrinking factor for the frame size from the properties file
-		double windowShrinking = Double.parseDouble(ResourceLoader
-				.getResource("Window_shrinking"));
+		double windowShrinking = Double
+				.parseDouble(ResourceLoader.getResource("Window_shrinking"));
 
 		// Set the bounds of the frame
 		setBounds((int) (0.5 * widthDesktop * (1 - windowShrinking)),
-				 (int) (0.5 * heightDesktop * (1 - windowShrinking)),
-				 (int) (widthDesktop * 0.80), (int) (heightDesktop * 0.80));
+				(int) (0.5 * heightDesktop * (1 - windowShrinking)),
+				(int) (widthDesktop * 0.80), (int) (heightDesktop * 0.80));
 
 		setLayout(new BorderLayout());
 
@@ -83,7 +83,7 @@ public class MainFrame extends JFrame {
 
 		tabbedPane.addTab("Project Properties", this.projectPropPanel);
 		tabbedPane.addTab("TEM Inspection", this.temInspectionPanel);
-		
+
 		tabbedPane.addFocusListener(this.projectPropPanel);
 
 		add(tabbedPane);

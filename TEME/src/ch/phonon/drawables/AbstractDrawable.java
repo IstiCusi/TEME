@@ -63,7 +63,8 @@ public abstract class AbstractDrawable implements Drawable, Positionable {
 	 * invariantScalingType flag: Distinguishes different variants of
 	 * invariantScaling
 	 */
-	public InvariantScalingType invariantScalingType = InvariantScalingType.BOTH;
+	public InvariantScalingType invariantScalingType =
+			InvariantScalingType.BOTH;
 
 	/**
 	 * calculates a {@link AffineTransform} of the viewPort rotation/pan/zoom
@@ -88,7 +89,8 @@ public abstract class AbstractDrawable implements Drawable, Positionable {
 
 		viewPortTransform.setToTranslation(temviewState.x, temviewState.y);
 		viewPortTransform.rotate(Math.toRadians(temviewState.rotation), 0, 0);
-		viewPortTransform.scale(temviewState.getScaling(), temviewState.getScaling());
+		viewPortTransform.scale(temviewState.getScaling(),
+				temviewState.getScaling());
 
 		return viewPortTransform;
 	}
@@ -163,17 +165,16 @@ public abstract class AbstractDrawable implements Drawable, Positionable {
 	public void paint(Graphics2D graphicsContext,
 			AffineTransform viewPortTransform) {
 
-		LocalOrientation drawableOrientationState = this
-				.getLocalOrientationState();
+		LocalOrientation drawableOrientationState =
+				this.getLocalOrientationState();
 		StarPoint starpoint = this.getStarPoint();
 
 		double localScaling = drawableOrientationState.getScaling();
 
-		AffineTransform locationTransform = new AffineTransform(
-				viewPortTransform);
+		AffineTransform locationTransform =
+				new AffineTransform(viewPortTransform);
 
-		locationTransform.translate(
-				drawableOrientationState.getLocalX().getX(),
+		locationTransform.translate(drawableOrientationState.getLocalX().getX(),
 				drawableOrientationState.getLocalX().getY());
 
 		double rotationCorrection = 0.0;
@@ -183,8 +184,8 @@ public abstract class AbstractDrawable implements Drawable, Positionable {
 
 		locationTransform.rotate(
 				Math.toRadians(drawableOrientationState.getRotation()
-						- rotationCorrection), starpoint.getX(),
-				starpoint.getY());
+						- rotationCorrection),
+				starpoint.getX(), starpoint.getY());
 		locationTransform.translate(starpoint.getX(), starpoint.getY());
 
 		double viewScaling = 1.0;

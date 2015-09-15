@@ -47,8 +47,8 @@ public class ResourceLoader {
 	 * @return the image associated with the fileName found in the pics folder.
 	 */
 	public static Image getImage(String fileName) {
-		return Toolkit.getDefaultToolkit().getImage(
-				rl.getClass().getResource("pics/" + fileName));
+		return Toolkit.getDefaultToolkit()
+				.getImage(rl.getClass().getResource("pics/" + fileName));
 	}
 
 	/**
@@ -90,7 +90,8 @@ public class ResourceLoader {
 		AudioInputStream resetAbleAudioStream;
 		resetAbleAudioStream = null;
 		try {
-			resetAbleAudioStream = createReusableAudioInputStream(audioInputStream);
+			resetAbleAudioStream =
+					createReusableAudioInputStream(audioInputStream);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -116,8 +117,8 @@ public class ResourceLoader {
 	 */
 	public static AudioInputStream getAudioStreamFromResource(String resource) {
 		String fileName = ResourceLoader.getResource(resource);
-		AudioInputStream audioStream = ResourceLoader
-				.getAudioInputStream(fileName);
+		AudioInputStream audioStream =
+				ResourceLoader.getAudioInputStream(fileName);
 		AudioInputStream resetAbleAudioStream;
 		resetAbleAudioStream = null;
 		try {
@@ -132,8 +133,8 @@ public class ResourceLoader {
 		return resetAbleAudioStream;
 	}
 
-	static ResourceBundle mainResourceBundle = ResourceBundle
-			.getBundle("ch.phonon.config.resourceBundle");
+	static ResourceBundle mainResourceBundle =
+			ResourceBundle.getBundle("ch.phonon.config.resourceBundle");
 
 	/**
 	 * For the whole {@link Application} a general properties file is arranged.
@@ -159,14 +160,15 @@ public class ResourceLoader {
 	 * 
 	 * @return EnumMap containing the AudioInputStreams
 	 */
-	public static EnumMap<SoundType, AudioInputStream> getStandardInputStreams() {
+	public static EnumMap<SoundType, AudioInputStream>
+			getStandardInputStreams() {
 
-		EnumMap<SoundType, AudioInputStream> standardAudioStreams = new EnumMap<SoundType, AudioInputStream>(
-				SoundType.class);
+		EnumMap<SoundType, AudioInputStream> standardAudioStreams =
+				new EnumMap<SoundType, AudioInputStream>(SoundType.class);
 
 		for (SoundType value : SoundType.values()) {
-			AudioInputStream stream = ResourceLoader
-					.getAudioStreamFromResource(value.toString());
+			AudioInputStream stream =
+					ResourceLoader.getAudioStreamFromResource(value.toString());
 			standardAudioStreams.put(value, stream);
 
 		}
@@ -174,16 +176,16 @@ public class ResourceLoader {
 
 	}
 
-	private static AudioInputStream createReusableAudioInputStream(
-			AudioInputStream ais) throws IOException,
-			UnsupportedAudioFileException {
+	private static AudioInputStream
+			createReusableAudioInputStream(AudioInputStream ais)
+					throws IOException, UnsupportedAudioFileException {
 
 		try {
 
 			byte[] buffer = new byte[1024 * 32];
 			int read = 0;
-			ByteArrayOutputStream baos = new ByteArrayOutputStream(
-					buffer.length);
+			ByteArrayOutputStream baos =
+					new ByteArrayOutputStream(buffer.length);
 			while ((read = ais.read(buffer, 0, buffer.length)) != -1) {
 				baos.write(buffer, 0, read);
 			}

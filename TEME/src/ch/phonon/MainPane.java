@@ -23,7 +23,7 @@ public class MainPane {
 	 */
 	public MainPane() {
 		super();
-		
+
 	}
 
 }

@@ -136,9 +136,10 @@ public class Sound implements Runnable {
 	}
 
 	/**
-	 * Set the active audio stream based on a a given preloaded 
-	 * {@link AudioInputStream}. The {@link AudioInputStream} can be loaded
-	 * by the auxillary {@link ResourceLoader} class. 
+	 * Set the active audio stream based on a a given preloaded
+	 * {@link AudioInputStream}. The {@link AudioInputStream} can be loaded by
+	 * the auxillary {@link ResourceLoader} class.
+	 * 
 	 * @param stream
 	 */
 	public void setActiveAudioStream(AudioInputStream stream) {
@@ -201,13 +202,13 @@ public class Sound implements Runnable {
 					abData.length)) >= 0) {
 				int offset = 0;
 				while (offset < numRead) {
-					offset += sourceDataLine.write(abData, offset, numRead
-							- offset);
+					offset += sourceDataLine.write(abData, offset,
+							numRead - offset);
 				}
 			}
 		} catch (IOException e1) {
-			System.out
-					.println("Sound IOException: Problem to read or write to lines");
+			System.out.println(
+					"Sound IOException: Problem to read or write to lines");
 			e1.printStackTrace();
 		} finally {
 			sourceDataLine.drain();

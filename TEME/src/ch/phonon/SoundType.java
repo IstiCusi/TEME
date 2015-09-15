@@ -32,18 +32,13 @@ import javax.sound.sampled.AudioInputStream;
  * <p>
  * 
  * <ul>
- * <li>
- * ERROR Error sound to be played whenever a action cannot be performed
- * <li>
- * KILL Killing sound to be played when an object is deleted (e.g. a point)
- * <li>
- * PAGETURN Turning a page / canvas / changing a view
- * <li>
- * POP Pop sound to emphasize the generation of an object (e.g. a point)
- * <li>
- * WELCOME Welcome sound of the application (signature tune)
- * <li>
- * TICK Tick sound used to emphasize finishing of a task (e.g. loading a file)
+ * <li>ERROR Error sound to be played whenever a action cannot be performed
+ * <li>KILL Killing sound to be played when an object is deleted (e.g. a point)
+ * <li>PAGETURN Turning a page / canvas / changing a view
+ * <li>POP Pop sound to emphasize the generation of an object (e.g. a point)
+ * <li>WELCOME Welcome sound of the application (signature tune)
+ * <li>TICK Tick sound used to emphasize finishing of a task (e.g. loading a
+ * file)
  * </ul>
  * 
  * @author phonon
@@ -55,27 +50,23 @@ public enum SoundType {
 	/**
 	 * Error sound to be played whenever a action cannot be performed
 	 */
-	ERROR,
-	/**
-	 * Killing sound to be played when an object is deleted 
-	 * (for example a point)
-	 */
-	KILL,
-	/**
-	 * Turning a page / canvas / changing a view
-	 */
-	PAGETURN,
-	/**
-	 * Pop sound to emphasize the generation of an object (for example a point)
-	 */
-	POP,
-	/**
-	 * Welcome sound of the application (signature tune)
-	 */
-	WELCOME,
-	/**
-	 * Tick sound used to emphasize finishing of a task 
-	 * (for example loading a file)
-	 */
+	ERROR, /**
+			 * Killing sound to be played when an object is deleted (for example
+			 * a point)
+			 */
+	KILL, /**
+			 * Turning a page / canvas / changing a view
+			 */
+	PAGETURN, /**
+				 * Pop sound to emphasize the generation of an object (for
+				 * example a point)
+				 */
+	POP, /**
+			 * Welcome sound of the application (signature tune)
+			 */
+	WELCOME, /**
+				 * Tick sound used to emphasize finishing of a task (for example
+				 * loading a file)
+				 */
 	TICK
 }

@@ -13,8 +13,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 /**
- * The {@link MainMenu} class represents the menu bar of the application.
- * It is mainly used to save and load the state of the application.
+ * The {@link MainMenu} class represents the menu bar of the application. It is
+ * mainly used to save and load the state of the application.
  * 
  * @author phonon
  *
@@ -26,25 +26,25 @@ public class MainMenu extends JMenuBar {
 	private JMenuItem saveFile;
 	private JMenuItem saveasFile;
 	private JMenuItem exitIt;
-	
+
 	/**
 	 * The public standard constructor is visible throughout the application.
 	 */
 	public MainMenu() {
 		super();
-		JMenu 	 fileMenue = new JMenu(ResourceLoader.getResource("File"));
+		JMenu fileMenue = new JMenu(ResourceLoader.getResource("File"));
 		add(fileMenue);
-		
+
 		openFile = new JMenuItem(ResourceLoader.getResource("File_openFile"));
 		saveFile = new JMenuItem(ResourceLoader.getResource("File_saveFile"));
-		saveasFile = new JMenuItem(ResourceLoader.getResource("File_saveasFile"));
+		saveasFile =
+				new JMenuItem(ResourceLoader.getResource("File_saveasFile"));
 		exitIt = new JMenuItem(ResourceLoader.getResource("File_exit"));
-		
+
 		fileMenue.add(openFile);
 		fileMenue.add(saveFile);
 		fileMenue.add(saveasFile);
 		fileMenue.add(exitIt);
 	}
-	
-	
+
 }

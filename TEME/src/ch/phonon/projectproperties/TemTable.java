@@ -97,9 +97,9 @@ public final class TemTable extends JTable {
 	}
 
 	/**
-	 * This public method summarizes a very specific implementation 
-	 * of this class. This is done for simplicity at the moment
-	 * and should later be brought in a much better design. 
+	 * This public method summarizes a very specific implementation of this
+	 * class. This is done for simplicity at the moment and should later be
+	 * brought in a much better design.
 	 */
 	public void configureTable() {
 
@@ -118,18 +118,18 @@ public final class TemTable extends JTable {
 
 		});
 
-		int fontSize = Integer.valueOf(ResourceLoader
-				.getResource("TEMTable_FontSize"));
+		int fontSize = Integer
+				.valueOf(ResourceLoader.getResource("TEMTable_FontSize"));
 		setFont(new Font("Arial", Font.BOLD, fontSize));
 
-		Color fontColor = new Color(
-				Integer.parseInt(
-						ResourceLoader.getResource("TEMViewSwitch_Color")
-								.substring(2), 16));
+		Color fontColor = new Color(Integer.parseInt(
+				ResourceLoader.getResource("TEMViewSwitch_Color").substring(2),
+				16));
 
 		setForeground(fontColor);
 
-		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		DefaultTableCellRenderer centerRenderer =
+				new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
 
 		for (int i = 1; i < getColumnModel().getColumnCount(); i++) {

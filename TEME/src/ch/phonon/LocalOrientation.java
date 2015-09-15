@@ -124,8 +124,8 @@ public class LocalOrientation extends PointInPictureBase implements Cloneable {
 	@Override
 	public LocalOrientation clone() {
 		try {
-			LocalOrientation newLocalOrientation = (LocalOrientation) super
-					.clone();
+			LocalOrientation newLocalOrientation =
+					(LocalOrientation) super.clone();
 			newLocalOrientation.setLocalX((Point2D) this.localX.clone());
 			newLocalOrientation.setRotation(this.rotation);
 			newLocalOrientation.setScaling(this.scaling);
@@ -160,9 +160,8 @@ public class LocalOrientation extends PointInPictureBase implements Cloneable {
 		if (localX == null) {
 			if (other.localX != null)
 				return false;
-		} else
-			if (!localX.equals(other.localX))
-				return false;
+		} else if (!localX.equals(other.localX))
+			return false;
 		if (Double.doubleToLongBits(rotation) != Double
 				.doubleToLongBits(other.rotation))
 			return false;

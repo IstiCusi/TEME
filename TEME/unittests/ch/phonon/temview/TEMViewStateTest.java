@@ -23,22 +23,20 @@ public class TEMViewStateTest {
 	 */
 	@Test
 	public void test() {
-		
-		TEMViewState state 		= 	new TEMViewState(100,50,20,90,400,500);
-		
-		/** 
+
+		TEMViewState state = new TEMViewState(100, 50, 20, 90, 400, 500);
+
+		/**
 		 * Test copy constructor
 		 */
-		TEMViewState cpState 	=	new TEMViewState(state);		
+		TEMViewState cpState = new TEMViewState(state);
 		assertEquals(state, cpState);
 		assertNotSame(cpState, state);
-		
-		/** 
-		 * Test clone 
-		 * TODO: clone should be anyway taken out of the class 
+
+		/**
+		 * Test clone TODO: clone should be anyway taken out of the class
 		 */
-		
-		
+
 	}
 
 }

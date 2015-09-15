@@ -96,7 +96,8 @@ public class DrawablePicture extends AbstractDrawable {
 	}
 
 	@Override
-	void draw(Graphics2D graphicsContext, AffineTransform locationTransform) {
+			void draw(Graphics2D graphicsContext,
+					AffineTransform locationTransform) {
 		this.locationTransform = locationTransform;
 		graphicsContext.drawRenderedImage(image, locationTransform);
 
@@ -120,6 +121,7 @@ public class DrawablePicture extends AbstractDrawable {
 
 	/**
 	 * Gives back the reference of the associated {@link BufferedImage}
+	 * 
 	 * @return reference to the associated image
 	 */
 	public BufferedImage getBufferedImage() {

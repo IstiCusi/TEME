@@ -32,7 +32,7 @@ import ch.phonon.StarPoint;
  * @author phonon
  * 
  */
-public class DrawableScaleReference extends DrawableComposite {
+public final class DrawableScaleReference extends DrawableComposite {
 
 	/**
 	 * Get the center point of the scale
@@ -59,8 +59,8 @@ public class DrawableScaleReference extends DrawableComposite {
 		ACTIVE {
 
 			@Override
-			Color getColor() {
-				return ACTIVE_COLOR;
+					DrawableShapeDecorations getDecorations() {
+				return ACTIVE_DECORATIONS;
 			}
 		},
 		/**
@@ -69,21 +69,26 @@ public class DrawableScaleReference extends DrawableComposite {
 		INACTIVE {
 
 			@Override
-			Color getColor() {
-				return INACTIVE_COLOR;
+					DrawableShapeDecorations getDecorations() {
+				return INACTIVE_DECORATIONS;
 			}
 		};
 
-		abstract Color getColor();
+		abstract DrawableShapeDecorations getDecorations();
 
 		/**
 		 * Active color choice for the outer box of the scale
 		 */
-		static final Color ACTIVE_COLOR = new Color(0x00F767);
+		static final DrawableShapeDecorations ACTIVE_DECORATIONS =
+				new DrawableShapeDecorations.Builder()
+						.color(new Color(0x00F767)).buildImmutable();
+
 		/**
 		 * Inactive color choice for the outer box of the scale
 		 */
-		static final Color INACTIVE_COLOR = new Color(0x890ADF);
+		static final DrawableShapeDecorations INACTIVE_DECORATIONS =
+				new DrawableShapeDecorations.Builder()
+						.color(new Color(0x890ADF)).buildImmutable();
 
 	};
 
@@ -106,8 +111,19 @@ public class DrawableScaleReference extends DrawableComposite {
 
 	private LocalOrientation localOrientationLeftGrip;
 	private DrawableBox leftGrip;
+	final static private DrawableShapeDecorations leftGripDecorations =
+			new DrawableShapeDecorations.Builder().color(new Color(0xFFEA00))
+					.filling(true).buildImmutable();
+
 	private StarPoint starPointRightGrip;
 	private DrawableBox rightGrip;
+	final static private DrawableShapeDecorations rightGripDecorations =
+			new DrawableShapeDecorations.Builder().color(new Color(0xFFEA00))
+					.filling(true).buildImmutable();
+
+	final static private DrawableShapeDecorations markerDecorations =
+			new DrawableShapeDecorations.Builder().color(Color.RED)
+					.buildImmutable();
 
 	private StarPoint end;
 
@@ -144,40 +160,34 @@ public class DrawableScaleReference extends DrawableComposite {
 
 		this.outerBox = new DrawableBox();
 		this.outerBox.setHeight((int) sizeOfGrip);
-		this.outerBox.setColor(ActiveState.ACTIVE_COLOR);
+		this.outerBox.applyDecorations(ActiveState.ACTIVE_DECORATIONS);
 
 		this.starPointLeftGrip = this.begin;
 		this.localOrientationLeftGrip = new LocalOrientation();
-		this.leftGrip = new DrawableBox(starPointLeftGrip,
-				localOrientationLeftGrip,
-				-10, 0,
-				(int) (sizeOfGrip),
-				(int) (sizeOfGrip));
-		this.leftGrip.setColor(new Color(0xFFEA00));
-		this.leftGrip.setFilled(true);
+		this.leftGrip =
+				new DrawableBox(starPointLeftGrip, localOrientationLeftGrip,
+						-10, 0, (int) (sizeOfGrip), (int) (sizeOfGrip));
+		this.leftGrip.applyDecorations(leftGripDecorations);
 
 		this.starPointRightGrip = this.end;
-		this.localOrientationRightGrip = new LocalOrientation(
-				new Point2D.Double(0,
-						0), angle, 1.0);
-		this.rightGrip = new DrawableBox(starPointRightGrip,
-				localOrientationRightGrip, +10, 0, (int) (sizeOfGrip),
-				(int) (sizeOfGrip));
-		this.rightGrip.setColor(new Color(0xFFEA00));
-		this.rightGrip.setFilled(true);
+		this.localOrientationRightGrip =
+				new LocalOrientation(new Point2D.Double(0, 0), angle, 1.0);
+		this.rightGrip =
+				new DrawableBox(starPointRightGrip, localOrientationRightGrip,
+						+10, 0, (int) (sizeOfGrip), (int) (sizeOfGrip));
+		this.rightGrip.applyDecorations(rightGripDecorations);
 
 		this.localOrientationLeftMarker = new LocalOrientation();
-		this.distanceMarkerLeft = new DrawableLine(
-				this.begin, localOrientationLeftMarker,
-				new Point2D.Double(0, 0), new Point2D.Double(0, 30));
-
-		this.distanceMarkerLeft.setColor(Color.RED);
+		this.distanceMarkerLeft =
+				new DrawableLine(this.begin, localOrientationLeftMarker,
+						new Point2D.Double(0, 0), new Point2D.Double(0, 30));
+		distanceMarkerLeft.applyDecorations(markerDecorations);
 
 		this.localOrientationRightMarker = new LocalOrientation();
-		this.distanceMarkerRight = new DrawableLine(
-				this.end, localOrientationLeftMarker,
-				new Point2D.Double(0, 0), new Point2D.Double(0, 30));
-		this.distanceMarkerRight.setColor(Color.RED);
+		this.distanceMarkerRight =
+				new DrawableLine(this.end, localOrientationLeftMarker,
+						new Point2D.Double(0, 0), new Point2D.Double(0, 30));
+		this.distanceMarkerRight.applyDecorations(markerDecorations);
 
 		this.outerBox.setInvariantScaling(true);
 		this.outerBox.invariantScalingType = InvariantScalingType.FIXEDY;
@@ -265,8 +275,8 @@ public class DrawableScaleReference extends DrawableComposite {
 		this.distance = StarPoint.getDistance(this.begin, this.end);
 		this.relativeVector = StarPoint.getDifference(this.begin, this.end);
 
-		this.angle = StarPoint
-				.getOrientedAngle(new StarPoint(10, 0), relativeVector);
+		this.angle = StarPoint.getOrientedAngle(new StarPoint(10, 0),
+				relativeVector);
 
 		this.xCenter = begin.getX() + relativeVector.getX() / 2.0;
 		this.yCenter = begin.getY() + relativeVector.getY() / 2.0;
@@ -351,9 +361,9 @@ public class DrawableScaleReference extends DrawableComposite {
 	 */
 	public boolean middleGripContains(int x, int y) {
 
-		boolean gapContains = this.outerBox.contains(x, y)
-				&& !this.leftGripContains(x, y)
-				&& !this.rightGripContains(x, y);
+		boolean gapContains =
+				this.outerBox.contains(x, y) && !this.leftGripContains(x, y)
+						&& !this.rightGripContains(x, y);
 
 		return gapContains;
 	}
@@ -394,7 +404,7 @@ public class DrawableScaleReference extends DrawableComposite {
 	 */
 	public void setActiveState(ActiveState state) {
 		this.activeState = state;
-		this.outerBox.setColor(state.getColor());
+		this.outerBox.applyDecorations(state.getDecorations());
 	}
 
 	/**

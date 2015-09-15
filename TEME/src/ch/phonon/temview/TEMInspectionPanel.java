@@ -36,7 +36,8 @@ import ch.phonon.drawables.Drawable;
  * e.g as the actual mouse cursor position, buttons to switch between different
  * {@link TEMAllied}s and buttons to switch between different
  * {@link TEMEditType}s that are managed by the {@link TEMEditMode} class.
- * @see "This component is initialized by the {@link MainFrame} component." 
+ * 
+ * @see "This component is initialized by the {@link MainFrame} component."
  * 
  * @author phonon
  */
@@ -58,8 +59,8 @@ public class TEMInspectionPanel extends JPanel {
 	private JPanel switchEditModePanel;
 
 	/**
-	 * Constructs the TEMInspection panel in arranging all views as described
-	 * in the class description. 
+	 * Constructs the TEMInspection panel in arranging all views as described in
+	 * the class description.
 	 */
 	public TEMInspectionPanel() {
 
@@ -70,7 +71,9 @@ public class TEMInspectionPanel extends JPanel {
 		Border emptyBorder = BorderFactory.createEmptyBorder();
 		setBorder(emptyBorder);
 
-		/** Add all subpanels to the InspectionPanel -------------------------- */
+		/**
+		 * Add all subpanels to the InspectionPanel --------------------------
+		 */
 
 		setLayout(new BorderLayout());
 
@@ -91,7 +94,9 @@ public class TEMInspectionPanel extends JPanel {
 
 		add(statusBarPanel, BorderLayout.SOUTH);
 
-		/** switchEditModePanel Definitions ----------------------------------- */
+		/**
+		 * switchEditModePanel Definitions -----------------------------------
+		 */
 
 		url = ResourceLoader.getUrl("pics/PreviousEditMode.png");
 		icon = new ImageIcon(url);
@@ -126,7 +131,9 @@ public class TEMInspectionPanel extends JPanel {
 			}
 		});
 
-		/** Switch/Cycle through TEM pictures (TEMAllieds) --------------------- */
+		/**
+		 * Switch/Cycle through TEM pictures (TEMAllieds) ---------------------
+		 */
 
 		// Border border = BorderFactory.createLineBorder(new
 		// Color(Integer.parseInt(
@@ -152,8 +159,8 @@ public class TEMInspectionPanel extends JPanel {
 				java.awt.Image.SCALE_SMOOTH);
 		icon = new ImageIcon(scaledIconImage);
 		switchToNextPictureButton = new JButton(icon);
-		switchToNextPictureButton.setUI((ButtonUI) BasicButtonUI
-				.createUI(switchToNextPictureButton));
+		switchToNextPictureButton.setUI(
+				(ButtonUI) BasicButtonUI.createUI(switchToNextPictureButton));
 		switchToNextPictureButton.setBackground(new Color(Integer.parseInt(
 				ResourceLoader.getResource("TEMViewSwitch_Color").substring(2),
 				16)));
@@ -179,13 +186,11 @@ public class TEMInspectionPanel extends JPanel {
 
 	}
 
-
-
 	/**
-	 * This function delegates the centerAll function from the {@link TEMView}. 
-	 * Because the {@link TEMView} constructors do not have completed information
-	 * of the actual width and height, this function is triggered after construction
-	 * of the TEMView to center all {@link Drawable}s. 
+	 * This function delegates the centerAll function from the {@link TEMView}.
+	 * Because the {@link TEMView} constructors do not have completed
+	 * information of the actual width and height, this function is triggered
+	 * after construction of the TEMView to center all {@link Drawable}s.
 	 */
 	public void centerAll() {
 		this.temView.centerAll();
@@ -193,6 +198,7 @@ public class TEMInspectionPanel extends JPanel {
 
 	/**
 	 * Gives back a reference to the {@link TEMView} component
+	 * 
 	 * @return associated tem view component of the {@link TEMInspectionPanel}.
 	 */
 	public TEMView getTEMView() {

@@ -47,12 +47,14 @@ public class DrawableText extends AbstractDrawable {
 	 * The text item represented by the {@link AttributedString} parameter
 	 * <code>text</code> is prepared by this constructor to be drawn at the
 	 * position identified by the <code>starpoint</code> and
-	 * <code>localOrientation</code> parameter. By default the text orientation 
-	 * about this location is centered. This can be changed by adjusting the 
-	 * {@link #textOrientation} member. 
+	 * <code>localOrientation</code> parameter. By default the text orientation
+	 * about this location is centered. This can be changed by adjusting the
+	 * {@link #textOrientation} member.
 	 * 
-	 * @param starpoint {@link StarPoint} location to the text item
-	 * @param localOrientation {@link LocalOrientation} of the text item
+	 * @param starpoint
+	 *            {@link StarPoint} location to the text item
+	 * @param localOrientation
+	 *            {@link LocalOrientation} of the text item
 	 * @param text
 	 */
 	public DrawableText(StarPoint starpoint, LocalOrientation localOrientation,
@@ -65,12 +67,13 @@ public class DrawableText extends AbstractDrawable {
 		// Still I think, there should be a better way
 		// http://stackoverflow.com/questions/4914145/getting-string-size-in-java-without-having-a-graphics-object-available
 
-		Font font = (Font) (aString.getIterator()
-				.getAttribute(TextAttribute.FONT));
-		FontRenderContext frc = new FontRenderContext(font.getTransform(),
-				true, true);
+		Font font =
+				(Font) (aString.getIterator().getAttribute(TextAttribute.FONT));
+		FontRenderContext frc =
+				new FontRenderContext(font.getTransform(), true, true);
 		AttributedCharacterIterator aci = aString.getIterator();
-		//TODO: Eclipse claims, that there is a hidden null pointer exception happening ?!?!
+		// TODO: Eclipse claims, that there is a hidden null pointer exception
+		// happening ?!?!
 		TextLayout textLayout = new TextLayout(aci, frc);
 		Shape outLine = textLayout.getOutline(null);
 		this.height = outLine.getBounds2D().getHeight();
@@ -79,7 +82,8 @@ public class DrawableText extends AbstractDrawable {
 	}
 
 	@Override
-	void draw(Graphics2D graphicsContext, AffineTransform locationTransform) {
+			void draw(Graphics2D graphicsContext,
+					AffineTransform locationTransform) {
 
 		FontRenderContext frc = graphicsContext.getFontRenderContext();
 		AttributedCharacterIterator aci = aString.getIterator();

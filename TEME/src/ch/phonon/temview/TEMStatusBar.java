@@ -82,13 +82,11 @@ public class TEMStatusBar extends JPanel implements PropertyChangeListener {
 		// TODO: Better logic ... before first addedPoint, this should give
 		// no value back.
 
-		this.labelText = String
-				.format(
-						
-				"Cross hairs: (X: %-7d , Y: %-7d) Px -- Last added Point (X: %-7d , Y: %-7d) Px ",
+		this.labelText = String.format(
 
-				x.intValue(), y.intValue(), addedx.intValue(),
-						addedy.intValue());
+		"Cross hairs: (X: %-7d , Y: %-7d) Px -- Last added Point (X: %-7d , Y: %-7d) Px ",
+
+		x.intValue(), y.intValue(), addedx.intValue(), addedy.intValue());
 
 		this.statusLabel.setText(this.labelText);
 	}

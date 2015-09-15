@@ -105,7 +105,8 @@ public class TEMAllied {
 
 		// TODO: This is duplicate code... add a class to keep it similar to
 		// the empty TEMView.
-		DrawableCoordinateSystem cS = new DrawableCoordinateSystem(new StarPoint(), (double) 1000, (double) 1000);
+		DrawableCoordinateSystem cS = new DrawableCoordinateSystem(
+				new StarPoint(), (double) 1000, (double) 1000);
 		addDrawable(cS);
 
 		loadTEMPicture(fileName);
@@ -132,12 +133,14 @@ public class TEMAllied {
 		this.pointsList = new ArrayList<DrawablePoint>();
 		this.scales = new Scales();
 
-		DrawableCoordinateSystem cS = new DrawableCoordinateSystem(new StarPoint(), (double) 1000, (double) 1000);
+		DrawableCoordinateSystem cS = new DrawableCoordinateSystem(
+				new StarPoint(), (double) 1000, (double) 1000);
 		addDrawable(cS);
 
 		LocalOrientation initialLocalOrientation = new LocalOrientation();
 		StarPoint initialStarpoint = new StarPoint(0, 0);
-		this.drawableTEMPicture = new DrawablePicture(initialStarpoint, initialLocalOrientation, image);
+		this.drawableTEMPicture = new DrawablePicture(initialStarpoint,
+				initialLocalOrientation, image);
 
 	}
 
@@ -161,8 +164,9 @@ public class TEMAllied {
 
 		double scalingFactor = 1;
 		scalingFactor = 100.0 / height;
-		this.setIcon(new ImageIcon(image.getScaledInstance((int) (width * scalingFactor),
-				(int) (height * scalingFactor), java.awt.Image.SCALE_SMOOTH)));
+		this.setIcon(new ImageIcon(image.getScaledInstance(
+				(int) (width * scalingFactor), (int) (height * scalingFactor),
+				java.awt.Image.SCALE_SMOOTH)));
 	}
 
 	/**
@@ -174,7 +178,8 @@ public class TEMAllied {
 	private void loadTEMPicture(String fileName) {
 		LocalOrientation initialLocalOrientation = new LocalOrientation();
 		StarPoint initialStarpoint = new StarPoint(0, 0);
-		this.drawableTEMPicture = new DrawablePicture(initialStarpoint, initialLocalOrientation, fileName);
+		this.drawableTEMPicture = new DrawablePicture(initialStarpoint,
+				initialLocalOrientation, fileName);
 		setIconByBufferedImage(this.drawableTEMPicture.getBufferedImage());
 	}
 
@@ -210,7 +215,8 @@ public class TEMAllied {
 		boolean success = false;
 
 		ArrayList<DrawablePoint> listOfPoints = getPointsList();
-		for (Iterator<DrawablePoint> iterator = listOfPoints.iterator(); iterator.hasNext();) {
+		for (Iterator<DrawablePoint> iterator =
+				listOfPoints.iterator(); iterator.hasNext();) {
 			DrawablePoint element = iterator.next();
 			if (element.contains(x, y)) {
 				iterator.remove();
@@ -329,7 +335,8 @@ public class TEMAllied {
 
 		// TODO: Add addtional information also for points etc
 
-		String information = "TEMAllied with name: " + this.name + "\n" + "-------------------------------------------"
+		String information = "TEMAllied with name: " + this.name + "\n"
+				+ "-------------------------------------------"
 				+ "Number of scales: " + this.scales.size() + "\n";
 
 		return information;

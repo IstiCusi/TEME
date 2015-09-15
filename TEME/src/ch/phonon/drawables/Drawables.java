@@ -16,11 +16,12 @@ package ch.phonon.drawables;
 public class Drawables {
 
 	// TODO: Implement scalingFactory
-	static Drawable scalingFactory (Drawable drawable, double scaling) {
+	static Drawable scalingFactory(Drawable drawable, double scaling) {
 		return null;
 	}
-	
-	// TODO: generateColor (Color in good contrast to backgroundColor --> Factory)
-		// should be in Drawables 
-	
+
+	// TODO: generateColor (Color in good contrast to backgroundColor -->
+	// Factory)
+	// should be in Drawables
+
 }

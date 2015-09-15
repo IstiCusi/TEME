@@ -9,10 +9,7 @@
 
 package ch.phonon.drawables;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
@@ -27,12 +24,14 @@ import ch.phonon.StarPoint;
  * @author phonon
  * 
  */
-public class DrawableLine extends AbstractDrawable {
+public class DrawableLine extends AbstractDrawable
+		implements Decoratable<DrawableShapeDecorations> {
 
 	private Line2D line;
-	private Color color;
 	double width, height;
-	private Stroke stroke;
+
+	private DrawableShapeDecorations decorations =
+			DrawableShapeDecorations.STANDARD_DECORATIONS;
 
 	/**
 	 * This constructor is used to define a {@link DrawableLine} object by
@@ -52,41 +51,21 @@ public class DrawableLine extends AbstractDrawable {
 		this.line = new Line2D.Double(point1, point2);
 
 		this.width = this.line.getBounds2D().getWidth();
-		;
+
 		this.height = this.line.getBounds2D().getHeight();
-		;
 
-		this.color = new Color(255, 0, 0);
-		this.stroke = new BasicStroke(2.0f);
 
 	}
 
-	/**
-	 * Sets the color of the circle
-	 * 
-	 * @param color
-	 */
-	public void setColor(Color color) {
-		this.color = color;
-	}
-
-	/**
-	 * Sets the {@link Stroke} type of the circle
-	 * 
-	 * @param stroke
-	 */
-
-	public void setStroke(Stroke stroke) {
-		this.stroke = stroke;
-	}
-
+	
 	@Override
-	void draw(Graphics2D graphicsContext, AffineTransform locationTransform) {
+	public void draw(Graphics2D graphicsContext,
+			AffineTransform locationTransform) {
 
-		graphicsContext.setColor(this.color);
-		graphicsContext.setStroke(this.stroke);
-		graphicsContext.draw(locationTransform
-				.createTransformedShape(this.line));
+		graphicsContext.setColor(this.decorations.getColor());
+		graphicsContext.setStroke(this.decorations.getStroke());
+		graphicsContext
+				.draw(locationTransform.createTransformedShape(this.line));
 
 	}
 
@@ -102,7 +81,17 @@ public class DrawableLine extends AbstractDrawable {
 
 	@Override
 	public boolean contains(int x, int y) {
-		// A line never contains ... 
+		// A line never contains ...
 		return false;
+	}
+
+	@Override
+	public void applyDecorations(DrawableShapeDecorations d) {
+		this.decorations = d;
+	}
+
+	@Override
+	public DrawableShapeDecorations getDecorations() {
+		return this.decorations;
 	}
 }

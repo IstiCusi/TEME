@@ -18,8 +18,8 @@ import java.util.ArrayList;
  * {@link Drawables} to one Drawable, what allows to construct more complex
  * shapes. It fulfills the contract of a normal {@link Drawable}. The
  * {@link #contains(int, int)} function checks if one of the {@link Drawable}s
- * contains the point. The class is abstract to inform the user/client to 
- * always extend.
+ * contains the point. The class is abstract to inform the user/client to always
+ * extend.
  * 
  * @author phonon
  *
@@ -65,7 +65,8 @@ abstract public class DrawableComposite implements Drawable {
 	}
 
 	@Override
-	public void paint(Graphics2D graphicsContext, AffineTransform transformation) {
+	public void paint(Graphics2D graphicsContext,
+			AffineTransform transformation) {
 		for (Drawable element : drawableList) {
 			element.paint(graphicsContext, transformation);
 		}

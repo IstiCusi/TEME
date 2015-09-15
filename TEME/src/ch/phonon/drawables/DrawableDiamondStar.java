@@ -16,7 +16,6 @@ import ch.phonon.LocalOrientation;
 import ch.phonon.StarPoint;
 import ch.phonon.temview.TEMView;
 
-
 /**
  * 
  * This star is a {@link DrawableComposite}, that may represents a mathematical
@@ -29,28 +28,34 @@ import ch.phonon.temview.TEMView;
  * @see DrawableStar
  * @see DrawableCircularStar
  */
-public class DrawableDiamondStar extends DrawableComposite {
+public final class DrawableDiamondStar extends DrawableComposite {
+
+	static private DrawableShapeDecorations pBoxDecoration =
+			new DrawableShapeDecorations.Builder().color(new Color(0, 255, 255))
+					.build();
+
+	static private LocalOrientation localOrientation =
+			new LocalOrientation(new Point2D.Double(0, 0), 45, 1.0);
 
 	/**
-	 * Constructs the star at the {@link StarPoint} location. 
+	 * Constructs the star at the {@link StarPoint} location.
+	 * 
 	 * @param starpoint
 	 */
 	public DrawableDiamondStar(StarPoint starpoint) {
 		super();
-		
-		LocalOrientation initialLocalOrientation = new LocalOrientation(new Point2D.Double(0,0), 45,1.0);
-		StarPoint initialStarpoint = starpoint;	
-		
-		DrawableBox pBox = new DrawableBox(initialStarpoint, initialLocalOrientation, 10, 10);
-		pBox.setColor(new Color(0,255,255));
+
+		DrawableBox pBox = new DrawableBox(starpoint, localOrientation, 10, 10);
 		pBox.setInvariantRotation(true);
 		pBox.setInvariantScaling(true);
-		
-		DrawableStar star = new DrawableStar(initialStarpoint);
-	
+
+		pBox.applyDecorations(pBoxDecoration);
+
+		DrawableStar star = new DrawableStar(starpoint);
+
 		this.add(pBox);
 		this.add(star);
-		
+
 	}
-		
+
 }

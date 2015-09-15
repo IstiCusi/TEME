@@ -97,9 +97,9 @@ public class Scales implements Iterable<DrawableScaleReference> {
 		int endX = (int) actualMousePosition.getX() + 200;
 		int yposition = (int) actualMousePosition.getY();
 
-		DrawableScaleReference newScale = new DrawableScaleReference(
-				new StarPoint(beginX, yposition), new StarPoint(
-						endX, yposition));
+		DrawableScaleReference newScale =
+				new DrawableScaleReference(new StarPoint(beginX, yposition),
+						new StarPoint(endX, yposition));
 
 		if (!this.activeScales.add(newScale)) {
 			throw new AssertionError("Could not add an additional scale");
@@ -116,10 +116,12 @@ public class Scales implements Iterable<DrawableScaleReference> {
 	 * @return first found scale that fits to the mouse position
 	 */
 
-	public DrawableScaleReference chooseScale(Point2D.Double actualMousePosition) {
+	public DrawableScaleReference
+			chooseScale(Point2D.Double actualMousePosition) {
 
 		// Get reference to found scale
-		DrawableScaleReference scale = findFirstScaleThatContains(actualMousePosition);
+		DrawableScaleReference scale =
+				findFirstScaleThatContains(actualMousePosition);
 
 		if (scale != null) {
 			moveAlltoInactive();
@@ -192,8 +194,8 @@ public class Scales implements Iterable<DrawableScaleReference> {
 	 *            {@link Drawable#contains(int, int)} check.
 	 * @return the first selected Scale
 	 */
-	private DrawableScaleReference findFirstScaleThatContains(
-			Point2D.Double actualMousePosition) {
+	private DrawableScaleReference
+			findFirstScaleThatContains(Point2D.Double actualMousePosition) {
 
 		for (DrawableScaleReference drawableScaleReference : activeScales) {
 			if (drawableScaleReference.contains(

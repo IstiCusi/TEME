@@ -29,7 +29,16 @@ import ch.phonon.StarPoint;
  * @author phonon
  * 
  */
-public class DrawableCoordinateSystem extends DrawableComposite {
+public final class DrawableCoordinateSystem extends DrawableComposite {
+
+	// TODO: Did the subsituttion below work 
+	private static LocalOrientation orientation =
+			new LocalOrientation(); // = new LocalOrientation(new Point2D.Double(0, 0), 0, 1.0);
+	
+	static private DrawableShapeDecorations circleDecoration =
+			new DrawableShapeDecorations.Builder().color(new Color(0, 255, 0))
+					.build();
+	
 
 	/**
 	 * Constructs the {@link DrawableCoordinateSystem} in placing the origin,
@@ -48,36 +57,52 @@ public class DrawableCoordinateSystem extends DrawableComposite {
 			double width) {
 		super();
 
-		StarPoint initialStarpoint = starpoint;
-
-		LocalOrientation orientation = new LocalOrientation(new Point2D.Double(
-				0, 0), 0, 1.0);
-		StarPoint str = new StarPoint(0, 0);
-		DrawableCircle circle = new DrawableCircle(str, orientation, 20, 20);
-		circle.setColor(new Color(0, 255, 0));
+		DrawableCircle circle = new DrawableCircle(starpoint, orientation, 20, 20);
 		circle.setInvariantRotation(false);
 		circle.setInvariantScaling(true);
+
+		circle.applyDecorations(circleDecoration);
+		
+		//circle.setColor(new Color(0, 255, 0));
+		
+		
 
 		float dash[] = { 10.0f };
 		Stroke stroke = new BasicStroke(3.0f, BasicStroke.CAP_BUTT,
 				BasicStroke.JOIN_MITER, 10.0f, dash, 0.0f);
+		
+		DrawableShapeDecorations crossDecoration =
+				new DrawableShapeDecorations.Builder().color(new Color(0, 255, 0))
+				.stroke(stroke)
+				.build();
+		
+		
 		// Stroke stroke=new BasicStroke(3.0f);
 
-		DrawableLine pLine1 = new DrawableLine(initialStarpoint,
+		DrawableLine pLine1 = new DrawableLine(starpoint,
 				new LocalOrientation(), new Point2D.Double(0, 0),
 				new Point2D.Double(5 * width, 0));
-		pLine1.setColor(new Color(0, 255, 0));
+		
+		
 		pLine1.setInvariantRotation(false);
 		pLine1.setInvariantScaling(true);
-		pLine1.setStroke(stroke);
+		
+//		pLine1.setColor(new Color(0, 255, 0));
+//		pLine1.setStroke(stroke);
 
-		DrawableLine pLine2 = new DrawableLine(initialStarpoint,
+		pLine1.applyDecorations(crossDecoration);
+		
+		DrawableLine pLine2 = new DrawableLine(starpoint,
 				new LocalOrientation(), new Point2D.Double(0, 0),
 				new Point2D.Double(0, 5 * height));
-		pLine2.setColor(new Color(0, 255, 0));
-		pLine2.setStroke(stroke);
 		pLine2.setInvariantRotation(false);
 		pLine2.setInvariantScaling(true);
+		
+		
+		// pLine2.setColor(new Color(0, 255, 0));
+		// pLine2.setStroke(stroke);
+		
+		pLine2.applyDecorations(crossDecoration);
 
 		this.add(pLine1);
 		this.add(pLine2);

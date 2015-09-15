@@ -89,13 +89,12 @@ public class Application {
 			;
 			HiFiLookAndFeel.setCurrentTheme(props);
 		} catch (ClassNotFoundException | InstantiationException
-				| IllegalAccessException
-				| UnsupportedLookAndFeelException e) {
+				| IllegalAccessException | UnsupportedLookAndFeelException e) {
 			// TODO Auto-generated catch block
 
 			try {
-				UIManager.setLookAndFeel(UIManager
-						.getSystemLookAndFeelClassName());
+				UIManager.setLookAndFeel(
+						UIManager.getSystemLookAndFeelClassName());
 			} catch (Exception ex) {
 				System.err
 						.println("Exception: standard look and feel not found");

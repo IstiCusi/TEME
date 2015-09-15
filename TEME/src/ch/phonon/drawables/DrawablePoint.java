@@ -57,7 +57,8 @@ public class DrawablePoint implements Drawable {
 	}
 
 	@Override
-	public void paint(Graphics2D graphicsContext, AffineTransform transformation) {
+	public void paint(Graphics2D graphicsContext,
+			AffineTransform transformation) {
 		drawable.paint(graphicsContext, transformation);
 	}
 

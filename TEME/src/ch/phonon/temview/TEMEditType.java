@@ -45,13 +45,12 @@ public enum TEMEditType {
 		return values()[(ordinal() + 1) % values().length];
 	}
 
-	
 	/**
 	 * Cycle to the previous {@link TEMEditMode} identified by the
 	 * {@link TEMEditType}
 	 * 
 	 * @return previous {@link TEMEditType}
-	 */	
+	 */
 	public TEMEditType getPrevious() {
 		return values()[(this.ordinal() + values().length - 1)
 				% values().length];

@@ -137,8 +137,8 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 
 			if (chosenScale != null) {
 
-				boolean isMiddleGripPressed = chosenScale.middleGripContains(
-						e.getX(), e.getY());
+				boolean isMiddleGripPressed =
+						chosenScale.middleGripContains(e.getX(), e.getY());
 
 				if (isMiddleGripPressed)
 					this.temAdapterScaleTreatment.treatMiddleGripPressed(e);
@@ -180,11 +180,10 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 		if (SwingUtilities.isMiddleMouseButton(e) && e.isControlDown()) {
 
 			// Scaling
-                       
-			temViewState.setScaling(this.temBegin.getScaling() - this.delta_y
-					* 0.01);
-			
-			
+
+			temViewState.setScaling(
+					this.temBegin.getScaling() - this.delta_y * 0.01);
+
 		}
 
 		// TODO: I do not like this conditional expressions - check if there is

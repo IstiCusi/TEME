@@ -56,8 +56,8 @@ import ch.phonon.temview.TEMView;
  * @author phonon
  * 
  */
-public class ProjectPropertiesPanel extends JPanel implements ActionListener,
-		FocusListener {
+public class ProjectPropertiesPanel extends JPanel
+		implements ActionListener, FocusListener {
 
 	private static final long serialVersionUID = 1L;
 	private JButton openButton;
@@ -117,9 +117,8 @@ public class ProjectPropertiesPanel extends JPanel implements ActionListener,
 		this.temTableModel = new TEMTableModel();
 		this.temTable = new TemTable(this.temTableModel);
 		this.temTable.configureTable();
-//		firePropertyChange("temTableModelChange", null,
-//				this.temTableModel);
-		
+		// firePropertyChange("temTableModelChange", null,
+		// this.temTableModel);
 
 		middlePanel = new JPanel();
 		middlePanel.setLayout(new BorderLayout());
@@ -139,17 +138,17 @@ public class ProjectPropertiesPanel extends JPanel implements ActionListener,
 				"Images", "jpg", "png", "gif", "bmp"));
 		temFileChooser.setAcceptAllFileFilterUsed(false);
 		temFileChooser.setMultiSelectionEnabled(true);
-		temFileChooser.setCurrentDirectory(new File(ResourceLoader.getResource(
-				"PictureFolder").toString()));
+		temFileChooser.setCurrentDirectory(new File(
+				ResourceLoader.getResource("PictureFolder").toString()));
 
 		url = ResourceLoader.getUrl("pics/Remove16.gif");
-		removeButton = new JButton("Remove TEM picture(s) ...", new ImageIcon(
-				url));
+		removeButton =
+				new JButton("Remove TEM picture(s) ...", new ImageIcon(url));
 		removeButton.addActionListener(this);
 
 		url = ResourceLoader.getUrl("pics/Duplicate16.gif");
-		copyButton = new JButton("Duplicate TEM picture(s) ...", new ImageIcon(
-				url));
+		copyButton =
+				new JButton("Duplicate TEM picture(s) ...", new ImageIcon(url));
 
 		clearButton = new JButton("Clear all TEM pictures ...");
 
@@ -177,8 +176,6 @@ public class ProjectPropertiesPanel extends JPanel implements ActionListener,
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		
-
 		if (e.getSource() == openButton) {
 			int returnVal = temFileChooser.showOpenDialog(this);
 
@@ -190,14 +187,14 @@ public class ProjectPropertiesPanel extends JPanel implements ActionListener,
 					try {
 						this.image = ImageIO.read(temFile);
 						if (this.image != null) {
-							this.temAllied = new TEMAllied(image,
-									temFile.getName());
+							this.temAllied =
+									new TEMAllied(image, temFile.getName());
 							this.temTableModel.add(this.temAllied);
 							this.temTableModel.fireTableDataChanged();
 							firePropertyChange("temTableModelChange", null,
 									this.temTableModel);
-							System.out.println("Opening: " + temFile.getName()
-									+ ".");
+							System.out.println(
+									"Opening: " + temFile.getName() + ".");
 						}
 
 					} catch (IOException ex) {
@@ -216,11 +213,10 @@ public class ProjectPropertiesPanel extends JPanel implements ActionListener,
 
 		if (e.getSource() == removeButton) {
 
-			this.temTableModel.removeTEMAllieds(
-					this.temTable.getSetOfSelectedRows());
+			this.temTableModel
+					.removeTEMAllieds(this.temTable.getSetOfSelectedRows());
 			this.temTableModel.fireTableDataChanged();
-			firePropertyChange("temTableModelChange", null,
-					this.temTableModel);
+			firePropertyChange("temTableModelChange", null, this.temTableModel);
 
 		}
 	}
@@ -252,11 +248,12 @@ public class ProjectPropertiesPanel extends JPanel implements ActionListener,
 			for (int row = 0; row < temTable.getRowCount(); row++) {
 				int rowHeight = temTable.getRowHeight();
 
-				for (int column = 0; column < temTable.getColumnCount(); column++) {
+				for (int column = 0; column < temTable
+						.getColumnCount(); column++) {
 					Component comp = temTable.prepareRenderer(
 							temTable.getCellRenderer(row, column), row, column);
-					rowHeight = Math.max(rowHeight,
-							comp.getPreferredSize().height);
+					rowHeight =
+							Math.max(rowHeight, comp.getPreferredSize().height);
 				}
 
 				temTable.setRowHeight(row, rowHeight);

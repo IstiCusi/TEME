@@ -39,15 +39,15 @@ public class TEMEditMode {
 
 			this.activeType = TEMEditType.POINT;
 
-			BufferedImage curBufferedImage = ResourceLoader
-					.getBufferedImage("Cross.gif");
-			Cursor bufferedCursor = Toolkit.getDefaultToolkit()
-					.createCustomCursor(curBufferedImage, new Point(32, 32),
-							"Cross");
+			BufferedImage curBufferedImage =
+					ResourceLoader.getBufferedImage("Cross.gif");
+			Cursor bufferedCursor =
+					Toolkit.getDefaultToolkit().createCustomCursor(
+							curBufferedImage, new Point(32, 32), "Cross");
 			this.cursors.put(TEMEditType.POINT, bufferedCursor);
 
-			curBufferedImage = ResourceLoader
-					.getBufferedImage("Cross_Scale.png");
+			curBufferedImage =
+					ResourceLoader.getBufferedImage("Cross_Scale.png");
 			bufferedCursor = Toolkit.getDefaultToolkit().createCustomCursor(
 					curBufferedImage, new Point(32, 32), "Scale");
 			this.cursors.put(TEMEditType.SCALE, bufferedCursor);

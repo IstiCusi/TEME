@@ -30,24 +30,29 @@ import ch.phonon.temview.TEMView;
  */
 public class DrawableCircularStar extends DrawableComposite {
 
+	static private DrawableShapeDecorations circleDecoration =
+			new DrawableShapeDecorations.Builder().color(new Color(0, 255, 255))
+					.build();
+
+	static private LocalOrientation localOrientation =
+			new LocalOrientation(new Point2D.Double(0, 0), 0, 1.0);
+
 	/**
-	 * Constructs the star at the {@link StarPoint} location. 
+	 * Constructs the star at the {@link StarPoint} location.
+	 * 
 	 * @param starpoint
 	 */
 	public DrawableCircularStar(StarPoint starpoint) {
 		super();
 
-		LocalOrientation initialLocalOrientation = new LocalOrientation(
-				new Point2D.Double(0, 0), 0, 1.0);
-		StarPoint initialStarpoint = starpoint;
-
-		DrawableCircle circle = new DrawableCircle(initialStarpoint,
-				initialLocalOrientation, 10, 10);
-		circle.setColor(new Color(0, 255, 255));
+		DrawableCircle circle =
+				new DrawableCircle(starpoint, localOrientation, 10, 10);
 		circle.setInvariantRotation(true);
 		circle.setInvariantScaling(true);
 
-		DrawableStar star = new DrawableStar(initialStarpoint);
+		circle.applyDecorations(circleDecoration);
+
+		DrawableStar star = new DrawableStar(starpoint);
 
 		this.add(circle);
 		this.add(star);

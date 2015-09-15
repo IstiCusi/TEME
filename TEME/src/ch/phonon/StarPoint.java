@@ -26,7 +26,9 @@ public class StarPoint extends PointInPictureBase {
 
 	Point2D.Double star;
 
-	/* ********************** Constructors ************************************* */
+	/*
+	 * ********************** Constructors *************************************
+	 */
 
 	/**
 	 * The standard constructor is identified with the global coordinate (0,0)
@@ -203,8 +205,8 @@ public class StarPoint extends PointInPictureBase {
 	 * @return length of the {@link StarPoint} vector
 	 */
 	public static double getNorm(StarPoint sPoint) {
-		double norm = Math.sqrt(Math.pow(sPoint.getX(), 2)
-				+ Math.pow(sPoint.getY(), 2));
+		double norm = Math
+				.sqrt(Math.pow(sPoint.getX(), 2) + Math.pow(sPoint.getY(), 2));
 		return norm;
 	}
 
@@ -272,7 +274,7 @@ public class StarPoint extends PointInPictureBase {
 	 * @param b
 	 * @return smaller unoriented angle
 	 * @see <a href=""http://math.stackexchange.com/questions/317874/
-
+	 * 
 	 *      calculate-the-angle-between-two-vectors"">oriented angle</a>
 	 */
 	public static double getAngle(StarPoint a, StarPoint b) {
@@ -281,8 +283,8 @@ public class StarPoint extends PointInPictureBase {
 
 		double dotProduct = getDotProduct(a, b);
 
-		double angle = Math.acos(dotProduct / (normA * normB)) * 360.0
-				/ (2 * Math.PI);
+		double angle =
+				Math.acos(dotProduct / (normA * normB)) * 360.0 / (2 * Math.PI);
 		return angle;
 	}
 
@@ -343,15 +345,15 @@ public class StarPoint extends PointInPictureBase {
 	 * @return scaled vector as {@link StarPoint}.
 	 */
 	public static StarPoint getScaledVector(StarPoint vector, double scale) {
-		StarPoint scaledVector = new StarPoint(vector.getX() * scale,
-				vector.getY() * scale);
+		StarPoint scaledVector =
+				new StarPoint(vector.getX() * scale, vector.getY() * scale);
 		return scaledVector;
 	}
 
 	@Override
 	/**
-	 * Gives back a string representation, that reflects the coordinates
-	 * of the StarPoint.
+	 * Gives back a string representation, that reflects the coordinates of the
+	 * StarPoint.
 	 */
 	public String toString() {
 		return "StarPoint: (X " + this.getX() + ", Y " + this.getY() + ")";
@@ -362,8 +364,7 @@ public class StarPoint extends PointInPictureBase {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((star == null) ? 0 : star.hashCode());
+		result = prime * result + ((star == null) ? 0 : star.hashCode());
 		return result;
 	}
 
@@ -384,9 +385,8 @@ public class StarPoint extends PointInPictureBase {
 		if (star == null) {
 			if (other.star != null)
 				return false;
-		} else
-			if (!star.equals(other.star))
-				return false;
+		} else if (!star.equals(other.star))
+			return false;
 		return true;
 	}
 

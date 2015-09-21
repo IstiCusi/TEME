@@ -23,7 +23,7 @@ import java.awt.geom.Point2D;
 
 import javax.swing.SwingUtilities;
 
-import ch.phonon.drawables.DrawableScaleReference;
+import ch.phonon.drawables.composites.DrawableScaleReference;
 
 // enum KeyState {pressed, released};
 

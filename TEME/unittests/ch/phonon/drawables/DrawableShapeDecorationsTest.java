@@ -15,6 +15,8 @@ import java.awt.Color;
 
 import org.junit.Test;
 
+import ch.phonon.drawables.decoration.DrawableShapeDecorations;
+
 /**
  * @author phonon
  *

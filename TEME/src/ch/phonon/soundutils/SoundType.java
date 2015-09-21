@@ -7,7 +7,7 @@
  * 
  *************************************************************************/
 
-package ch.phonon;
+package ch.phonon.soundutils;
 
 import java.util.EnumMap;
 

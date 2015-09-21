@@ -7,7 +7,7 @@
  * 
  *************************************************************************/
 
-package ch.phonon.drawables;
+package ch.phonon.drawables.primitives;
 
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
@@ -18,8 +18,10 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import ch.phonon.LocalOrientation;
-import ch.phonon.StarPoint;
+import ch.phonon.drawables.AbstractDrawable;
+import ch.phonon.drawables.Drawable;
+import ch.phonon.drawables.orientation.LocalOrientation;
+import ch.phonon.drawables.orientation.StarPoint;
 
 /**
  * The {@link DrawablePicture} class provides a {@link Drawable} picture, that
@@ -96,7 +98,7 @@ public class DrawablePicture extends AbstractDrawable {
 	}
 
 	@Override
-			void draw(Graphics2D graphicsContext,
+			public void draw(Graphics2D graphicsContext,
 					AffineTransform locationTransform) {
 		this.locationTransform = locationTransform;
 		graphicsContext.drawRenderedImage(image, locationTransform);

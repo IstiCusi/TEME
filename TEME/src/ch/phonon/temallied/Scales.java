@@ -15,7 +15,7 @@
  * could be similarly used for the points etc container.
  */
 
-package ch.phonon;
+package ch.phonon.temallied;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -23,8 +23,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import ch.phonon.drawables.Drawable;
-import ch.phonon.drawables.DrawableScaleReference;
-import ch.phonon.drawables.DrawableScaleReference.ActiveState;
+import ch.phonon.drawables.composites.DrawableScaleReference;
+import ch.phonon.drawables.composites.DrawableScaleReference.ActiveState;
+import ch.phonon.drawables.orientation.StarPoint;
 import ch.phonon.temview.TEMView;
 
 /**

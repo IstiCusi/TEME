@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 /**
  * The abstract {@link DrawableComposite} class allows to group
- * {@link Drawables} to one Drawable, what allows to construct more complex
+ * {@link Drawable}s to one Drawable, what allows to construct more complex
  * shapes. It fulfills the contract of a normal {@link Drawable}. The
  * {@link #contains(int, int)} function checks if one of the {@link Drawable}s
  * contains the point. The class is abstract to inform the user/client to always

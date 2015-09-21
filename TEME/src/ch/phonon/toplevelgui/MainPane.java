@@ -10,7 +10,7 @@
 // TODO: Implement a pane to reach most of the important functions of the 
 // TEMView
 
-package ch.phonon;
+package ch.phonon.toplevelgui;
 
 /**
  * @author phonon

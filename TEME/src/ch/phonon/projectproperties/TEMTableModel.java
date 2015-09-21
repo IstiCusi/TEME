@@ -19,12 +19,12 @@ import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
-import ch.phonon.LocalOrientation;
 import ch.phonon.ResourceLoader;
-import ch.phonon.StarPoint;
-import ch.phonon.TEMAllied;
-import ch.phonon.drawables.DrawableCoordinateSystem;
-import ch.phonon.drawables.DrawablePicture;
+import ch.phonon.drawables.composites.DrawableCoordinateSystem;
+import ch.phonon.drawables.orientation.LocalOrientation;
+import ch.phonon.drawables.orientation.StarPoint;
+import ch.phonon.drawables.primitives.DrawablePicture;
+import ch.phonon.temallied.TEMAllied;
 
 /**
  * The class logically spans a table, that gives an overview about the loaded

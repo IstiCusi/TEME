@@ -25,10 +25,10 @@ package ch.phonon.drawables;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 
-import ch.phonon.InvariantScalingType;
-import ch.phonon.LocalOrientation;
-import ch.phonon.Positionable;
-import ch.phonon.StarPoint;
+import ch.phonon.drawables.orientation.LocalOrientation;
+import ch.phonon.drawables.orientation.Positionable;
+import ch.phonon.drawables.orientation.StarPoint;
+import ch.phonon.temallied.InvariantScalingType;
 import ch.phonon.temview.TEMView;
 import ch.phonon.temview.TEMViewState;
 
@@ -116,7 +116,11 @@ public abstract class AbstractDrawable implements Drawable, Positionable {
 		return viewPortTransform;
 	}
 
-	abstract void draw(Graphics2D graphicsContext,
+	/**
+	 * @param graphicsContext
+	 * @param locationTransform
+	 */
+	abstract public void draw(Graphics2D graphicsContext,
 			AffineTransform locationTransform);
 
 	@Override

@@ -7,6 +7,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import ch.phonon.drawables.orientation.StarPoint;
+
 /**
  * @author phonon
  *
@@ -15,7 +17,7 @@ public class StarPointTest {
 
 	/**
 	 * Test method for
-	 * {@link ch.phonon.StarPoint#createRotatedStarPoint(ch.phonon.StarPoint, double)}
+	 * {@link ch.phonon.drawables.orientation.StarPoint#createRotatedStarPoint(ch.phonon.drawables.orientation.StarPoint, double)}
 	 * .
 	 */
 	@Test
@@ -38,7 +40,7 @@ public class StarPointTest {
 	}
 
 	/**
-	 * Test method for {@link ch.phonon.StarPoint#rotateStarPoint(double)}.
+	 * Test method for {@link ch.phonon.drawables.orientation.StarPoint#rotateStarPoint(double)}.
 	 */
 	@Test
 	public void testRotateStarPoint() {
@@ -78,7 +80,7 @@ public class StarPointTest {
 
 	/**
 	 * Test method for
-	 * {@link ch.phonon.StarPoint#getDifference(ch.phonon.StarPoint, ch.phonon.StarPoint)}
+	 * {@link ch.phonon.drawables.orientation.StarPoint#getDifference(ch.phonon.drawables.orientation.StarPoint, ch.phonon.drawables.orientation.StarPoint)}
 	 * .
 	 */
 	@Test
@@ -98,7 +100,7 @@ public class StarPointTest {
 	}
 
 	/**
-	 * Test method for {@link ch.phonon.StarPoint#equals(java.lang.Object)}.
+	 * Test method for {@link ch.phonon.drawables.orientation.StarPoint#equals(java.lang.Object)}.
 	 */
 	@Test
 	public void testEquals() {
@@ -111,7 +113,7 @@ public class StarPointTest {
 
 	/**
 	 * Test method for
-	 * {@link ch.phonon.StarPoint#getOrientedAngle(ch.phonon.StarPoint, ch.phonon.StarPoint)}
+	 * {@link ch.phonon.drawables.orientation.StarPoint#getOrientedAngle(ch.phonon.drawables.orientation.StarPoint, ch.phonon.drawables.orientation.StarPoint)}
 	 * .
 	 */
 	@Test
@@ -141,7 +143,7 @@ public class StarPointTest {
 
 	/**
 	 * Test method for
-	 * {@link ch.phonon.StarPoint#getAngle(ch.phonon.StarPoint, ch.phonon.StarPoint)}
+	 * {@link ch.phonon.drawables.orientation.StarPoint#getAngle(ch.phonon.drawables.orientation.StarPoint, ch.phonon.drawables.orientation.StarPoint)}
 	 * .
 	 */
 	@Test
@@ -185,7 +187,7 @@ public class StarPointTest {
 
 	/**
 	 * Test method for
-	 * {@link ch.phonon.StarPoint#getCounterClockWiseAngle(ch.phonon.StarPoint, ch.phonon.StarPoint)}
+	 * {@link ch.phonon.drawables.orientation.StarPoint#getCounterClockWiseAngle(ch.phonon.drawables.orientation.StarPoint, ch.phonon.drawables.orientation.StarPoint)}
 	 * .
 	 */
 	@Test

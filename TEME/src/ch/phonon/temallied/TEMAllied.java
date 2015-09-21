@@ -10,7 +10,7 @@
 // TODO Check if members are all initialized (icon e.g.) and make this more
 // robust -- no unidentified state should be possible. Write unit tests.
 
-package ch.phonon;
+package ch.phonon.temallied;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -20,10 +20,11 @@ import java.util.Iterator;
 import javax.swing.ImageIcon;
 
 import ch.phonon.drawables.Drawable;
-import ch.phonon.drawables.DrawableCoordinateSystem;
-import ch.phonon.drawables.DrawablePicture;
 import ch.phonon.drawables.DrawablePoint;
-import ch.phonon.drawables.Drawables;
+import ch.phonon.drawables.composites.DrawableCoordinateSystem;
+import ch.phonon.drawables.orientation.LocalOrientation;
+import ch.phonon.drawables.orientation.StarPoint;
+import ch.phonon.drawables.primitives.DrawablePicture;
 
 // TODO The TEMAllied component should also store the viewing state in
 // the TEMView so that when the user changes to the old view of another
@@ -40,36 +41,21 @@ import ch.phonon.drawables.Drawables;
  */
 public class TEMAllied {
 
+	// ------------------------------- State------------------------------------
+	
 	// TODO: Better to use interfaces and not classes as reference type
 	// see Effective Java Book ... in this case e.g. List
 	private DrawablePicture drawableTEMPicture;
 	private ArrayList<Drawable> drawableList;
 	private ArrayList<DrawablePoint> pointsList;
-	private Scales scales = null;
+	private Scales scales = new Scales();
 
 	private String name;
 	private String information = "";
 	private ImageIcon icon;
 
-	/**
-	 * Get all {@link Drawable} associated to this {@link TEMAllied}.
-	 * 
-	 * @return all drawables
-	 */
-	public ArrayList<Drawable> getDrawables() {
-		return drawableList;
-	}
-
-	/**
-	 * Set a List of drawables to be associated with the loaded TEM picture
-	 * 
-	 * @param drawableList
-	 *            the drawables to set
-	 */
-	public void setDrawableList(ArrayList<Drawable> drawableList) {
-		this.drawableList = drawableList;
-	}
-
+	// ----------------------------Constructors --------------------------------
+	
 	/**
 	 * Initializes any empty TEMAllied container that can is used as a first
 	 * view onto the temView before another TEMAllied instance is displayed. The
@@ -79,7 +65,6 @@ public class TEMAllied {
 	public TEMAllied() {
 		this.drawableList = new ArrayList<Drawable>();
 		this.pointsList = new ArrayList<DrawablePoint>();
-		this.scales = new Scales();
 		this.information = "No picture loaded";
 		this.name = "no name";
 	}
@@ -101,7 +86,6 @@ public class TEMAllied {
 
 		this.drawableList = new ArrayList<Drawable>();
 		this.pointsList = new ArrayList<DrawablePoint>();
-		this.scales = new Scales();
 
 		// TODO: This is duplicate code... add a class to keep it similar to
 		// the empty TEMView.
@@ -131,7 +115,6 @@ public class TEMAllied {
 
 		this.drawableList = new ArrayList<Drawable>();
 		this.pointsList = new ArrayList<DrawablePoint>();
-		this.scales = new Scales();
 
 		DrawableCoordinateSystem cS = new DrawableCoordinateSystem(
 				new StarPoint(), (double) 1000, (double) 1000);
@@ -143,6 +126,29 @@ public class TEMAllied {
 				initialLocalOrientation, image);
 
 	}
+
+
+	
+	/**
+	 * Get all {@link Drawable} associated to this {@link TEMAllied}.
+	 * 
+	 * @return all drawables
+	 */
+	public ArrayList<Drawable> getDrawables() {
+		return drawableList;
+	}
+
+	/**
+	 * Set a List of drawables to be associated with the loaded TEM picture
+	 * 
+	 * @param drawableList
+	 *            the drawables to set
+	 */
+	public void setDrawableList(ArrayList<Drawable> drawableList) {
+		this.drawableList = drawableList;
+	}
+
+
 
 	/**
 	 * This private function generates an small sized icon of an height of 100
@@ -229,7 +235,7 @@ public class TEMAllied {
 	}
 
 	/**
-	 * Adds an additional {@link Drawable} to the list of {@link Drawables} that
+	 * Adds an additional {@link Drawable} to the list of {@link Drawable}s that
 	 * should be plotted on top of the TEM picture. the last added is on top.
 	 * 
 	 * @param drawable
@@ -247,14 +253,6 @@ public class TEMAllied {
 	public DrawablePicture getDrawableTEMPicture() {
 		return this.drawableTEMPicture;
 	}
-
-	// /**
-	// * Sets the TEM picture
-	// * @param temPicture
-	// */
-	// public void setTemPicture(DrawablePicture temPicture) {
-	// this.drawableTEMPicture = temPicture;
-	// }
 
 	/**
 	 * Get reference ot he point list associated with the TEM picture

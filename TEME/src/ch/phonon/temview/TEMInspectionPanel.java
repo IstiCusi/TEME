@@ -26,8 +26,8 @@ import javax.swing.plaf.ButtonUI;
 import javax.swing.plaf.basic.BasicButtonUI;
 
 import ch.phonon.ResourceLoader;
-import ch.phonon.TEMAllied;
 import ch.phonon.drawables.Drawable;
+import ch.phonon.temallied.TEMAllied;
 
 /**
  * This JPanel contains all components necessary to inspect TEM pictures: The

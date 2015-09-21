@@ -24,6 +24,9 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+import ch.phonon.soundutils.Sound;
+import ch.phonon.soundutils.SoundType;
+
 /**
  * The ResourceLoader class is the central utility class collecting functions
  * that are relevant for loading resources as pictures, videos and sounds. The

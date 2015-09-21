@@ -42,6 +42,10 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import com.jtattoo.plaf.hifi.HiFiLookAndFeel;
 
+import ch.phonon.soundutils.Sound;
+import ch.phonon.soundutils.SoundType;
+import ch.phonon.toplevelgui.MainFrame;
+
 /**
  * The <code>Application</code> class represents the main entrance point of the
  * application. Because Swing is not tread-save, all the execution of the Swing

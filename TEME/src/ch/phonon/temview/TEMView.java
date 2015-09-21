@@ -32,23 +32,23 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
-import ch.phonon.LocalOrientation;
 import ch.phonon.ResourceLoader;
-import ch.phonon.Scales;
-import ch.phonon.Sound;
-import ch.phonon.SoundType;
-import ch.phonon.StarPoint;
-import ch.phonon.TEMAllied;
-import ch.phonon.TextOrientation;
 import ch.phonon.drawables.AbstractDrawable;
 import ch.phonon.drawables.Drawable;
-import ch.phonon.drawables.DrawableDiamondStar;
-import ch.phonon.drawables.DrawablePicture;
 import ch.phonon.drawables.DrawablePoint;
-import ch.phonon.drawables.DrawableScaleReference;
-import ch.phonon.drawables.DrawableScaleReference.ActiveState;
-import ch.phonon.drawables.DrawableText;
+import ch.phonon.drawables.TextOrientation;
+import ch.phonon.drawables.composites.DrawableDiamondStar;
+import ch.phonon.drawables.composites.DrawableScaleReference;
+import ch.phonon.drawables.composites.DrawableScaleReference.ActiveState;
+import ch.phonon.drawables.orientation.LocalOrientation;
+import ch.phonon.drawables.orientation.StarPoint;
+import ch.phonon.drawables.primitives.DrawablePicture;
+import ch.phonon.drawables.primitives.DrawableText;
 import ch.phonon.projectproperties.TEMTableModel;
+import ch.phonon.soundutils.Sound;
+import ch.phonon.soundutils.SoundType;
+import ch.phonon.temallied.Scales;
+import ch.phonon.temallied.TEMAllied;
 
 /**
  * The {@link TEMView} is a {@link JPanel}, that is used to show various
@@ -156,7 +156,7 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 	// ---------------------painting of the view -------------------------------
 
 	@Override
-	public void paintComponent(Graphics g) {
+	public void paintComponent(Graphics g) { // swing: use always paintComponent
 
 		super.paintComponent(g);
 		Graphics2D g2D = (Graphics2D) g;
@@ -381,6 +381,7 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 	private void configureEnvironment() {
 
 		Border emptyBorder = BorderFactory.createEmptyBorder();
+		setDoubleBuffered(true); // This seems not to be necessary somehow
 		setBorder(emptyBorder);
 
 		setOpaque(true);

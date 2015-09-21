@@ -6,11 +6,13 @@
  *  All Rights Reserved.
  * 
  *************************************************************************/
-package ch.phonon;
+package ch.phonon.toplevelgui;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+
+import ch.phonon.ResourceLoader;
 
 /**
  * The {@link MainMenu} class represents the menu bar of the application. It is

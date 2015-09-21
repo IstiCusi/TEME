@@ -12,7 +12,7 @@
 // We have to check this contract. Are the functions setInitialOrientationState
 // necessary.
 
-package ch.phonon;
+package ch.phonon.drawables.orientation;
 
 import ch.phonon.drawables.AbstractDrawable;
 import ch.phonon.drawables.Drawable;

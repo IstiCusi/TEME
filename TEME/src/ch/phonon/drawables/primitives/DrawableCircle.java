@@ -9,14 +9,18 @@
 
 //TODO: Use the DrawableProperties 
 
-package ch.phonon.drawables;
+package ch.phonon.drawables.primitives;
 
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 
-import ch.phonon.LocalOrientation;
-import ch.phonon.StarPoint;
+import ch.phonon.drawables.AbstractDrawable;
+import ch.phonon.drawables.Drawable;
+import ch.phonon.drawables.decoration.Decoratable;
+import ch.phonon.drawables.decoration.DrawableShapeDecorations;
+import ch.phonon.drawables.orientation.LocalOrientation;
+import ch.phonon.drawables.orientation.StarPoint;
 
 /**
  * 

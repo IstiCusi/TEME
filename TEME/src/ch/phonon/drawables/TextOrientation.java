@@ -7,9 +7,11 @@
  * 
  *************************************************************************/
 
-package ch.phonon;
+package ch.phonon.drawables;
 
-import ch.phonon.drawables.DrawableText;
+import ch.phonon.drawables.orientation.LocalOrientation;
+import ch.phonon.drawables.orientation.StarPoint;
+import ch.phonon.drawables.primitives.DrawableText;
 
 /**
  * This enum is used to describe the orientation of text written to the tem view

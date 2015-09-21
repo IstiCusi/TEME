@@ -7,15 +7,19 @@
  * 
  *************************************************************************/
 
-package ch.phonon.drawables;
+package ch.phonon.drawables.composites;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Stroke;
 import java.awt.geom.Point2D;
 
-import ch.phonon.LocalOrientation;
-import ch.phonon.StarPoint;
+import ch.phonon.drawables.DrawableComposite;
+import ch.phonon.drawables.decoration.DrawableShapeDecorations;
+import ch.phonon.drawables.orientation.LocalOrientation;
+import ch.phonon.drawables.orientation.StarPoint;
+import ch.phonon.drawables.primitives.DrawableCircle;
+import ch.phonon.drawables.primitives.DrawableLine;
 
 /**
  * 

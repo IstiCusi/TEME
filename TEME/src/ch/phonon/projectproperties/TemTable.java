@@ -25,9 +25,9 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
 import ch.phonon.ResourceLoader;
-import ch.phonon.Sound;
-import ch.phonon.SoundType;
-import ch.phonon.TEMAllied;
+import ch.phonon.soundutils.Sound;
+import ch.phonon.soundutils.SoundType;
+import ch.phonon.temallied.TEMAllied;
 import ch.phonon.temview.TEMView;
 
 /**

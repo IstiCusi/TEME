@@ -7,9 +7,10 @@
  * 
  *************************************************************************/
 
-package ch.phonon;
+package ch.phonon.drawables.orientation;
 
 import java.awt.geom.Point2D;
+
 import ch.phonon.drawables.Drawable;
 import ch.phonon.drawables.DrawableComposite;
 

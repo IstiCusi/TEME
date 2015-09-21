@@ -7,16 +7,19 @@
  * 
  *******************************************************************************/
 
-package ch.phonon.drawables;
+package ch.phonon.drawables.primitives;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 
-import ch.phonon.LocalOrientation;
-import ch.phonon.StarPoint;
+import ch.phonon.drawables.AbstractDrawable;
+import ch.phonon.drawables.decoration.Decoratable;
+import ch.phonon.drawables.decoration.Decorations;
+import ch.phonon.drawables.decoration.DrawableShapeDecorations;
+import ch.phonon.drawables.orientation.LocalOrientation;
+import ch.phonon.drawables.orientation.StarPoint;
 
 /**
  * The <code>DrawableBox</code> class implements the {@link AbstractDrawable}.
@@ -189,39 +192,6 @@ public class DrawableBox extends AbstractDrawable
 	@Override
 	public double getHeight() {
 		return this.height;
-	}
-
-	/**
-	 * get filling status of box. Is it filled (true) or empty (false)
-	 * 
-	 * @return filling status of the {@link Drawable}
-	 * @deprecated getDecorations Should be used and the color set there.
-	 */
-
-	public boolean isFilled() {
-		// TODO Auto-generated method stub
-		return this.decorations.isFilled();
-	}
-
-	/**
-	 * Sets the color of the drawable box.
-	 * 
-	 * @param color
-	 * @deprecated getDecorations Should be used and the color set there.
-	 */
-	public void setColor(Color color) {
-		this.decorations.setColor(color);
-	}
-
-	/**
-	 * set the filling status of the box. When filled is true, than the drawn
-	 * box is filled.
-	 * 
-	 * @param filled
-	 * @deprecated
-	 */
-	public void setFilled(boolean filled) {
-		this.decorations.setFilled(filled);
 	}
 
 }

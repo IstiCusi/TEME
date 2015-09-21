@@ -7,7 +7,7 @@
  * 
  *************************************************************************/
 
-package ch.phonon;
+package ch.phonon.drawables.orientation;
 
 import java.awt.geom.Point2D;
 

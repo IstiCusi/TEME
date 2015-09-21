@@ -11,8 +11,8 @@ package ch.phonon.temview;
 
 import java.awt.event.MouseEvent;
 
-import ch.phonon.StarPoint;
-import ch.phonon.drawables.DrawableScaleReference;
+import ch.phonon.drawables.composites.DrawableScaleReference;
+import ch.phonon.drawables.orientation.StarPoint;
 
 /**
  * This class handles the {@link DrawableScaleReference} movement in the

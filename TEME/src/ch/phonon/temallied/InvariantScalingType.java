@@ -7,7 +7,7 @@
  * 
  *******************************************************************************/
 
-package ch.phonon;
+package ch.phonon.temallied;
 
 import ch.phonon.drawables.Drawable;
 import ch.phonon.temview.TEMViewState;

@@ -11,8 +11,8 @@
 
 package ch.phonon.temview;
 
-import ch.phonon.TEMAllied;
-import ch.phonon.drawables.DrawableScaleReference;
+import ch.phonon.drawables.composites.DrawableScaleReference;
+import ch.phonon.temallied.TEMAllied;
 
 /**
  * The TEMEditType classifies different modes of the {@link TEMView}. These

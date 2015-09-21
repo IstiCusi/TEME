@@ -7,7 +7,7 @@
  * 
  *************************************************************************/
 
-package ch.phonon;
+package ch.phonon.soundutils;
 
 import java.io.IOException;
 import java.util.EnumMap;
@@ -19,6 +19,8 @@ import javax.sound.sampled.DataLine;
 import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
+
+import ch.phonon.ResourceLoader;
 
 //TODO: Write unit test, that checks the construction of objects, when
 // when the static setStandardStreams(EnumMap) was not used before.

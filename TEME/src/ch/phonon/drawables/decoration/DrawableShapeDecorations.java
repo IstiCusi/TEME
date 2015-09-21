@@ -7,11 +7,13 @@
  * 
  *************************************************************************/
 
-package ch.phonon.drawables;
+package ch.phonon.drawables.decoration;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Stroke;
+
+import ch.phonon.drawables.Drawable;
 
 /**
  * 

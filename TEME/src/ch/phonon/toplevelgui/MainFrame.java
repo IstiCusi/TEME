@@ -7,7 +7,7 @@
  * 
  *************************************************************************/
 
-package ch.phonon;
+package ch.phonon.toplevelgui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -19,6 +19,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JTabbedPane;
 
+import ch.phonon.ResourceLoader;
 import ch.phonon.projectproperties.ProjectPropertiesPanel;
 import ch.phonon.temview.TEMInspectionPanel;
 

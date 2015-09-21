@@ -7,7 +7,10 @@
  * 
  *************************************************************************/
 
-package ch.phonon.drawables;
+package ch.phonon.drawables.decoration;
+
+import ch.phonon.drawables.AbstractDrawable;
+import ch.phonon.drawables.Drawable;
 
 /**
  * Interface that any {@link Drawable} needs to implement, when it should be

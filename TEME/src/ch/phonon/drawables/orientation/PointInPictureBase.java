@@ -7,7 +7,7 @@
  * 
  *************************************************************************/
 
-package ch.phonon;
+package ch.phonon.drawables.orientation;
 
 //TODO: Is it necessary to define here equals ? (see Bloch, eff. java)
 // TODO add the origin description

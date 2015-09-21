@@ -7,7 +7,7 @@
  * 
  *************************************************************************/
 
-package ch.phonon.drawables;
+package ch.phonon.drawables.primitives;
 
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -19,9 +19,10 @@ import java.awt.geom.AffineTransform;
 import java.text.AttributedCharacterIterator;
 import java.text.AttributedString;
 
-import ch.phonon.LocalOrientation;
-import ch.phonon.StarPoint;
-import ch.phonon.TextOrientation;
+import ch.phonon.drawables.AbstractDrawable;
+import ch.phonon.drawables.TextOrientation;
+import ch.phonon.drawables.orientation.LocalOrientation;
+import ch.phonon.drawables.orientation.StarPoint;
 import ch.phonon.temview.TEMView;
 
 /**
@@ -82,7 +83,7 @@ public class DrawableText extends AbstractDrawable {
 	}
 
 	@Override
-			void draw(Graphics2D graphicsContext,
+		public void draw(Graphics2D graphicsContext,
 					AffineTransform locationTransform) {
 
 		FontRenderContext frc = graphicsContext.getFontRenderContext();

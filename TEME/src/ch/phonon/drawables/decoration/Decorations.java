@@ -1,4 +1,4 @@
-package ch.phonon.drawables;
+package ch.phonon.drawables.decoration;
 
 /**
  * 

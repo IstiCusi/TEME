@@ -22,10 +22,9 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 
 import ch.phonon.drawables.composites.DrawableScaleReference;
-
-// enum KeyState {pressed, released};
 
 /**
  * This is the central adapter listened by the {@link TEMView} to handle
@@ -50,6 +49,11 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 
 	private Point2D.Double actualMousePosition;
 
+	private DrawableScaleReference oldScaleChoice;
+	//private TEMAllied oldTEMAllied;
+
+	private ScaleAnimationTimerListener scaleAnimationTimerListener;
+
 	/**
 	 * This constructor registers the {@link TEMView} to this adapter (copy by
 	 * reference). The TEMView reference is than used in the {@link KeyListener}
@@ -61,6 +65,10 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 		this.temView = temView;
 		this.temBegin = new TEMViewState();
 		this.temAdapterScaleTreatment = new TemAdapterScaleTreatment(temView);
+		this.scaleAnimationTimerListener =
+				new ScaleAnimationTimerListener(temView);
+		temView.scaleMarkerAnimationTimer =
+				new Timer(50, this.scaleAnimationTimerListener);
 	}
 
 	@Override
@@ -136,6 +144,14 @@ public class TEMAdapter extends MouseAdapter implements KeyListener {
 					.chooseScale(new Point2D.Double(e.getX(), e.getY()));
 
 			if (chosenScale != null) {
+
+				if (chosenScale != this.oldScaleChoice
+						|| chosenScale.distanceMarkerState()==0.0) {
+					temView.zeroAllDistanceMarkers();
+					temView.scaleMarkerAnimationTimer.start();
+				}
+				this.oldScaleChoice = chosenScale;
+			//	this.oldTEMAllied = temView.getTemAllied();
 
 				boolean isMiddleGripPressed =
 						chosenScale.middleGripContains(e.getX(), e.getY());

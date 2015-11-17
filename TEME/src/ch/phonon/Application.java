@@ -21,6 +21,11 @@
  */
 
 /*
+ * TODO: Add fonts to jar file - not to depend on the local font installation
+ * 
+ */
+
+/*
  * TODO: Introduce different point types (e.g. picture space point, temView
  * space point) Rewrite code based on this definitions. Do a code refactoring
  * based on this new point definitions

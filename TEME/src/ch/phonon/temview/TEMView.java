@@ -30,6 +30,7 @@ import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 import javax.swing.border.Border;
 
 import ch.phonon.ResourceLoader;
@@ -98,6 +99,9 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 
 	/** Standard Edit modes and their associated containers (cursors,...) */
 	private TEMEditMode temEditMode;
+
+	/** Timer used for animation of the scales */
+	public Timer scaleMarkerAnimationTimer = null;
 
 	// ------------------------ Constructor ------------------------------------
 
@@ -481,6 +485,10 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 			repaint();
 		}
 
+		if (evt.getPropertyName().equals("scaleChange")) {
+			repaint();
+		}
+
 	}
 
 	// --------------------------Getters and Setters---------------------------
@@ -546,6 +554,9 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 	 */
 	public void switchToNextTemAllied() {
 
+		this.scaleMarkerAnimationTimer.stop();
+		scaleDistanceMarkerOfChosenScale(0.0);
+
 		try {
 			TEMAllied helper = temTableModel.getForwardItem();
 			if (helper != null) {
@@ -570,6 +581,9 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 	 * {@link TEMView}.
 	 */
 	public void switchToPreviousTemAllied() {
+
+		this.scaleMarkerAnimationTimer.stop();
+		scaleDistanceMarkerOfChosenScale(0.0);
 
 		try {
 			TEMAllied helper = temTableModel.getBackwardItem();
@@ -651,7 +665,7 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 	}
 
 	/**
-	 * This legated method After chosing a scale by mouse pointer (see this
+	 * After chosing a scale by mouse pointer (see this
 	 * {@link #chooseScale(java.awt.geom.Point2D.Double)} the chosen state is
 	 * changed. This function allows to get a reference to the chosen scale.
 	 * 
@@ -661,6 +675,30 @@ public class TEMView extends JPanel implements PropertyChangeListener {
 		DrawableScaleReference chosenScale =
 				this.temAllied.delegateScales().getChosenScale();
 		return chosenScale;
+	}
+
+	/**
+	 * scales the chosen scale distance markers according to the markerScale
+	 * factor.
+	 * 
+	 * @param markerScale
+	 */
+	public void scaleDistanceMarkerOfChosenScale(double markerScale) {
+		if (this.temAllied.delegateScales().getChosenScale() != null) {
+			this.temAllied.delegateScales().getChosenScale()
+					.scaleDistanceMarkers(markerScale);
+			repaint();
+		}
+	}
+
+	/**
+	 * Sets the distance markers of all scales to normal unextended position
+	 */
+	public void zeroAllDistanceMarkers() {
+		for (DrawableScaleReference scale : this.temAllied.delegateScales()) {
+			scale.zeroDistanceMarkers();
+			repaint();
+		}
 	}
 
 }

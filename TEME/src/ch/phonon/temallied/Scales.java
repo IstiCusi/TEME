@@ -125,12 +125,14 @@ public class Scales implements Iterable<DrawableScaleReference> {
 				findFirstScaleThatContains(actualMousePosition);
 
 		if (scale != null) {
-			moveAlltoInactive();
-			this.inactiveScales.remove(scale);
-			scale.setActiveState(ActiveState.ACTIVE);
-			this.activeScales.add(scale);
-			this.setChosenScale(scale);
-			return scale;
+			synchronized (this) {
+				moveAlltoInactive();
+				this.inactiveScales.remove(scale);
+				scale.setActiveState(ActiveState.ACTIVE);
+				this.activeScales.add(scale);
+				this.setChosenScale(scale);
+				return scale;
+			}
 		} else {
 			this.setChosenScale(null);
 			return null;

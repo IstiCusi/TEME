@@ -96,10 +96,13 @@ public final class DrawableScaleReference extends DrawableComposite {
 						.color(new Color(0x890ADF)).buildImmutable();
 
 	};
-
+	
 	private ActiveState activeState;
 
+//	private double markerScale;
+
 	double sizeOfGrip = 20.0; // TODO: put into properties file
+	double markerExtansion = 3*30;
 
 	private StarPoint begin;
 
@@ -142,6 +145,10 @@ public final class DrawableScaleReference extends DrawableComposite {
 
 	private DrawableLine distanceMarkerRight;
 
+	private double markerScale;
+
+	//private Timer timer;
+
 	/**
 	 * Constructs a {@link DrawableScaleReference} based on a begin point and
 	 * and end point. Any new constructed scale in active state.
@@ -153,6 +160,8 @@ public final class DrawableScaleReference extends DrawableComposite {
 	public DrawableScaleReference(StarPoint begin, StarPoint end) {
 		super();
 
+		System.out.println("NEW");
+		
 		this.activeState = ActiveState.ACTIVE;
 
 		this.begin = begin;
@@ -408,8 +417,10 @@ public final class DrawableScaleReference extends DrawableComposite {
 	 *            to set
 	 */
 	public void setActiveState(ActiveState state) {
+		
 		this.activeState = state;
 		this.outerBox.applyDecorations(state.getDecorations());
+
 	}
 
 	/**
@@ -419,6 +430,40 @@ public final class DrawableScaleReference extends DrawableComposite {
 	 */
 	public ActiveState getActiveState() {
 		return activeState;
+	}
+
+	/**
+	 * Scale the distance markers of the scale to extended position
+	 * 
+	 * @param markerScale
+	 */
+	public void scaleDistanceMarkers(double markerScale) {
+		this.markerScale = markerScale;
+		distanceMarkerLeft.setLine(new Point2D.Double(0,0), 
+				new Point2D.Double(0, 30 + markerScale*this.markerExtansion));	
+		distanceMarkerRight.setLine(new Point2D.Double(0,0), 
+				new Point2D.Double(0, 30 + markerScale*this.markerExtansion));	
+		update();
+	}
+
+	/**
+	 * Sets the distance markers of the scale to unextended position 
+	 */
+	public void zeroDistanceMarkers() {
+		distanceMarkerLeft.setLine(new Point2D.Double(0,0), 
+				new Point2D.Double(0, 30));
+		distanceMarkerRight.setLine(new Point2D.Double(0,0), 
+				new Point2D.Double(0, 30));
+
+	}
+	
+	/**
+	 * Gives back marker state, it's marker scale extension factor
+	 * 
+	 * @return markerScale
+	 */
+	public double distanceMarkerState() {
+		return this.markerScale; 
 	}
 
 }

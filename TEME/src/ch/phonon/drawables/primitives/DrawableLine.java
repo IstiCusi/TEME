@@ -53,7 +53,7 @@ public class DrawableLine extends AbstractDrawable
 		super(starpoint, localOrientation);
 
 		this.line = new Line2D.Double(point1, point2);
-
+		
 		this.width = this.line.getBounds2D().getWidth();
 
 		this.height = this.line.getBounds2D().getHeight();
@@ -98,4 +98,17 @@ public class DrawableLine extends AbstractDrawable
 	public DrawableShapeDecorations getDecorations() {
 		return this.decorations;
 	}
+	
+	/**
+	 * Set new dimension of line 
+	 * @param a
+	 * @param b
+	 */
+	public void setLine(Point2D a, Point2D b) {
+		this.line.setLine(a, b);
+		this.width = this.line.getBounds2D().getWidth();
+		this.height = this.line.getBounds2D().getHeight();
+
+	}
+	
 }

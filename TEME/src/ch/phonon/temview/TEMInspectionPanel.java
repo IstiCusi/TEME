@@ -57,6 +57,8 @@ public class TEMInspectionPanel extends JPanel {
 	private JButton switchtoPreviousEditMode;
 
 	private JPanel switchEditModePanel;
+	
+
 
 	/**
 	 * Constructs the TEMInspection panel in arranging all views as described in

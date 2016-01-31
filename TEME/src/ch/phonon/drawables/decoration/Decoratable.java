@@ -24,7 +24,6 @@ import ch.phonon.drawables.Drawable;
 public interface Decoratable<T extends Decorations> {
 
 	/**
-	 * 
 	 * This function is used to apply {@link DrawableShapeDecorations} that
 	 * allow to adjust typical non shape related properties like color, line
 	 * style.

@@ -21,6 +21,10 @@
  */
 
 /*
+ * TODO: Reread the complete source code to get again familiar.
+ */
+
+/*
  * TODO: Add fonts to jar file - not to depend on the local font installation
  * 
  */

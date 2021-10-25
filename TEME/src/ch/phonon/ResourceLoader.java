@@ -204,7 +204,7 @@ public class ResourceLoader {
 	}
 
 	/**
-	 * This convinience function is used to obtain resource paths directly in
+	 * This convenience function is used to obtain resource paths directly in
 	 * the jar file of the application.
 	 * 
 	 * @param path

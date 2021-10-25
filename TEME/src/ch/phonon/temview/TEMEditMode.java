@@ -16,6 +16,8 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.EnumMap;
 
+import com.sun.xml.internal.bind.v2.TODO;
+
 import ch.phonon.ResourceLoader;
 
 /**
@@ -36,6 +38,11 @@ public class TEMEditMode {
 	TEMEditMode() {
 
 		try {
+			
+			//TODO: Please check, why either on new Ubuntu releases, java versions or different graphics boards the cursor
+			// point (64,64) is needed while on other systems that is different (is this maybe also related
+			// to screen resolution) -- the gif is of size 128x128 -- therefore 64x64 is logical. Maybe a bug in old 
+			// java releases ? 32 was used before
 
 			this.activeType = TEMEditType.POINT;
 
@@ -43,13 +50,13 @@ public class TEMEditMode {
 					ResourceLoader.getBufferedImage("Cross.gif");
 			Cursor bufferedCursor =
 					Toolkit.getDefaultToolkit().createCustomCursor(
-							curBufferedImage, new Point(32, 32), "Cross");
+							curBufferedImage, new Point(64,64), "Cross");
 			this.cursors.put(TEMEditType.POINT, bufferedCursor);
 
 			curBufferedImage =
 					ResourceLoader.getBufferedImage("Cross_Scale.png");
 			bufferedCursor = Toolkit.getDefaultToolkit().createCustomCursor(
-					curBufferedImage, new Point(32, 32), "Scale");
+					curBufferedImage, new Point(64, 64), "Scale");
 			this.cursors.put(TEMEditType.SCALE, bufferedCursor);
 
 		} catch (IOException e) {

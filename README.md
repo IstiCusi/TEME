@@ -124,7 +124,7 @@ Several key tasks are still in progress. Some of these are listed in the **TODOs
 
 ## Open Source License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE.md) file for details.
 
 ### External Libraries
 

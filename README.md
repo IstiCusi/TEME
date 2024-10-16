@@ -6,7 +6,7 @@
 
 This tool is currently in the **early development stages**, but it's designed to allow contributions from developers, scientists, and enthusiasts interested in TEM image analysis, scientific software development, and 3D visualization. Contributions are welcome to help bring this vision to reality.
 
-**Placeholders for images:**
+**Some views showing the GUI**
 
 - ![Loading TEM files into project](./TEME/doc/views/1.png)
 - ![Setting points and scales](./TEME/doc/views/2.png)
@@ -98,9 +98,9 @@ TEME follows a well-organized **Model-View-Controller (MVC) architecture**:
 
 - **Mouse Controls**:
 
-  - **Pan**: Middle mouse button to pan across the image.
-  - **Zoom**: Use the mouse wheel to zoom in and out.
-  - **Rotate**: Right-click and drag to rotate the 3D view.
+  - **Pan**: Middle mouse button and SHIFT.
+  - **Zoom**: Middle mouse button and CTRL.
+  - **Rotate**: Middle mouse button.
 
 - **Keyboard Controls**:
   - **Home**: Centers the view.

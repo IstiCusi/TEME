@@ -1,4 +1,3 @@
-
 # TEME - Transmission Electron Microscopy (TEM) Statistical Analysis
 
 ## Introduction
@@ -8,8 +7,9 @@
 This tool is currently in the **early development stages**, but it's designed to allow contributions from developers, scientists, and enthusiasts interested in TEM image analysis, scientific software development, and 3D visualization. Contributions are welcome to help bring this vision to reality.
 
 **Placeholders for images:**
-- ![Sample TEM Image](path/to/sample-tem-image.png) 
-- ![Interface Overview](path/to/interface-overview.png) 
+
+- ![Loading TEM files into project](./TEME/doc/views/1.png)
+- ![Interface Overview](path/to/interface-overview.png)
 - ![Zooming and Scaling in Action](path/to/zoom-scale-action.png)
 
 ---
@@ -17,6 +17,7 @@ This tool is currently in the **early development stages**, but it's designed to
 ## What TEME Will Become
 
 The vision of TEME is to offer a complete suite of tools for:
+
 - **Image processing of TEM datasets**: Applying filters, extracting features, and generating quantitative data from microscopic images.
 - **Plasmon analysis**: Statistical tools for analyzing plasmonic features within TEM images.
 - **3D Visualization**: Providing a 3D interface for interacting with and manipulating images, similar to popular 3D design tools like Blender.
@@ -31,18 +32,22 @@ Currently, many foundational features have been implemented, including view mani
 TEME is developed as a **Java-based project** within the **Eclipse IDE**. Hereâ€™s how you can set it up:
 
 ### Prerequisites
+
 - **Java 1.8 or higher** (The project does not run correctly with Java 1.7 due to cursor handling issues.)
 - **Eclipse IDE** (or another Java IDE of your choice)
 - **Gradle** (for project build management)
 
 ### Installation Steps
+
 1. **Clone the repository**:
+
    ```bash
    git clone https://github.com/IstiCusi/TEME.git
    cd TEME
    ```
 
 2. **Import into Eclipse**:
+
    - Open Eclipse.
    - Select `File > Import > Existing Gradle Project`.
    - Navigate to the directory where you cloned the repository, and Eclipse will import the project.
@@ -52,6 +57,7 @@ TEME is developed as a **Java-based project** within the **Eclipse IDE**. Hereâ€
    - Run the project within Eclipse to start interacting with the TEM images.
 
 **Placeholders for project setup images:**
+
 - ![Eclipse Project Setup](path/to/eclipse-setup.png)
 
 ---
@@ -59,22 +65,25 @@ TEME is developed as a **Java-based project** within the **Eclipse IDE**. Hereâ€
 ## Software Design
 
 TEME follows a well-organized **Model-View-Controller (MVC) architecture**:
+
 - **Model**: The data, including TEM datasets, is encapsulated in objects like `TEMAllied`.
 - **View**: The graphical components (`TEMView`, `TEMStatusBar`, `TEMInspectionPanel`) render the data and allow the user to interact with the images.
 - **Controller**: `TEMAdapter` acts as the bridge between user inputs (keyboard/mouse) and the view, executing operations like panning, zooming, rotating, and editing.
 
 ### Key Design Elements:
-  
 
 1. **State Management** (`TEMViewState.java`):
+
    - Manages view properties such as scaling, panning, and rotation.
    - Ensures a smooth user experience by tracking these parameters and making the view responsive to input.
 
 2. **Interaction Handlers** (`TEMAdapter.java`):
+
    - Handles user inputs via mouse and keyboard, delegating actions like zooming, panning, and rotating to the view.
    - Implements different modes for interacting with the TEM images (e.g., Scale Mode, Point Mode).
 
 3. **Scale Management** (`ScaleAnimationTimerListener.java`, `TEMEditMode.java`, `TEMEditType.java`):
+
    - Implements animation for scale transitions, providing smooth zooming and scaling.
    - `TEMEditMode` and `TEMEditType` manage the various modes users can switch between (e.g., editing points or scales).
 
@@ -89,6 +98,7 @@ TEME follows a well-organized **Model-View-Controller (MVC) architecture**:
 ### Keyboard and Mouse Controls:
 
 - **Mouse Controls**:
+
   - **Pan**: Middle mouse button to pan across the image.
   - **Zoom**: Use the mouse wheel to zoom in and out.
   - **Rotate**: Right-click and drag to rotate the 3D view.
@@ -118,6 +128,7 @@ Several key tasks are still in progress. Some of these are listed in the **TODOs
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ### External Libraries
+
 - **JTattoo**: Used for enhanced UI themes. JTattoo provides an attractive look and feel for Swing applications, but note that for open-source projects, the JTattoo license allows free usage without requiring the commercial license.
 
 For further details, refer to [JTattoo License](http://www.jtattoo.net/License.html).

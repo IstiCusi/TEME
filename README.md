@@ -9,8 +9,7 @@ This tool is currently in the **early development stages**, but it's designed to
 **Placeholders for images:**
 
 - ![Loading TEM files into project](./TEME/doc/views/1.png)
-- ![Interface Overview](path/to/interface-overview.png)
-- ![Zooming and Scaling in Action](path/to/zoom-scale-action.png)
+- ![Setting points and scales](./TEME/doc/views/2.png)
 
 ---
 
